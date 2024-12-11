@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-
+import pytest
 from src.block.block import Block
 from src.block.bookmark import Bookmark
 from src.block.bulleted_list_item import BulletedlistItem
@@ -18,11 +18,7 @@ from src.block.video import Video
 from src.potion import Potion
 
 
-import pytest
-
-
-class Test(TestCase):
-
+class TestAppendBlock(TestCase):
     PAGE_ID = "1596567a3bbf8049803de1ffe3616d9e"
 
     def setUp(self):
@@ -30,7 +26,6 @@ class Test(TestCase):
         self.suite.clear_page(self.PAGE_ID)
 
     @pytest.mark.post_api()
-    @pytest.mark.current()
     def test_パラグラフを追加する(self):
         text_block = Paragraph.from_plain_text(text="テスト")
         self._append_block_test(block=text_block)
