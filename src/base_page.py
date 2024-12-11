@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from src.base_operator import BaseOperator
 from src.block import Block
-from src.datetime_utils import jst_now
+from src.datetime_utils import JST
 from src.page.page_id import PageId
 from src.properties.checkbox import Checkbox
 from src.properties.cover import Cover
@@ -72,15 +72,21 @@ class BasePage:
     def title(self) -> str:
         return self.get_title_text()
 
-    def get_created_at(self) -> datetime:
-        if self.created_time is None:
-            return jst_now()
-        return self.created_time.start_time
+    @property
+    def created_at(self) -> datetime:
+        if self.created_time is None or self.created_time.start_datetime is None:
+            raise ValueError("created_at is None. This page is not created yet.")
+        datetime_ = self.created_time.start_datetime
+        # タイムゾーン未指定のため、tzinfoを付与
+        return (datetime_ + timedelta(hours=9)).replace(tzinfo=JST)
 
-    def get_updated_at(self) -> datetime:
-        if self.last_edited_time is None:
-            return jst_now()
-        return self.last_edited_time.start_time
+    @property
+    def updated_at(self) -> datetime:
+        if self.last_edited_time is None or self.last_edited_time.start_datetime is None:
+            raise ValueError("created_at is None. This page is not created yet.")
+        datetime_ = self.last_edited_time.start_datetime
+        # タイムゾーン未指定のため、tzinfoを付与
+        return (datetime_ + timedelta(hours=9)).replace(tzinfo=JST)
 
     def get_status(self, name: str) -> Status:
         return self._get_property(name=name, instance_class=Status)  # type: ignore
