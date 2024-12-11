@@ -1,17 +1,26 @@
-
 from src.block.block import Block
 
 
 class Video(Block):
     caption: list
     external_url: str
-    type: str = "video"
 
-    def __init__(self, id: str, archived: bool, created_time: str, last_edited_time: str, has_children: bool,
-                 parent: dict, caption: list, external_url: str):
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
-        self.caption = caption
+    def __init__(
+        self,
+        external_url: str,
+        caption: list,
+        id: str | None = None,
+        archived: bool | None = None,
+        created_time: str | None = None,
+        last_edited_time: str | None = None,
+        has_children: bool | None = None,
+        parent: dict | None = None,
+    ):
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.external_url = external_url
+        self.caption = caption
 
     @staticmethod
     def of(block: dict) -> "Video":
@@ -28,12 +37,23 @@ class Video(Block):
             external_url=video_external["url"] if "url" in video_external else "",
         )
 
+    @staticmethod
+    def from_external_url(url: str) -> "Video":
+        return Video(
+            external_url=url,
+            caption=[],
+        )
+
     @property
     def type(self) -> str:
         return "video"
 
     def to_dict_sub(self) -> dict:
-        raise NotImplementedError
+        return {
+            "caption": self.caption,
+            "type": "external",
+            "external": {"url": self.external_url},
+        }
 
     def to_slack_text(self) -> str:
         return self.external_url

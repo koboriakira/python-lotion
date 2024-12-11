@@ -83,20 +83,23 @@ class Test(TestCase):
         todo = ToDo.from_plain_text(text="テスト2", checked=True)
         self._append_block_test(block=todo)
 
+    @pytest.mark.post_api()
+    def test_動画を追加する(self):
+        url = "https://www.youtube.com/watch?v=L5mF2uBKhS8"
+        video = Video.from_external_url(url=url)
+        self._append_block_test(block=video)
+
     # @pytest.mark.post_api()
-    # @pytest.mark.current()
     # def test_コールアウトを追加する(self):
     #     callout = Callout.from_plain_text(text="テスト")
     #     self._append_block_test(block=callout)
 
     # @pytest.mark.post_api()
-    # @pytest.mark.current()
     # def test_コードを追加する(self):
     #     code = Code.from_plain_text(text="テスト")
     #     self._append_block_test(block=code)
 
     # @pytest.mark.post_api()
-    # @pytest.mark.current()
     # def test_テーブルを追加する(self):
     #     callout = Callout.from_plain_text(text="テスト")
     #     self._append_block_test(block=callout)
