@@ -2,12 +2,16 @@ from unittest import TestCase
 
 import pytest
 
+from page.page_id import PageId
 from potion import Potion
+from properties.checkbox import Checkbox
 from properties.number import Number
 from properties.property import Property
+from properties.relation import Relation
 from properties.status import Status
 from properties.text import Text
 from properties.title import Title
+from properties.url import Url
 
 
 class TestUpdateProperty(TestCase):
@@ -52,10 +56,37 @@ class TestUpdateProperty(TestCase):
         self.fail("ユーザが名前ベースでマルチセレクトを選べるようにしたい")
 
     @pytest.mark.post_api()
+    def test_ファイルを変更する(self):
+        self.fail("ファイルプロパティを作成するところから")
+
+    @pytest.mark.post_api()
     def test_ステータスを変更する(self):
         status_prop = Status.from_status_name(name="ステータス", status_name="未着手")
         actual = self._update_page(property=status_prop)
         self.assertEqual(actual.get_status(name="ステータス").status_name, "未着手")
+
+    @pytest.mark.post_api()
+    def test_チェックボックスを変更する(self):
+        checkbox_prop = Checkbox.true(name="チェックボックス")
+        actual = self._update_page(property=checkbox_prop)
+        self.assertEqual(actual.get_checkbox(name="チェックボックス").checked, True)
+
+    @pytest.mark.post_api()
+    def test_URLを変更する(self):
+        url_prop = Url.from_url(name="URL", url="https://example.com")
+        actual = self._update_page(property=url_prop)
+        self.assertEqual(actual.get_url(name="URL").url, "https://example.com")
+
+    @pytest.mark.post_api()
+    def test_リレーションを変更する(self):
+        # Given
+        page_id = PageId("1596567a3bbf80af8042c36cf78f92e4")
+        relation_prop = Relation.from_id(name="リレーション", id=page_id.value)
+
+        # When, Then
+        actual = self._update_page(property=relation_prop)
+        actual_relation = actual.get_relation(name="リレーション")
+        self.assertEqual(actual_relation.id_list, [page_id.value])
 
     def _update_page(self, property: Property):
         # When

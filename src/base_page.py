@@ -86,25 +86,25 @@ class BasePage:
         return self._get_property(name=name, instance_class=Status)  # type: ignore
 
     def get_text(self, name: str) -> Text:
-        return self.properties.get_property(name=name, instance_class=Text)
+        return self._get_property(name=name, instance_class=Text)  # type: ignore
 
     def get_date(self, name: str) -> Date:
         return self._get_property(name=name, instance_class=Date)  # type: ignore
 
     def get_select(self, name: str) -> Select:
-        return self.properties.get_property(name=name, instance_class=Select)
+        return self._get_property(name=name, instance_class=Select)  # type: ignore
 
     def get_multi_select(self, name: str) -> MultiSelect:
-        return self.properties.get_property(name=name, instance_class=MultiSelect)
+        return self._get_property(name=name, instance_class=MultiSelect)  # type: ignore
 
     def get_relation(self, name: str) -> Relation:
-        return self.properties.get_property(name=name, instance_class=Relation)
+        return self._get_property(name=name, instance_class=Relation)  # type: ignore
 
     def get_checkbox(self, name: str) -> Checkbox:
-        return self.properties.get_property(name=name, instance_class=Checkbox)
+        return self._get_property(name=name, instance_class=Checkbox)  # type: ignore
 
     def get_url(self, name: str) -> Url:
-        return self.properties.get_property(name=name, instance_class=Url)
+        return self._get_property(name=name, instance_class=Url)  # type: ignore
 
     def get_number(self, name: str) -> Number:
         return self._get_property(name=name, instance_class=Number)  # type: ignore
