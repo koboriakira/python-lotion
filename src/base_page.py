@@ -23,6 +23,15 @@ from src.properties.title import Title
 from src.properties.url import Url
 
 
+class NotCreatedError(Exception):
+    pass
+
+
+class NotFoundPropertyError(Exception):
+    def __init__(self, class_name: str, prop_name: str):
+        super().__init__(f"{class_name} property not found. name: {prop_name}")
+
+
 @dataclass
 class BasePage:
     properties: Properties
@@ -31,8 +40,8 @@ class BasePage:
     url: str | None = None
     created_time: CreatedTime | None = None
     last_edited_time: LastEditedTime | None = None
-    created_by: BaseOperator | None = None
-    last_edited_by: BaseOperator | None = None
+    _created_by: BaseOperator | None = None
+    _last_edited_by: BaseOperator | None = None
     cover: Cover | None = None
     icon: Icon | None = None
     archived: bool | None = False
@@ -46,8 +55,8 @@ class BasePage:
             url=None,
             created_time=None,
             last_edited_time=None,
-            created_by=None,
-            last_edited_by=None,
+            _created_by=None,
+            _last_edited_by=None,
             properties=Properties(values=properties or []),
             cover=None,
             icon=None,
@@ -75,7 +84,7 @@ class BasePage:
     @property
     def created_at(self) -> datetime:
         if self.created_time is None or self.created_time.start_datetime is None:
-            raise ValueError("created_at is None. This page is not created yet.")
+            raise NotCreatedError("created_at is None.")
         datetime_ = self.created_time.start_datetime
         # タイムゾーン未指定のため、tzinfoを付与
         return (datetime_ + timedelta(hours=9)).replace(tzinfo=JST)
@@ -83,7 +92,7 @@ class BasePage:
     @property
     def updated_at(self) -> datetime:
         if self.last_edited_time is None or self.last_edited_time.start_datetime is None:
-            raise ValueError("created_at is None. This page is not created yet.")
+            raise NotCreatedError("created_at is None.")
         datetime_ = self.last_edited_time.start_datetime
         # タイムゾーン未指定のため、tzinfoを付与
         return (datetime_ + timedelta(hours=9)).replace(tzinfo=JST)
@@ -118,7 +127,7 @@ class BasePage:
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)
         if result is None:
-            raise ValueError(f"{instance_class.__name__} property not found. name: {name}")
+            raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=name)
         return result
 
     def get_parant_database_id(self) -> str | None:
@@ -148,7 +157,7 @@ class BasePage:
     @property
     def page_id(self) -> PageId:
         if self.id_ is None:
-            raise ValueError("page_id is None. This page is not created yet.")
+            raise NotCreatedError("page_id is None.")
         return PageId(self.id_) if isinstance(self.id_, str) else self.id_
 
     def is_created(self) -> bool:
@@ -156,8 +165,20 @@ class BasePage:
 
     def get_id_and_url(self) -> dict[str, str]:
         if self.id is None or self.url is None:
-            raise ValueError("id or url is None")
+            raise NotCreatedError("id or url is None")
         return {
             "id": self.id,
             "url": self.url,
         }
+
+    @property
+    def created_by(self) -> BaseOperator:
+        if self._created_by is None:
+            raise NotCreatedError("created_by is None.")
+        return self._created_by
+
+    @property
+    def edited_by(self) -> BaseOperator:
+        if self._last_edited_by is None:
+            raise NotCreatedError("created_by is None.")
+        return self._last_edited_by

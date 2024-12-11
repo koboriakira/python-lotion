@@ -49,42 +49,28 @@ class NotionApiError(Exception):
         if database_id is not None:
             message += f"database_id: {database_id}"
         if properties is not None:
-            properties_ = (
-                properties.__dict__()
-                if isinstance(properties, Properties)
-                else properties
-            )
+            properties_ = properties.__dict__() if isinstance(properties, Properties) else properties
             message += f", properties: {properties_}"
         super().__init__(message)
 
 
 class Potion:
-    def __init__(
-        self, client: Client, max_retry_count: int = 3, logger: Logger | None = None
-    ) -> None:
+    def __init__(self, client: Client, max_retry_count: int = 3, logger: Logger | None = None) -> None:
         self.client = client
         self.max_retry_count = max_retry_count
         self._logger = logger or getLogger(__name__)
 
     @staticmethod
-    def get_instance(
-        max_retry_count: int = 3, logger: Logger | None = None
-    ) -> "Potion":
+    def get_instance(max_retry_count: int = 3, logger: Logger | None = None) -> "Potion":
         client = Client(auth=os.getenv("NOTION_SECRET"))
         return Potion(client, max_retry_count=max_retry_count, logger=logger)
 
-    def retrieve_page(
-        self, page_id: str, page_model: BasePage | None = None
-    ) -> BasePage:
+    def retrieve_page(self, page_id: str, page_model: BasePage | None = None) -> BasePage:
         """指定されたページを取得する"""
         page_entity = self.__retrieve_page(page_id=page_id)
-        return self.__convert_page_model(
-            page_entity=page_entity, include_children=True, page_model=page_model
-        )
+        return self.__convert_page_model(page_entity=page_entity, include_children=True, page_model=page_model)
 
-    def update_page(
-        self, page_id: str, properties: list[Property] | None = None
-    ) -> dict:
+    def update_page(self, page_id: str, properties: list[Property] | None = None) -> dict:
         """指定されたページを更新する"""
         update_properties = Properties(values=properties or [])
         return self.__update(page_id=page_id, properties=update_properties)
@@ -107,11 +93,7 @@ class Potion:
         page = self.__create_page(
             database_id=database_id,
             cover=cover.__dict__() if cover is not None else None,
-            properties=(
-                Properties(values=properties).__dict__()
-                if properties is not None
-                else {}
-            ),
+            properties=(Properties(values=properties).__dict__() if properties is not None else {}),
         )
         if blocks is not None:
             self.append_blocks(block_id=page["id"], blocks=blocks)
@@ -126,9 +108,7 @@ class Potion:
         include_children: bool | None = None,
     ) -> list[BasePage]:
         """指定されたデータベースのページを取得する"""
-        results = self._database_query(
-            database_id=database_id, filter_param=filter_param
-        )
+        results = self._database_query(database_id=database_id, filter_param=filter_param)
         pages: list[BasePage] = []
         for page_entity in results:
             page = self.__convert_page_model(
@@ -138,9 +118,7 @@ class Potion:
             )
             pages.append(page)
         if title is not None:
-            pages = list(
-                filter(lambda p: p.properties.get_title().text == title, pages)
-            )
+            pages = list(filter(lambda p: p.properties.get_title().text == title, pages))
         return pages
 
     def find_page_by_title(
@@ -172,9 +150,7 @@ class Potion:
         start_cursor: str | None = None,
     ) -> dict:
         if filter_param is None:
-            return self._database_query_without_filter(
-                database_id=database_id, start_cursor=start_cursor
-            )
+            return self._database_query_without_filter(database_id=database_id, start_cursor=start_cursor)
         results = []
         while True:
             data = self.__database_query(
@@ -187,9 +163,7 @@ class Potion:
                 return results
             start_cursor = data.get("next_cursor")
 
-    def _database_query_without_filter(
-        self, database_id: str, start_cursor: str | None = None
-    ) -> dict:
+    def _database_query_without_filter(self, database_id: str, start_cursor: str | None = None) -> dict:
         results = []
         while True:
             data = self.__database_query(
@@ -235,24 +209,16 @@ class Potion:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)
 
-    def __append_block_children(
-        self, block_id: str, children: list[dict], retry_count: int = 0
-    ) -> dict:
+    def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> dict:
         try:
-            return self.client.blocks.children.append(
-                block_id=block_id, children=children
-            )
+            return self.client.blocks.children.append(block_id=block_id, children=children)
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__append_block_children(
-                    block_id=block_id, children=children, retry_count=retry_count + 1
-                )
+                return self.__append_block_children(block_id=block_id, children=children, retry_count=retry_count + 1)
             raise NotionApiError(page_id=block_id, e=e) from e
         except HTTPResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__append_block_children(
-                    block_id=block_id, children=children, retry_count=retry_count + 1
-                )
+                return self.__append_block_children(block_id=block_id, children=children, retry_count=retry_count + 1)
             raise NotionApiError(page_id=block_id, e=e) from e
         except TypeError as e:
             raise AppendBlockError(block_id=block_id, blocks=children, e=e) from e
@@ -273,24 +239,19 @@ class Potion:
         last_edited_time = LastEditedTime.create(page_entity["last_edited_time"])
         created_by = BaseOperator.of(page_entity["created_by"])
         last_edited_by = BaseOperator.of(page_entity["last_edited_by"])
-        cover = (
-            Cover.of(page_entity["cover"]) if page_entity["cover"] is not None else None
-        )
+        cover = Cover.of(page_entity["cover"]) if page_entity["cover"] is not None else None
         icon = Icon.of(page_entity["icon"]) if page_entity["icon"] is not None else None
         archived = page_entity["archived"]
         properties = PropertyTranslator.from_dict(page_entity["properties"])
-        block_children = (
-            self.__get_block_children(page_id=id_.value) if include_children else []
-        )
+        block_children = self.__get_block_children(page_id=id_.value) if include_children else []
 
-        page_model_cls = page_model or BasePage
-        return page_model_cls(
+        return BasePage(
             id_=id_,
             url=url,
             created_time=created_time,
             last_edited_time=last_edited_time,
-            created_by=created_by,
-            last_edited_by=last_edited_by,
+            _created_by=created_by,
+            _last_edited_by=last_edited_by,
             cover=cover,
             icon=icon,
             archived=archived,
@@ -303,15 +264,11 @@ class Potion:
             return self.client.pages.retrieve(page_id=page_id)
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__retrieve_page(
-                    page_id=page_id, retry_count=retry_count + 1
-                )
+                return self.__retrieve_page(page_id=page_id, retry_count=retry_count + 1)
             raise NotionApiError(page_id=page_id, e=e) from e
         except HTTPResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__retrieve_page(
-                    page_id=page_id, retry_count=retry_count + 1
-                )
+                return self.__retrieve_page(page_id=page_id, retry_count=retry_count + 1)
             raise NotionApiError(page_id=page_id, e=e) from e
 
     def __get_block_children(self, page_id: str) -> list[Block]:
@@ -323,15 +280,11 @@ class Potion:
             return self.client.blocks.children.list(block_id=block_id)
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__list_blocks(
-                    block_id=block_id, retry_count=retry_count + 1
-                )
+                return self.__list_blocks(block_id=block_id, retry_count=retry_count + 1)
             raise NotionApiError(page_id=block_id, e=e) from e
         except HTTPResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__list_blocks(
-                    block_id=block_id, retry_count=retry_count + 1
-                )
+                return self.__list_blocks(block_id=block_id, retry_count=retry_count + 1)
             raise NotionApiError(page_id=block_id, e=e) from e
 
     def __archive(self, page_id: str, retry_count: int = 0) -> dict:
@@ -349,9 +302,7 @@ class Potion:
                 return self.__archive(page_id=page_id, retry_count=retry_count + 1)
             raise NotionApiError(page_id=page_id, e=e) from e
 
-    def __update(
-        self, page_id: str, properties: Properties, retry_count: int = 0
-    ) -> dict:
+    def __update(self, page_id: str, properties: Properties, retry_count: int = 0) -> dict:
         try:
             return self.client.pages.update(
                 page_id=page_id,
@@ -359,15 +310,11 @@ class Potion:
             )
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__update(
-                    page_id=page_id, properties=properties, retry_count=retry_count + 1
-                )
+                return self.__update(page_id=page_id, properties=properties, retry_count=retry_count + 1)
             raise NotionApiError(page_id=page_id, e=e, properties=properties) from e
         except HTTPResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
-                return self.__update(
-                    page_id=page_id, properties=properties, retry_count=retry_count + 1
-                )
+                return self.__update(page_id=page_id, properties=properties, retry_count=retry_count + 1)
             raise NotionApiError(page_id=page_id, e=e, properties=properties) from e
 
     def __create_page(
@@ -391,9 +338,7 @@ class Potion:
                     cover=cover,
                     retry_count=retry_count + 1,
                 )
-            raise NotionApiError(
-                database_id=database_id, e=e, properties=properties
-            ) from e
+            raise NotionApiError(database_id=database_id, e=e, properties=properties) from e
         except HTTPResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
                 self.__create_page(
@@ -402,9 +347,7 @@ class Potion:
                     cover=cover,
                     retry_count=retry_count + 1,
                 )
-            raise NotionApiError(
-                database_id=database_id, e=e, properties=properties
-            ) from e
+            raise NotionApiError(database_id=database_id, e=e, properties=properties) from e
 
     def __database_query(
         self,
@@ -444,7 +387,4 @@ class Potion:
             raise NotionApiError(database_id=database_id, e=e) from e
 
     def __is_able_retry(self, status: int, retry_count: int) -> bool:
-        return (
-            status == NOTION_API_ERROR_BAD_GATEWAY
-            and retry_count < self.max_retry_count
-        )
+        return status == NOTION_API_ERROR_BAD_GATEWAY and retry_count < self.max_retry_count
