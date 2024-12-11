@@ -1,20 +1,21 @@
 from unittest import TestCase
 
 
-from block.bookmark import Bookmark
-from block.bulleted_list_item import BulletedlistItem
-from block.callout import Callout
-from block.code import Code
-from block.divider import Divider
-from block.embed import Embed
-from block.heading import Heading
-from block.image import Image
-from block.numbered_list_item import NumberedListItem
-from block.paragraph import Paragraph
-from block.quote import Quote
-from block.to_do import ToDo
-from block.video import Video
-from potion import Potion
+from src.block.block import Block
+from src.block.bookmark import Bookmark
+from src.block.bulleted_list_item import BulletedlistItem
+from src.block.callout import Callout
+from src.block.code import Code
+from src.block.divider import Divider
+from src.block.embed import Embed
+from src.block.heading import Heading
+from src.block.image import Image
+from src.block.numbered_list_item import NumberedListItem
+from src.block.paragraph import Paragraph
+from src.block.quote import Quote
+from src.block.to_do import ToDo
+from src.block.video import Video
+from src.potion import Potion
 
 
 import pytest
@@ -29,6 +30,7 @@ class Test(TestCase):
         self.suite.clear_page(self.PAGE_ID)
 
     @pytest.mark.post_api()
+    @pytest.mark.current()
     def test_パラグラフを追加する(self):
         text_block = Paragraph.from_plain_text(text="テスト")
         self._append_block_test(block=text_block)
@@ -106,3 +108,9 @@ class Test(TestCase):
         # When, Then
         actual = self.suite.append_block(block_id=self.PAGE_ID, block=block)
         self.assertTrue("results" in actual)
+        block_by_get = self._get_first_block()
+        self.assertIsInstance(block_by_get, block.__class__)
+
+    def _get_first_block(self) -> Block:
+        page = self.suite.retrieve_page(self.PAGE_ID)
+        return page.block_children[0]
