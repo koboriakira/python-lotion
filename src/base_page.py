@@ -83,7 +83,7 @@ class BasePage:
         return self.last_edited_time.start_time
 
     def get_status(self, name: str) -> Status:
-        return self.properties.get_property(name=name, instance_class=Status)
+        return self._get_property(name=name, instance_class=Status)  # type: ignore
 
     def get_text(self, name: str) -> Text:
         return self.properties.get_property(name=name, instance_class=Text)

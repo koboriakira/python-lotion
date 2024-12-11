@@ -5,6 +5,7 @@ import pytest
 from potion import Potion
 from properties.number import Number
 from properties.property import Property
+from properties.status import Status
 from properties.text import Text
 from properties.title import Title
 
@@ -41,6 +42,21 @@ class TestUpdateProperty(TestCase):
         number_prop = Number.from_num(name="数値", value=1)
         actual = self._update_page(property=number_prop)
         self.assertEqual(actual.get_number(name="数値").number, 1)
+
+    @pytest.mark.post_api()
+    def test_セレクトを変更する(self):
+        self.fail("ユーザが名前ベースでセレクトを選べるようにしたい")
+
+    @pytest.mark.post_api()
+    def test_マルチセレクトを変更する(self):
+        self.fail("ユーザが名前ベースでマルチセレクトを選べるようにしたい")
+
+    @pytest.mark.post_api()
+    @pytest.mark.current()
+    def test_ステータスを変更する(self):
+        status_prop = Status.from_status_name(name="ステータス", status_name="未着手")
+        actual = self._update_page(property=status_prop)
+        self.assertEqual(actual.get_status(name="ステータス").status_name, "未着手")
 
     def _update_page(self, property: Property):
         # When
