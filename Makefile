@@ -2,6 +2,10 @@
 test:
 	@pipenv run pytest -m "not learning and not get_api and not post_api"
 
+.PHONY: test-current
+test-current:
+	@pipenv run pytest -m "current"
+
 .PHONY: test-get-api
 test-get-api:
 	@pipenv run pytest -m "get_api"
