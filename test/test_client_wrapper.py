@@ -19,20 +19,18 @@ class TestClientWrapper(TestCase):
     def setUp(self):
         self.suite = ClientWrapper.get_instance()
 
-    @pytest.mark.skip()
+    @pytest.mark.get_api()
     def test_ページを取得してみる(self):
         # pipenv run pytest test/notion_client_wrapper/test_client_wrapper.py -k test_ページを取得してみる
-        page_id = "5c38fd30714b4ce2bf2d25407f3cfc16"
+        page_id = "1596567a3bbf80bb92a0d05094b0c110"
         page = self.suite.retrieve_page(page_id=page_id)
-        print(page)
-        print(page.get_slack_text_in_block_children())
-        self.fail("標準出力確認のためのエラー")
+        self.assertIsInstance(page, BasePage)
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_すべてのデータを取得できる(self):
         pass
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_1つの条件で絞り込む(self):
         pass
         # # Given
@@ -49,7 +47,7 @@ class TestClientWrapper(TestCase):
         # self.assertEqual(1, len(pages))
         # self.assertEqual("タバコロード 20", pages[0].get_title().text)
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_タイトルを使って絞り込む_title引数(self):
         pass
         # # Given
@@ -63,7 +61,7 @@ class TestClientWrapper(TestCase):
         # self.assertEqual(1, len(pages))
         # self.assertEqual("タバコロード 20", pages[0].get_title().text)
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_タイトルを使って絞り込む_titleをpropertyで(self):
         pass
         # Given
@@ -80,7 +78,7 @@ class TestClientWrapper(TestCase):
         # self.assertEqual(1, len(pages))
         # self.assertEqual("タバコロード 20", pages[0].get_title().text)
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_返却値のモデルを指定できるようにする(self):
         pass
 
@@ -101,7 +99,7 @@ class TestClientWrapper(TestCase):
         # )
         # self.assertIsInstance(pages[0], OriginalBasePage)
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_更新日時でしぼりこむ(self):
         pass
         # class OriginalBasePage(BasePage):
@@ -125,7 +123,7 @@ class TestClientWrapper(TestCase):
         # print(pages)
         # print(len(pages))
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_ブロックもあわせてページをひとつ取得する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_ブロックもあわせてページをひとつ取得する
@@ -138,7 +136,7 @@ class TestClientWrapper(TestCase):
         # print(task)
         # # self.fail()
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_現在のタスクを取得する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_現在のタスクを取得する
@@ -226,7 +224,7 @@ class TestClientWrapper(TestCase):
         # # 内容を確認したいので、無理やりfailさせる
         # self.fail("動作確認用。テストは失敗しても問題ありません。")
 
-    @pytest.mark.skip("実際にページが作成されるので注意")
+    @pytest.mark.post_api("実際にページが作成されるので注意")
     def test_ページを作成してみる(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_ページを作成してみる
@@ -242,7 +240,7 @@ class TestClientWrapper(TestCase):
         # )
         # print(page)
 
-    @pytest.mark.use_genuine_api()
+    @pytest.mark.get_api()
     def test_タイトルだけで検索する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_タイトルだけで検索する
@@ -254,7 +252,7 @@ class TestClientWrapper(TestCase):
         # )
         # self.assertIsNotNone(page)
 
-    @pytest.mark.skip("実際にページが作成されるので注意")
+    @pytest.mark.post_api("実際にページが作成されるので注意")
     def test_ページを作成する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_ページを作成する
