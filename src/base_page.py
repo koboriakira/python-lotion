@@ -1,16 +1,13 @@
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from src.base_operator import BaseOperator
 from src.block import Block
-from src.datetime_utils import JST
 from src.page.page_id import PageId
 from src.properties.checkbox import Checkbox
 from src.properties.cover import Cover
-from src.properties.created_time import CreatedTime
 from src.properties.date import Date
 from src.properties.icon import Icon
-from src.properties.last_edited_time import LastEditedTime
 from src.properties.multi_select import MultiSelect
 from src.properties.number import Number
 from src.properties.properties import Properties
@@ -38,8 +35,8 @@ class BasePage:
     block_children: list[Block] = field(default_factory=list)
     id_: PageId | str | None = None
     url: str | None = None
-    created_time: CreatedTime | None = None
-    last_edited_time: LastEditedTime | None = None
+    created_time: datetime | None = None
+    last_edited_time: datetime | None = None
     _created_by: BaseOperator | None = None
     _last_edited_by: BaseOperator | None = None
     cover: Cover | None = None
@@ -83,19 +80,15 @@ class BasePage:
 
     @property
     def created_at(self) -> datetime:
-        if self.created_time is None or self.created_time.start_datetime is None:
+        if self.created_time is None:
             raise NotCreatedError("created_at is None.")
-        datetime_ = self.created_time.start_datetime
-        # タイムゾーン未指定のため、tzinfoを付与
-        return (datetime_ + timedelta(hours=9)).replace(tzinfo=JST)
+        return self.created_time
 
     @property
     def updated_at(self) -> datetime:
-        if self.last_edited_time is None or self.last_edited_time.start_datetime is None:
+        if self.last_edited_time is None:
             raise NotCreatedError("created_at is None.")
-        datetime_ = self.last_edited_time.start_datetime
-        # タイムゾーン未指定のため、tzinfoを付与
-        return (datetime_ + timedelta(hours=9)).replace(tzinfo=JST)
+        return self.last_edited_time
 
     def get_status(self, name: str) -> Status:
         return self._get_property(name=name, instance_class=Status)  # type: ignore

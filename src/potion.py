@@ -1,18 +1,18 @@
 import os
+from datetime import datetime, timedelta
 from logging import Logger, getLogger
 
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
+from datetime_utils import JST
 from src.base_operator import BaseOperator
 from src.base_page import BasePage
 from src.block import Block, BlockFactory
 from src.filter.filter_builder import FilterBuilder
 from src.page.page_id import PageId
 from src.properties.cover import Cover
-from src.properties.created_time import CreatedTime
 from src.properties.icon import Icon
-from src.properties.last_edited_time import LastEditedTime
 from src.properties.properties import Properties
 from src.properties.property import Property
 from src.properties.title import Title
@@ -235,8 +235,8 @@ class Potion:
 
         id_ = PageId(page_entity["id"])
         url = page_entity["url"]
-        created_time = CreatedTime.create(page_entity["created_time"])
-        last_edited_time = LastEditedTime.create(page_entity["last_edited_time"])
+        created_time = datetime.fromisoformat(page_entity["created_time"]) + timedelta(hours=9)
+        last_edited_time = datetime.fromisoformat(page_entity["last_edited_time"]) + timedelta(hours=9)
         created_by = BaseOperator.of(page_entity["created_by"])
         last_edited_by = BaseOperator.of(page_entity["last_edited_by"])
         cover = Cover.of(page_entity["cover"]) if page_entity["cover"] is not None else None
@@ -248,8 +248,8 @@ class Potion:
         return BasePage(
             id_=id_,
             url=url,
-            created_time=created_time,
-            last_edited_time=last_edited_time,
+            created_time=created_time.replace(tzinfo=JST),
+            last_edited_time=last_edited_time.replace(tzinfo=JST),
             _created_by=created_by,
             _last_edited_by=last_edited_by,
             cover=cover,
