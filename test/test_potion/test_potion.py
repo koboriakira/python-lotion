@@ -20,8 +20,8 @@ class TestClientWrapper(TestCase):
         self.suite = Potion.get_instance()
 
     @pytest.mark.get_api()
-    def test_ページを取得してみる(self):
-        # pipenv run pytest test/notion_client_wrapper/test_client_wrapper.py -k test_ページを取得してみる
+    def test_ページを取得する(self):
+        # pipenv run pytest test/test_potion/test_potion.py -k test_ページを取得する
         page_id = "1596567a3bbf80bb92a0d05094b0c110"
         page = self.suite.retrieve_page(page_id=page_id)
         self.assertIsInstance(page, BasePage)
