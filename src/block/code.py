@@ -14,7 +14,9 @@ class Code(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.rich_text = rich_text
         self.language = language
 
@@ -33,6 +35,11 @@ class Code(Block):
             has_children=block["has_children"],
             parent=block["parent"],
         )
+
+    @staticmethod
+    def from_plain_text(text: str, language: str | None = None) -> "Code":
+        rich_text = RichText.from_plain_text(text)
+        return Code(rich_text=rich_text, language=language)
 
     @property
     def type(self) -> str:

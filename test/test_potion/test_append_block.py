@@ -1,8 +1,10 @@
 from unittest import TestCase
 
+
 from block.bookmark import Bookmark
 from block.bulleted_list_item import BulletedlistItem
 from block.callout import Callout
+from block.code import Code
 from block.divider import Divider
 from block.embed import Embed
 from block.heading import Heading
@@ -13,7 +15,7 @@ from block.quote import Quote
 from block.to_do import ToDo
 from block.video import Video
 from potion import Potion
-from properties.text import Text
+
 
 import pytest
 
@@ -89,20 +91,15 @@ class Test(TestCase):
         video = Video.from_external_url(url=url)
         self._append_block_test(block=video)
 
-    # @pytest.mark.post_api()
-    # def test_コールアウトを追加する(self):
-    #     callout = Callout.from_plain_text(text="テスト")
-    #     self._append_block_test(block=callout)
+    @pytest.mark.post_api()
+    def test_コールアウトを追加する(self):
+        callout = Callout.from_plain_text(text="テスト")
+        self._append_block_test(block=callout)
 
-    # @pytest.mark.post_api()
-    # def test_コードを追加する(self):
-    #     code = Code.from_plain_text(text="テスト")
-    #     self._append_block_test(block=code)
-
-    # @pytest.mark.post_api()
-    # def test_テーブルを追加する(self):
-    #     callout = Callout.from_plain_text(text="テスト")
-    #     self._append_block_test(block=callout)
+    @pytest.mark.post_api()
+    def test_コードを追加する(self):
+        code = Code.from_plain_text(text="print('hello')", language="python")
+        self._append_block_test(block=code)
 
     def _append_block_test(self, block):
         # When, Then
