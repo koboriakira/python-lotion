@@ -1,3 +1,4 @@
+from tabnanny import check
 from src.block.block import Block
 from src.block.rich_text import RichText
 
@@ -10,7 +11,7 @@ class ToDo(Block):
     def __init__(
         self,
         rich_text: RichText,
-        color: str,
+        color: str | None = None,
         checked: bool | None = None,
         id: str | None = None,
         archived: bool | None = None,
@@ -19,7 +20,9 @@ class ToDo(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.rich_text = rich_text
         self.color = color
         self.checked = checked or False
@@ -40,6 +43,11 @@ class ToDo(Block):
             checked=to_do["checked"],
         )
 
+    @staticmethod
+    def from_plain_text(text: str, checked: bool | None = None) -> "ToDo":
+        checked = checked or False
+        return ToDo(rich_text=RichText.from_plain_text(text), checked=checked)
+
     @property
     def type(self) -> str:
         return "to_do"
@@ -54,4 +62,8 @@ class ToDo(Block):
         return result
 
     def to_slack_text(self) -> str:
-        return "[ ] " + self.rich_text.to_slack_text() if not self.checked else "[x] " + self.rich_text.to_slack_text()
+        return (
+            "[ ] " + self.rich_text.to_slack_text()
+            if not self.checked
+            else "[x] " + self.rich_text.to_slack_text()
+        )

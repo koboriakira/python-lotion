@@ -7,7 +7,11 @@ from block.divider import Divider
 from block.embed import Embed
 from block.heading import Heading
 from block.image import Image
+from block.numbered_list_item import NumberedListItem
 from block.paragraph import Paragraph
+from block.quote import Quote
+from block.to_do import ToDo
+from block.video import Video
 from potion import Potion
 from properties.text import Text
 
@@ -33,7 +37,9 @@ class Test(TestCase):
 
     @pytest.mark.post_api()
     def test_リストを追加する(self):
-        list_block = BulletedlistItem.from_plain_text(text="テスト")
+        list_block = BulletedlistItem.from_plain_text(text="テスト1")
+        self._append_block_test(block=list_block)
+        list_block = BulletedlistItem.from_plain_text(text="テスト2")
         self._append_block_test(block=list_block)
 
     @pytest.mark.post_api()
@@ -57,6 +63,26 @@ class Test(TestCase):
         image = Image.from_external_url(url=url)
         self._append_block_test(block=image)
 
+    @pytest.mark.post_api()
+    def test_番号付きリストを追加する(self):
+        numberd_list_block = NumberedListItem.from_plain_text(text="テスト1")
+        self._append_block_test(block=numberd_list_block)
+
+        numberd_list_block = NumberedListItem.from_plain_text(text="テスト2")
+        self._append_block_test(block=numberd_list_block)
+
+    @pytest.mark.post_api()
+    def test_引用を追加する(self):
+        quote = Quote.from_plain_text(text="テスト")
+        self._append_block_test(block=quote)
+
+    @pytest.mark.post_api()
+    def test_TODOリストを追加する(self):
+        todo = ToDo.from_plain_text(text="テスト1")
+        self._append_block_test(block=todo)
+        todo = ToDo.from_plain_text(text="テスト2", checked=True)
+        self._append_block_test(block=todo)
+
     # @pytest.mark.post_api()
     # @pytest.mark.current()
     # def test_コールアウトを追加する(self):
@@ -68,6 +94,12 @@ class Test(TestCase):
     # def test_コードを追加する(self):
     #     code = Code.from_plain_text(text="テスト")
     #     self._append_block_test(block=code)
+
+    # @pytest.mark.post_api()
+    # @pytest.mark.current()
+    # def test_テーブルを追加する(self):
+    #     callout = Callout.from_plain_text(text="テスト")
+    #     self._append_block_test(block=callout)
 
     def _append_block_test(self, block):
         # When, Then
