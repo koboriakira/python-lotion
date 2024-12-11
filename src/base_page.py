@@ -88,9 +88,8 @@ class BasePage:
     def get_text(self, name: str) -> Text:
         return self.properties.get_property(name=name, instance_class=Text)
 
-    def get_date(self, name: str | None = None) -> Date:
-        _name = name or Date.DEFAULT_NAME
-        return self.properties.get_property(name=name, instance_class=Date)
+    def get_date(self, name: str) -> Date:
+        return self._get_property(name=name, instance_class=Date)  # type: ignore
 
     def get_select(self, name: str) -> Select:
         return self.properties.get_property(name=name, instance_class=Select)

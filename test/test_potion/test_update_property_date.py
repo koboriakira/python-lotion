@@ -10,6 +10,7 @@ from properties.property import Property
 from properties.title import Title
 
 
+@pytest.mark.current()
 class TestUpdateProperty(TestCase):
     DATABASE_ID = "1596567a3bbf80d58251f1159e5c40fa"
     PROP_NAME = "日付"
@@ -57,6 +58,42 @@ class TestUpdateProperty(TestCase):
         self.assertEqual(actual.end_date, None)
         self.assertEqual(actual.end_datetime, None)
         self.assertEqual(actual.end_time, None)
+
+    @pytest.mark.post_api()
+    def test_開始日と終了日を変更する(self):
+        # Given
+        start_date = date(2021, 1, 1)
+        end_date = date(2021, 1, 2)
+        date_prop = Date.from_range(name=self.PROP_NAME, start=start_date, end=end_date)
+
+        # When, Then
+        actual = self._update_page(property=date_prop)
+        self.assertEqual(actual.start_date, start_date)
+        self.assertEqual(actual.start_time, start_date)
+        self.assertEqual(actual.start_datetime, datetime(2021, 1, 1, tzinfo=JST))
+        self.assertEqual(actual.end_date, end_date)
+        self.assertEqual(actual.end_time, end_date)
+        self.assertEqual(actual.end_datetime, datetime(2021, 1, 2, tzinfo=JST))
+
+    @pytest.mark.post_api()
+    def test_開始時刻と終了時刻を変更する(self):
+        # Given
+        start_datetime = datetime(2021, 1, 1, 12, 34, 0, tzinfo=JST)
+        end_datetime = datetime(2021, 1, 1, 23, 45, 0, tzinfo=JST)
+        date_prop = Date.from_range(
+            name=self.PROP_NAME,
+            start=start_datetime,
+            end=end_datetime,
+        )
+
+        # When, Then
+        actual = self._update_page(property=date_prop)
+        self.assertEqual(actual.start_date, start_datetime.date())
+        self.assertEqual(actual.start_time, start_datetime)
+        self.assertEqual(actual.start_datetime, start_datetime)
+        self.assertEqual(actual.end_date, end_datetime.date())
+        self.assertEqual(actual.end_time, end_datetime)
+        self.assertEqual(actual.end_datetime, end_datetime)
 
     def _update_page(self, property: Property):
         # When
