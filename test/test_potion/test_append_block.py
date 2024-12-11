@@ -4,6 +4,7 @@ from block.bookmark import Bookmark
 from block.bulleted_list_item import BulletedlistItem
 from block.callout import Callout
 from block.divider import Divider
+from block.embed import Embed
 from block.paragraph import Paragraph
 from potion import Potion
 from properties.text import Text
@@ -34,10 +35,15 @@ class Test(TestCase):
         self._append_block_test(block=list_block)
 
     @pytest.mark.post_api()
-    @pytest.mark.current()
     def test_区切り線を追加する(self):
         divider = Divider()
         self._append_block_test(block=divider)
+
+    @pytest.mark.post_api()
+    @pytest.mark.current()
+    def test_埋め込みを追加する(self):
+        embed = Embed.from_url(url="https://www.google.com/")
+        self._append_block_test(block=embed)
 
     # @pytest.mark.post_api()
     # @pytest.mark.current()

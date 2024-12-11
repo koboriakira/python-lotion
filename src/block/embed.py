@@ -16,9 +16,18 @@ class Embed(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.embed_url = embed_url
         self.caption = caption or []
+
+    @staticmethod
+    def from_url(url: str) -> "Embed":
+        return Embed(
+            embed_url=url,
+            caption=[],
+        )
 
     @staticmethod
     def from_url_and_caption(url: str, caption_str: str | None = None) -> "Embed":
