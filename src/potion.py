@@ -223,6 +223,14 @@ class Potion:
             rich_text=[{"text": {"content": text}}],
         )
 
+    def clear_page(self, page_id: str) -> None:
+        """指定されたページのブロックを削除する"""
+        blocks = self.list_blocks(block_id=page_id)
+        for block in blocks:
+            if block.id is None:
+                raise ValueError(f"block_id is None: {block}")
+            self.client.blocks.delete(block_id=block.id)
+
     def remove_page(self, page_id: str) -> None:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)

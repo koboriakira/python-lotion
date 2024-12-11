@@ -26,6 +26,7 @@ class Test(TestCase):
 
     def setUp(self):
         self.suite = Potion.get_instance()
+        self.suite.clear_page(self.PAGE_ID)
 
     @pytest.mark.post_api()
     def test_パラグラフを追加する(self):
