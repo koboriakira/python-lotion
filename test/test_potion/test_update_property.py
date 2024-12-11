@@ -52,7 +52,6 @@ class TestUpdateProperty(TestCase):
         self.fail("ユーザが名前ベースでマルチセレクトを選べるようにしたい")
 
     @pytest.mark.post_api()
-    @pytest.mark.current()
     def test_ステータスを変更する(self):
         status_prop = Status.from_status_name(name="ステータス", status_name="未着手")
         actual = self._update_page(property=status_prop)
