@@ -20,7 +20,7 @@ class TestUpdateProperty(TestCase):
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
-        self.page = self.suite.retrieve_page(page_id=created_page["id"])
+        self.page = self.suite.retrieve_page(page_id=created_page.page_id.value)
         return super().setUp()
 
     def tearDown(self) -> None:

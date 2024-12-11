@@ -2,7 +2,6 @@ from unittest import TestCase
 
 import pytest
 
-from page.page_id import PageId
 from potion import Potion
 from properties.checkbox import Checkbox
 from properties.number import Number
@@ -23,7 +22,7 @@ class TestUpdateProperty(TestCase):
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
-        self.page = self.suite.retrieve_page(page_id=created_page["id"])
+        self.page = self.suite.retrieve_page(page_id=created_page.page_id.value)
         return super().setUp()
 
     def tearDown(self) -> None:
@@ -84,12 +83,13 @@ class TestUpdateProperty(TestCase):
         actual = self._update_page(property=url_prop)
         self.assertEqual(actual.get_url(name="URL").url, "https://example.com")
 
+    @pytest.mark.current()
     def test_リレーションを変更する(self):
         # Given
         related_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="リレーション")]
         )
-        page_id = PageId(related_page["id"])
+        page_id = related_page.page_id
         relation_prop = Relation.from_id(name="リレーション", id=page_id.value)
 
         # When, Then
