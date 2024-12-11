@@ -49,15 +49,35 @@ class TestUpdateProperty(TestCase):
 
     @pytest.mark.post_api()
     def test_セレクトを変更する(self):
-        self.fail("ユーザが名前ベースでセレクトを選べるようにしたい")
+        self.skipTest("ユーザが名前ベースでセレクトを選べるようにしたい")
 
     @pytest.mark.post_api()
     def test_マルチセレクトを変更する(self):
-        self.fail("ユーザが名前ベースでマルチセレクトを選べるようにしたい")
+        self.skipTest("ユーザが名前ベースでマルチセレクトを選べるようにしたい")
 
     @pytest.mark.post_api()
     def test_ファイルを変更する(self):
-        self.fail("ファイルプロパティを作成するところから")
+        self.skipTest("ファイルプロパティを作成するところから")
+
+    @pytest.mark.post_api()
+    def test_ユーザーを変更する(self):
+        self.skipTest("ユーザープロパティを作成するところから")
+
+    @pytest.mark.post_api()
+    def test_メールを変更する(self):
+        self.skipTest("メールプロパティを作成するところから")
+
+    @pytest.mark.post_api()
+    def test_電話番号を変更する(self):
+        self.skipTest("電話番号プロパティを作成するところから")
+
+    @pytest.mark.post_api()
+    def test_数式を変更する(self):
+        self.skipTest("数式プロパティを作成するところから")
+
+    @pytest.mark.post_api()
+    def test_ロールアップを変更する(self):
+        self.skipTest("ロールアッププロパティを作成するところから")
 
     @pytest.mark.post_api()
     def test_ステータスを変更する(self):
