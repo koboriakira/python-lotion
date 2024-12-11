@@ -3,6 +3,7 @@ from datetime import datetime
 
 from src.base_operator import BaseOperator
 from src.block import Block
+from src.datetime_utils import jst_now
 from src.page.page_id import PageId
 from src.properties.checkbox import Checkbox
 from src.properties.cover import Cover
@@ -20,7 +21,6 @@ from src.properties.status import Status
 from src.properties.text import Text
 from src.properties.title import Title
 from src.properties.url import Url
-from src.datetime_utils import jst_now
 
 
 @dataclass
@@ -40,9 +40,7 @@ class BasePage:
     object = "page"
 
     @staticmethod
-    def create(
-        properties: list[Property] | None = None, blocks: list[Block] | None = None
-    ) -> "BasePage":
+    def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
         return BasePage(
             id_=None,
             url=None,
@@ -109,8 +107,14 @@ class BasePage:
     def get_url(self, name: str) -> Url:
         return self.properties.get_property(name=name, instance_class=Url)
 
-    def get_number(self, name: str) -> Number | None:
-        return self.properties.get_property(name=name, instance_class=Number)
+    def get_number(self, name: str) -> Number:
+        return self._get_property(name=name, instance_class=Number)  # type: ignore
+
+    def _get_property(self, name: str, instance_class: type) -> Property:
+        result = self.properties.get_property(name=name, instance_class=instance_class)
+        if result is None:
+            raise ValueError(f"{instance_class.__name__} property not found. name: {name}")
+        return result
 
     def get_parant_database_id(self) -> str | None:
         """未実装。削除すべきかも"""
@@ -137,10 +141,13 @@ class BasePage:
         return self.id_.value if self.id_ is not None else None
 
     @property
-    def page_id(self) -> PageId | None:
-        if isinstance(self.id_, str):
-            return PageId(self.id_)
-        return self.id_
+    def page_id(self) -> PageId:
+        if self.id_ is None:
+            raise ValueError("page_id is None. This page is not created yet.")
+        return PageId(self.id_) if isinstance(self.id_, str) else self.id_
+
+    def is_created(self) -> bool:
+        return self.id is not None
 
     def get_id_and_url(self) -> dict[str, str]:
         if self.id is None or self.url is None:
