@@ -3,6 +3,7 @@ from unittest import TestCase
 from block.bookmark import Bookmark
 from block.bulleted_list_item import BulletedlistItem
 from block.callout import Callout
+from block.divider import Divider
 from block.paragraph import Paragraph
 from potion import Potion
 from properties.text import Text
@@ -31,6 +32,12 @@ class Test(TestCase):
     def test_リストを追加する(self):
         list_block = BulletedlistItem.from_plain_text(text="テスト")
         self._append_block_test(block=list_block)
+
+    @pytest.mark.post_api()
+    @pytest.mark.current()
+    def test_区切り線を追加する(self):
+        divider = Divider()
+        self._append_block_test(block=divider)
 
     # @pytest.mark.post_api()
     # @pytest.mark.current()

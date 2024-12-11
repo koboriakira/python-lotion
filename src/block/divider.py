@@ -11,7 +11,9 @@ class Divider(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
 
     @staticmethod
     def of(block: dict) -> "Divider":
@@ -29,7 +31,7 @@ class Divider(Block):
         return "divider"
 
     def to_dict_sub(self) -> dict:
-        raise NotImplementedError
+        return {}
 
     def to_slack_text(self) -> str:
         return "---"
