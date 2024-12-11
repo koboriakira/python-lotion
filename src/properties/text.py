@@ -10,10 +10,11 @@ class Text(Property):
     type: str = "rich_text"
 
     def __init__(
-            self,
-            name: str,
-            rich_text: RichText,
-            id: str | None = None) -> None:  # noqa: A002
+        self,
+        name: str,
+        rich_text: RichText,
+        id: str | None = None,
+    ) -> None:  # noqa: A002
         self.name = name
         self.id = id
         self.rich_text = rich_text
