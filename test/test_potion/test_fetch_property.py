@@ -23,8 +23,16 @@ class TestFetchProperty(TestCase):
         self.suite.remove_page(self.page.page_id.value)
         return super().setUp()
 
-    @pytest.mark.post_api()
-    @pytest.mark.current()
+    @pytest.mark.get_api()
     def test_作成日時と更新日時を取得する(self):
         self.assertEqual(self.page.created_at, self.now)
         self.assertEqual(self.page.updated_at, self.now)
+
+    @pytest.mark.get_api()
+    def test_作成ユーザと更新ユーザを取得する(self):
+        expected_id = "510806db-4772-4f42-b4b6-6f81b6e8b788"
+        expected_object = "user"
+        self.assertEqual(self.page.created_by.id, expected_id)
+        self.assertEqual(self.page.created_by.object, expected_object)
+        self.assertEqual(self.page.edited_by.id, expected_id)
+        self.assertEqual(self.page.edited_by.object, expected_object)
