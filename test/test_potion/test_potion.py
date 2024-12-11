@@ -1,36 +1,25 @@
-from datetime import datetime
 from unittest import TestCase
 
 import pytest
-
 from src.base_page import BasePage
+
 from potion import Potion
-from src.filter.condition.date_condition import DateCondition
-from src.filter.condition.string_condition import StringCondition
-from src.filter.filter_builder import FilterBuilder
-from src.properties.cover import Cover
-from src.properties.last_edited_time import LastEditedTime
-from src.properties.title import Title
-from src.properties.url import Url
-from src.datetime_utils import JST
 
 
+@pytest.mark.api()
 class TestClientWrapper(TestCase):
     def setUp(self):
         self.suite = Potion.get_instance()
 
-    @pytest.mark.get_api()
     def test_ページを取得する(self):
         # pipenv run pytest test/test_potion/test_potion.py -k test_ページを取得する
         page_id = "1596567a3bbf80bb92a0d05094b0c110"
         page = self.suite.retrieve_page(page_id=page_id)
         self.assertIsInstance(page, BasePage)
 
-    @pytest.mark.get_api()
     def test_すべてのデータを取得できる(self):
         pass
 
-    @pytest.mark.get_api()
     def test_1つの条件で絞り込む(self):
         pass
         # # Given
@@ -47,7 +36,6 @@ class TestClientWrapper(TestCase):
         # self.assertEqual(1, len(pages))
         # self.assertEqual("タバコロード 20", pages[0].get_title().text)
 
-    @pytest.mark.get_api()
     def test_タイトルを使って絞り込む_title引数(self):
         pass
         # # Given
@@ -61,7 +49,6 @@ class TestClientWrapper(TestCase):
         # self.assertEqual(1, len(pages))
         # self.assertEqual("タバコロード 20", pages[0].get_title().text)
 
-    @pytest.mark.get_api()
     def test_タイトルを使って絞り込む_titleをpropertyで(self):
         pass
         # Given
@@ -78,7 +65,6 @@ class TestClientWrapper(TestCase):
         # self.assertEqual(1, len(pages))
         # self.assertEqual("タバコロード 20", pages[0].get_title().text)
 
-    @pytest.mark.get_api()
     def test_返却値のモデルを指定できるようにする(self):
         pass
 
@@ -99,7 +85,6 @@ class TestClientWrapper(TestCase):
         # )
         # self.assertIsInstance(pages[0], OriginalBasePage)
 
-    @pytest.mark.get_api()
     def test_更新日時でしぼりこむ(self):
         pass
         # class OriginalBasePage(BasePage):
@@ -123,7 +108,6 @@ class TestClientWrapper(TestCase):
         # print(pages)
         # print(len(pages))
 
-    @pytest.mark.get_api()
     def test_ブロックもあわせてページをひとつ取得する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_ブロックもあわせてページをひとつ取得する
@@ -136,7 +120,6 @@ class TestClientWrapper(TestCase):
         # print(task)
         # # self.fail()
 
-    @pytest.mark.get_api()
     def test_現在のタスクを取得する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_現在のタスクを取得する
@@ -224,7 +207,6 @@ class TestClientWrapper(TestCase):
         # # 内容を確認したいので、無理やりfailさせる
         # self.fail("動作確認用。テストは失敗しても問題ありません。")
 
-    @pytest.mark.post_api("実際にページが作成されるので注意")
     def test_ページを作成してみる(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_ページを作成してみる
@@ -240,7 +222,6 @@ class TestClientWrapper(TestCase):
         # )
         # print(page)
 
-    @pytest.mark.get_api()
     def test_タイトルだけで検索する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_タイトルだけで検索する
@@ -252,7 +233,6 @@ class TestClientWrapper(TestCase):
         # )
         # self.assertIsNotNone(page)
 
-    @pytest.mark.post_api("実際にページが作成されるので注意")
     def test_ページを作成する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_ページを作成する

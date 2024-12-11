@@ -7,6 +7,7 @@ from potion import Potion
 from properties.title import Title
 
 
+@pytest.mark.api()
 class TestFetchProperty(TestCase):
     DATABASE_ID = "1596567a3bbf80fc9aacdc21f9f5c516"
 
@@ -23,12 +24,10 @@ class TestFetchProperty(TestCase):
         self.suite.remove_page(self.page.page_id.value)
         return super().setUp()
 
-    @pytest.mark.get_api()
     def test_作成日時と更新日時を取得する(self):
         self.assertEqual(self.page.created_at, self.now)
         self.assertEqual(self.page.updated_at, self.now)
 
-    @pytest.mark.get_api()
     def test_作成ユーザと更新ユーザを取得する(self):
         expected_id = "510806db-4772-4f42-b4b6-6f81b6e8b788"
         expected_object = "user"

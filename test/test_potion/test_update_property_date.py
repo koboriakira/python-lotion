@@ -10,6 +10,7 @@ from properties.property import Property
 from properties.title import Title
 
 
+@pytest.mark.api()
 class TestUpdateProperty(TestCase):
     DATABASE_ID = "1596567a3bbf80d58251f1159e5c40fa"
     PROP_NAME = "日付"
@@ -26,7 +27,6 @@ class TestUpdateProperty(TestCase):
         self.suite.remove_page(self.page.page_id.value)
         return super().setUp()
 
-    @pytest.mark.post_api()
     def test_開始日を変更する(self):
         # Given
         date_ = date(2021, 1, 1)
@@ -41,7 +41,6 @@ class TestUpdateProperty(TestCase):
         self.assertEqual(actual.end_datetime, None)
         self.assertEqual(actual.end_time, None)
 
-    @pytest.mark.post_api()
     def test_開始時刻を変更する(self):
         # Given
         datetime_ = datetime(2021, 1, 1, 12, 34, 0, tzinfo=JST)
@@ -58,7 +57,6 @@ class TestUpdateProperty(TestCase):
         self.assertEqual(actual.end_datetime, None)
         self.assertEqual(actual.end_time, None)
 
-    @pytest.mark.post_api()
     def test_開始日と終了日を変更する(self):
         # Given
         start_date = date(2021, 1, 1)
@@ -74,7 +72,6 @@ class TestUpdateProperty(TestCase):
         self.assertEqual(actual.end_time, end_date)
         self.assertEqual(actual.end_datetime, datetime(2021, 1, 2, tzinfo=JST))
 
-    @pytest.mark.post_api()
     def test_開始時刻と終了時刻を変更する(self):
         # Given
         start_datetime = datetime(2021, 1, 1, 12, 34, 0, tzinfo=JST)
