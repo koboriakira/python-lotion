@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
+from src.properties.email import Email
 from src.base_operator import BaseOperator
 from src.block import Block
 from src.page.page_id import PageId
@@ -116,6 +117,9 @@ class BasePage:
 
     def get_number(self, name: str) -> Number:
         return self._get_property(name=name, instance_class=Number)  # type: ignore
+
+    def get_email(self, name: str) -> Email:
+        return self._get_property(name=name, instance_class=Email)  # type: ignore
 
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)
