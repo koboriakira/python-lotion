@@ -1,6 +1,7 @@
 from typing import Any
 
 from properties.created_by import CreatedBy
+from properties.last_edited_by import LastEditedBy
 from src.properties.button import Button
 from src.properties.checkbox import Checkbox
 from src.properties.created_time import CreatedTime
@@ -64,6 +65,8 @@ class PropertyTranslator:
                 return People.of(key, property_)
             case "created_by":
                 return CreatedBy.of(key, property_)
+            case "last_edited_by":
+                return LastEditedBy.of(key, property_)
             case _:
                 msg = f"Unsupported property type: {type_} {property_}"
                 raise Exception(msg)
