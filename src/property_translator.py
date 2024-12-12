@@ -16,6 +16,7 @@ from src.properties.status import Status
 from src.properties.text import Text
 from src.properties.title import Title
 from src.properties.url import Url
+from src.properties.person import People
 
 
 class PropertyTranslator:
@@ -60,6 +61,8 @@ class PropertyTranslator:
                 return Rollup.of(key, property_)
             case "button":
                 return Button.of(key, property_)
+            case "people":
+                return People.of(key, property_)
             case _:
                 msg = f"Unsupported property type: {type_} {property_}"
                 raise Exception(msg)
