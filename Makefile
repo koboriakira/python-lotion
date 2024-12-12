@@ -10,3 +10,7 @@ test-current:
 .PHONY: test-all
 test-all:
 	@pipenv run pytest
+
+.PHONY: test-min
+test-min:
+	@pipenv run pytest -m "minimum"
