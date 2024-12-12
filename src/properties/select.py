@@ -1,22 +1,18 @@
 from dataclasses import dataclass
-from typing import Optional
-
 from src.properties.property import Property
 
 
 @dataclass
 class Select(Property):
-    selected_name: str
-    selected_id: str
-    selected_color: str
+    selected_name: str | None
+    selected_id: str | None
+    selected_color: str | None
     type: str = "select"
-
-    TYPE = "select"
 
     def __init__(
         self,
         name: str,
-        selected_name: str,
+        selected_name: str | None = None,
         selected_id: str | None = None,
         selected_color: str | None = None,
         id: str | None = None,
@@ -28,10 +24,10 @@ class Select(Property):
         self.selected_color = selected_color if selected_color is not None else "default"
 
     @staticmethod
-    def of(name: str, param: dict) -> Optional["Select"]:
+    def of(name: str, param: dict) -> "Select":
         select = param["select"]
         if select is None:
-            return None
+            return Select(name=name)
         return Select(
             name=name,
             selected_id=select["id"],
@@ -41,6 +37,13 @@ class Select(Property):
         )
 
     def __dict__(self):
+        if self.selected_name is None:
+            return {
+                self.name: {
+                    "type": self.type,
+                    "select": None,
+                }
+            }
         result = {
             "type": self.type,
             "select": {
@@ -54,4 +57,4 @@ class Select(Property):
         return {self.name: result}
 
     def value_for_filter(self) -> str:
-        return self.selected_name
+        return self.selected_name if self.selected_name is not None else ""
