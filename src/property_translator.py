@@ -1,5 +1,6 @@
 from typing import Any
 
+from properties.created_by import CreatedBy
 from src.properties.button import Button
 from src.properties.checkbox import Checkbox
 from src.properties.created_time import CreatedTime
@@ -28,9 +29,7 @@ class PropertyTranslator:
         return Properties(values=[value for value in values if value is not None])
 
     @classmethod
-    def from_property_dict(
-        cls: "PropertyTranslator", key: str, property_: dict[str, Any]
-    ) -> "Property":  # noqa: PLR0911
+    def from_property_dict(cls: "PropertyTranslator", key: str, property_: dict[str, Any]) -> "Property":  # noqa: PLR0911
         type_ = property_["type"]
         match type_:
             case "title":
@@ -63,6 +62,8 @@ class PropertyTranslator:
                 return Button.of(key, property_)
             case "people":
                 return People.of(key, property_)
+            case "created_by":
+                return CreatedBy.of(key, property_)
             case _:
                 msg = f"Unsupported property type: {type_} {property_}"
                 raise Exception(msg)
