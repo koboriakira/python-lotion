@@ -27,7 +27,9 @@ class PropertyTranslator:
         return Properties(values=[value for value in values if value is not None])
 
     @classmethod
-    def from_property_dict(cls: "PropertyTranslator", key: str, property_: dict[str, Any]) -> "Property":  # noqa: PLR0911
+    def from_property_dict(
+        cls: "PropertyTranslator", key: str, property_: dict[str, Any]
+    ) -> "Property":  # noqa: PLR0911
         type_ = property_["type"]
         match type_:
             case "title":
@@ -51,9 +53,9 @@ class PropertyTranslator:
             case "relation":
                 return Relation.of(key, property_)
             case "last_edited_time":
-                return LastEditedTime.create(property_["last_edited_time"])
+                return LastEditedTime.create(key, property_["last_edited_time"])
             case "created_time":
-                return CreatedTime.create(property_["created_time"])
+                return CreatedTime.create(key, property_["created_time"])
             case "rollup":
                 return Rollup.of(key, property_)
             case "button":
