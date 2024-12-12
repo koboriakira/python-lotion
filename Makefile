@@ -9,7 +9,7 @@ test-current:
 
 .PHONY: test-all
 test-all:
-	@pipenv run pytest
+	@pipenv run pytest -n auto --dist=loadfile
 
 .PHONY: test-min
 test-min:
