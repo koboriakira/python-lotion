@@ -11,6 +11,7 @@ notion_client = ">=2.2.1"
 parameterized = "*"
 pytest = "*"
 pytest-watch = "*"
+pytest-xdist = "*"
 
 [requires]
 python_version = "3.11"
