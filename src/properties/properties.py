@@ -64,7 +64,9 @@ class Properties:
         """
         ボタンのプロパティは更新時にエラーとなるため、除外する。
         """
-        return Properties(values=[prop for prop in self.values if prop.type != "button"])
+        return Properties(
+            values=[prop for prop in self.values if prop.type not in ["button", "created_by", "last_edited_by"]]
+        )
 
     def is_empty(self) -> bool:
         return len(self.values) == 0

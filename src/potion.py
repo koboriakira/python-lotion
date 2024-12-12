@@ -1,18 +1,18 @@
 import os
+from datetime import datetime, timedelta
 from logging import Logger, getLogger
 
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
+from datetime_utils import JST
 from src.base_operator import BaseOperator
 from src.base_page import BasePage
 from src.block import Block, BlockFactory
 from src.filter.filter_builder import FilterBuilder
 from src.page.page_id import PageId
 from src.properties.cover import Cover
-from src.properties.created_time import CreatedTime
 from src.properties.icon import Icon
-from src.properties.last_edited_time import LastEditedTime
 from src.properties.properties import Properties
 from src.properties.property import Property
 from src.properties.title import Title
@@ -65,10 +65,10 @@ class Potion:
         client = Client(auth=os.getenv("NOTION_SECRET"))
         return Potion(client, max_retry_count=max_retry_count, logger=logger)
 
-    def retrieve_page(self, page_id: str, page_model: BasePage | None = None) -> BasePage:
+    def retrieve_page(self, page_id: str) -> BasePage:
         """指定されたページを取得する"""
         page_entity = self.__retrieve_page(page_id=page_id)
-        return self.__convert_page_model(page_entity=page_entity, include_children=True, page_model=page_model)
+        return self.__convert_page_model(page_entity=page_entity, include_children=True)
 
     def update_page(self, page_id: str, properties: list[Property] | None = None) -> dict:
         """指定されたページを更新する"""
@@ -88,7 +88,7 @@ class Potion:
         cover: Cover | None = None,
         properties: list[Property] | None = None,
         blocks: list[Block] | None = None,
-    ) -> dict:
+    ) -> BasePage:
         """データベース上にページを新規作成する"""
         page = self.__create_page(
             database_id=database_id,
@@ -97,14 +97,13 @@ class Potion:
         )
         if blocks is not None:
             self.append_blocks(block_id=page["id"], blocks=blocks)
-        return page
+        return self.retrieve_page(page_id=page["id"])
 
     def retrieve_database(  # noqa: PLR0913
         self,
         database_id: str,
         title: str | None = None,
         filter_param: dict | None = None,
-        page_model: BasePage | None = None,
         include_children: bool | None = None,
     ) -> list[BasePage]:
         """指定されたデータベースのページを取得する"""
@@ -114,7 +113,6 @@ class Potion:
             page = self.__convert_page_model(
                 page_entity=page_entity,
                 include_children=include_children or False,
-                page_model=page_model,
             )
             pages.append(page)
         if title is not None:
@@ -126,15 +124,13 @@ class Potion:
         database_id: str,
         title: str,
         title_key_name: str | None = "名前",
-        page_model: BasePage | None = None,
     ) -> BasePage | None:
         """タイトルだけをもとにデータベースのページを取得する"""
-        title_property = Title.from_plain_text(text=title, name=title_key_name)
+        title_property = Title.from_plain_text(text=title)
         filter_param = FilterBuilder.build_simple_equal_condition(title_property)
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
-            page_model=page_model,
         )
         if len(results) == 0:
             return None
@@ -227,7 +223,6 @@ class Potion:
         self,
         page_entity: dict,
         include_children: bool | None = None,
-        page_model: BasePage | None = None,
     ) -> BasePage:
         include_children = (
             include_children if include_children is not None else True
@@ -235,8 +230,8 @@ class Potion:
 
         id_ = PageId(page_entity["id"])
         url = page_entity["url"]
-        created_time = CreatedTime.create(page_entity["created_time"])
-        last_edited_time = LastEditedTime.create(page_entity["last_edited_time"])
+        created_time = datetime.fromisoformat(page_entity["created_time"]) + timedelta(hours=9)
+        last_edited_time = datetime.fromisoformat(page_entity["last_edited_time"]) + timedelta(hours=9)
         created_by = BaseOperator.of(page_entity["created_by"])
         last_edited_by = BaseOperator.of(page_entity["last_edited_by"])
         cover = Cover.of(page_entity["cover"]) if page_entity["cover"] is not None else None
@@ -248,8 +243,8 @@ class Potion:
         return BasePage(
             id_=id_,
             url=url,
-            created_time=created_time,
-            last_edited_time=last_edited_time,
+            created_time=created_time.replace(tzinfo=JST),
+            last_edited_time=last_edited_time.replace(tzinfo=JST),
             _created_by=created_by,
             _last_edited_by=last_edited_by,
             cover=cover,

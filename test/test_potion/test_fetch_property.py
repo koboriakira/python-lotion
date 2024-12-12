@@ -16,7 +16,7 @@ class TestFetchProperty(TestCase):
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
-        self.page = self.suite.retrieve_page(page_id=created_page["id"])
+        self.page = self.suite.retrieve_page(page_id=created_page.page_id.value)
         self.now = jst_now().replace(second=0, microsecond=0)
         return super().setUp()
 

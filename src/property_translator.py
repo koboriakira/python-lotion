@@ -1,5 +1,7 @@
 from typing import Any
 
+from properties.created_by import CreatedBy
+from properties.last_edited_by import LastEditedBy
 from src.properties.button import Button
 from src.properties.checkbox import Checkbox
 from src.properties.created_time import CreatedTime
@@ -16,18 +18,19 @@ from src.properties.status import Status
 from src.properties.text import Text
 from src.properties.title import Title
 from src.properties.url import Url
+from src.properties.person import People
 
 
 class PropertyTranslator:
-    @classmethod
-    def from_dict(cls: "PropertyTranslator", properties: dict[str, dict]) -> Properties:
+    @staticmethod
+    def from_dict(properties: dict[str, dict]) -> Properties:
         values = []
         for key, value in properties.items():
-            values.append(cls.from_property_dict(key, value))
+            values.append(PropertyTranslator.from_property_dict(key, value))
         return Properties(values=[value for value in values if value is not None])
 
-    @classmethod
-    def from_property_dict(cls: "PropertyTranslator", key: str, property_: dict[str, Any]) -> "Property":  # noqa: PLR0911
+    @staticmethod
+    def from_property_dict(key: str, property_: dict[str, Any]) -> "Property":  # noqa: PLR0911
         type_ = property_["type"]
         match type_:
             case "title":
@@ -51,13 +54,19 @@ class PropertyTranslator:
             case "relation":
                 return Relation.of(key, property_)
             case "last_edited_time":
-                return LastEditedTime.create(property_["last_edited_time"])
+                return LastEditedTime.create(key, property_["last_edited_time"])
             case "created_time":
-                return CreatedTime.create(property_["created_time"])
+                return CreatedTime.create(key, property_["created_time"])
             case "rollup":
                 return Rollup.of(key, property_)
             case "button":
                 return Button.of(key, property_)
+            case "people":
+                return People.of(key, property_)
+            case "created_by":
+                return CreatedBy.of(key, property_)
+            case "last_edited_by":
+                return LastEditedBy.of(key, property_)
             case _:
                 msg = f"Unsupported property type: {type_} {property_}"
                 raise Exception(msg)

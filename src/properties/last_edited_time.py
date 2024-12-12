@@ -1,14 +1,46 @@
-from datetime import date, datetime
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Any
 
-from src.properties.date import Date
+from src.properties.property import Property
 from src.datetime_utils import convert_to_date_or_datetime
 
 
-class LastEditedTime(Date):
-    NAME = "最終更新日時"
+@dataclass
+class LastEditedTime(Property):
+    def __init__(
+        self,
+        name: str,
+        value: datetime,
+        id: str | None = None,  # noqa: A002
+    ) -> None:
+        self.name = name
+        self.value = value
+        self.id = id
 
-    @classmethod
-    def create(cls, value: str | date | datetime) -> "LastEditedTime":
-        if isinstance(value, str):
-            value = convert_to_date_or_datetime(value)
-        return LastEditedTime.from_start_date(name=cls.NAME, start_date=value)
+    @staticmethod
+    def create(key, value: str) -> "LastEditedTime":
+        return LastEditedTime(
+            name=key,
+            value=convert_to_date_or_datetime(value),
+        )
+
+    def __dict__(self) -> dict[str, Any]:
+        _date = {
+            "start": self.value.isoformat(),
+            "end": None,
+            "time_zone": None,
+        }
+        return {
+            self.name: {
+                "type": self.type,
+                "date": _date,
+            },
+        }
+
+    @property
+    def type(self) -> str:
+        return "date"  # NOTE: last_edited_timeではなくdateにする
+
+    def value_for_filter(self) -> str:
+        return self.value.isoformat()
