@@ -54,16 +54,16 @@ class NotionApiError(Exception):
         super().__init__(message)
 
 
-class Potion:
+class Lotion:
     def __init__(self, client: Client, max_retry_count: int = 3, logger: Logger | None = None) -> None:
         self.client = client
         self.max_retry_count = max_retry_count
         self._logger = logger or getLogger(__name__)
 
     @staticmethod
-    def get_instance(max_retry_count: int = 3, logger: Logger | None = None) -> "Potion":
+    def get_instance(max_retry_count: int = 3, logger: Logger | None = None) -> "Lotion":
         client = Client(auth=os.getenv("NOTION_SECRET"))
-        return Potion(client, max_retry_count=max_retry_count, logger=logger)
+        return Lotion(client, max_retry_count=max_retry_count, logger=logger)
 
     def retrieve_page(self, page_id: str) -> BasePage:
         """指定されたページを取得する"""
