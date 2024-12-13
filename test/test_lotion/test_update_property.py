@@ -3,7 +3,7 @@ from unittest import TestCase
 import pytest
 
 from lotion.page.page_id import PageId
-from lotion.lotion import Lotion
+from lotion import Lotion
 from lotion.properties.checkbox import Checkbox
 from lotion.properties.email import Email
 from lotion.properties.number import Number

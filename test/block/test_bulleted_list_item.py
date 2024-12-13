@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from lotion.block.bulleted_list_item import BulletedlistItem
+from lotion.block import BulletedlistItem
 from lotion.block.rich_text import RichText
 
 

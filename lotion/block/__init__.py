@@ -14,3 +14,7 @@ from .child_database import ChildDatabase
 from .to_do import ToDo
 from .callout import Callout
 from .child_page import ChildPage
+from .column_list import ColumnList
+from .image import Image
+from .numbered_list_item import NumberedListItem
+from .table import Table

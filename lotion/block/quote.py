@@ -1,4 +1,4 @@
-from lotion.block.block import Block
+from lotion.block import Block
 from lotion.block.rich_text import RichText
 
 

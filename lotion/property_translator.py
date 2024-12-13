@@ -1,26 +1,6 @@
 from typing import Any
 
-from lotion.properties.phone_number import PhoneNumber
-from lotion.properties.created_by import CreatedBy
-from lotion.properties.email import Email
-from lotion.properties.last_edited_by import LastEditedBy
-from lotion.properties.button import Button
-from lotion.properties.checkbox import Checkbox
-from lotion.properties.created_time import CreatedTime
-from lotion.properties.date import Date
-from lotion.properties.last_edited_time import LastEditedTime
-from lotion.properties.multi_select import MultiSelect
-from lotion.properties.number import Number
-from lotion.properties.properties import Properties
-from lotion.properties.property import Property
-from lotion.properties.relation import Relation
-from lotion.properties.rollup import Rollup
-from lotion.properties.select import Select
-from lotion.properties.status import Status
-from lotion.properties.text import Text
-from lotion.properties.title import Title
-from lotion.properties.url import Url
-from lotion.properties.person import People
+from lotion.properties import PhoneNumber, CreatedBy, Email, LastEditedBy, Button, Checkbox, CreatedTime, Date, LastEditedTime, MultiSelect, Number, Properties, Property, Relation, Rollup, Select, Status, Text, Title, Url, People
 
 
 class PropertyTranslator:

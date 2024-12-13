@@ -1,4 +1,4 @@
-from lotion.block.block import Block
+from lotion.block import Block
 
 
 class Table(Block):

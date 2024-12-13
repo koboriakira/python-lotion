@@ -10,12 +10,8 @@ from lotion.base_operator import BaseOperator
 from lotion.base_page import BasePage
 from lotion.block import Block, BlockFactory
 from lotion.filter.filter_builder import FilterBuilder
-from lotion.page.page_id import PageId
-from lotion.properties.cover import Cover
-from lotion.properties.icon import Icon
-from lotion.properties.properties import Properties
-from lotion.properties.property import Property
-from lotion.properties.title import Title
+from lotion.page import PageId
+from lotion.properties import Cover, Icon, Properties, Property, Title
 from lotion.property_translator import PropertyTranslator
 
 NOTION_API_ERROR_BAD_GATEWAY = 502

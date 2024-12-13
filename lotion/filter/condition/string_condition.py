@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from lotion.properties.property import Property
+from lotion.properties import Property
 
-from .condition import Condition
+from lotion.filter.condition import Condition
 
 
 class StringConditionType(Enum):

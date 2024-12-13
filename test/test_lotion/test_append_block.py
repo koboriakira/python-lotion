@@ -1,21 +1,8 @@
 from unittest import TestCase
 
 import pytest
-from lotion.block.block import Block
-from lotion.block.bookmark import Bookmark
-from lotion.block.bulleted_list_item import BulletedlistItem
-from lotion.block.callout import Callout
-from lotion.block.code import Code
-from lotion.block.divider import Divider
-from lotion.block.embed import Embed
-from lotion.block.heading import Heading
-from lotion.block.image import Image
-from lotion.block.numbered_list_item import NumberedListItem
-from lotion.block.paragraph import Paragraph
-from lotion.block.quote import Quote
-from lotion.block.to_do import ToDo
-from lotion.block.video import Video
-from lotion.lotion import Lotion
+from lotion.block import Block, Bookmark, BulletedlistItem, Callout, Code, Divider, Embed, Heading, Image, NumberedListItem, Paragraph, Quote, ToDo, Video
+from lotion import Lotion
 
 
 @pytest.mark.api()

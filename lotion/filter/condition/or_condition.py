@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .condition import Condition
+from lotion.filter.condition import Condition
 
 
 @dataclass(frozen=True)

@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from lotion.properties.checkbox import Checkbox
+from lotion.properties import Checkbox
 
-from .condition import Condition
+from lotion.filter.condition import Condition
 
 
 class CheckboxConditionType(Enum):

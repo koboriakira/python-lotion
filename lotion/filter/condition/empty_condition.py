@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from .condition import Condition
+from lotion.filter.condition import Condition
 
 
 class EmptyConditionType(Enum):

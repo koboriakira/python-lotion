@@ -3,7 +3,7 @@ from unittest import TestCase
 import pytest
 from lotion.base_page import BasePage
 
-from lotion.lotion import Lotion
+from lotion import Lotion
 
 
 @pytest.mark.api()

@@ -1,7 +1,5 @@
-from lotion.filter.condition.condition import Condition
-from lotion.filter.condition.string_condition import StringCondition
-from lotion.properties.property import Property
-from lotion.properties.title import Title
+from lotion.filter.condition import Condition, StringCondition
+from lotion.properties import Property, Title
 
 
 class FilterBuilder:

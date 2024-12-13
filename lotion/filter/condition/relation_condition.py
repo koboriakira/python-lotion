@@ -4,7 +4,7 @@ from enum import Enum
 from lotion.filter.condition.or_condition import OrCondition
 from lotion.properties.relation import Relation
 
-from .condition import Condition
+from lotion.filter.condition import Condition
 
 
 class RelationConditionType(Enum):

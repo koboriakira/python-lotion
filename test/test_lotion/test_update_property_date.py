@@ -4,7 +4,7 @@ from unittest import TestCase
 import pytest
 
 from lotion.datetime_utils import JST
-from lotion.lotion import Lotion
+from lotion import Lotion
 from lotion.properties.date import Date
 from lotion.properties.property import Property
 from lotion.properties.title import Title

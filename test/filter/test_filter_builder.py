@@ -5,7 +5,7 @@ from lotion.filter.condition.date_condition import DateCondition
 from lotion.filter.condition.number_condition import NumberCondition
 from lotion.filter.condition.or_condition import OrCondition as Or
 from lotion.filter.condition.string_condition import StringCondition
-from lotion.filter.filter_builder import FilterBuilder
+from lotion.filter import FilterBuilder
 from lotion.properties.date import Date
 from lotion.properties.number import Number
 from lotion.properties.select import Select
