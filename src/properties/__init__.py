@@ -15,3 +15,9 @@ from .cover import Cover
 from .icon import Icon
 from .parent import Parent
 from .rollup import Rollup
+from .person import People
+from .email import Email
+from .created_by import CreatedBy
+from .last_edited_by import LastEditedBy
+from .created_time import CreatedTime
+from .last_edited_time import LastEditedTime
