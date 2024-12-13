@@ -12,6 +12,8 @@ parameterized = "*"
 pytest = "*"
 pytest-watch = "*"
 pytest-xdist = "*"
+build = "*"
+twine = "*"
 
 [requires]
 python_version = "3.11"

@@ -14,3 +14,9 @@ test-all:
 .PHONY: test-min
 test-min:
 	@pipenv run pytest -m "minimum"
+
+.PHONY: build
+build:
+	python -m build
+	twine upload --repository pypi dist/*
+	rm -fr dist
