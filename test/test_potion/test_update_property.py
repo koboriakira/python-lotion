@@ -7,6 +7,7 @@ from potion import Potion
 from properties.checkbox import Checkbox
 from properties.email import Email
 from properties.number import Number
+from properties.phone_number import PhoneNumber
 from properties.property import Property
 from properties.relation import Relation
 from properties.status import Status
@@ -58,14 +59,16 @@ class TestUpdateProperty(TestCase):
     def test_ユーザーを変更する(self):
         self.skipTest("ユーザープロパティを作成するところから")
 
-    @pytest.mark.current()
     def test_メールを変更する(self):
         email_prop = Email.from_email(name="メール", email="sample@example.com")
         actual = self._update_page(property=email_prop)
         self.assertEqual(actual.get_email(name="メール").value, "sample@example.com")
 
+    @pytest.mark.current()
     def test_電話番号を変更する(self):
-        self.skipTest("電話番号プロパティを作成するところから")
+        phone_number_prop = PhoneNumber.create(name="電話", phone_number="090-1234-5678")
+        actual = self._update_page(property=phone_number_prop)
+        self.assertEqual(actual.get_phone_number(name="電話").value, "090-1234-5678")
 
     def test_数式を変更する(self):
         self.skipTest("数式プロパティを作成するところから")

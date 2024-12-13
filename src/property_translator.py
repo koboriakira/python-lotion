@@ -1,5 +1,6 @@
 from typing import Any
 
+from src.properties.phone_number import PhoneNumber
 from src.properties.created_by import CreatedBy
 from src.properties.email import Email
 from src.properties.last_edited_by import LastEditedBy
@@ -66,6 +67,8 @@ class PropertyTranslator:
                 return People.of(key, property_)
             case "email":
                 return Email.of(key, property_)
+            case "phone_number":
+                return PhoneNumber.of(key, property_)
             case "created_by":
                 return CreatedBy.of(key, property_)
             case "last_edited_by":
