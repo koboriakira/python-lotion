@@ -3,16 +3,16 @@ from unittest import TestCase
 import pytest
 from src.base_page import BasePage
 
-from potion import Potion
+from lotion import Lotion
 
 
 @pytest.mark.api()
 class TestClientWrapper(TestCase):
     def setUp(self):
-        self.suite = Potion.get_instance()
+        self.suite = Lotion.get_instance()
 
     def test_ページを取得する(self):
-        # pipenv run pytest test/test_potion/test_potion.py -k test_ページを取得する
+        # pipenv run pytest test/test_lotion/test_lotion.py -k test_ページを取得する
         page_id = "15a6567a3bbf814b9b06e0fd3c6959e0"
         page = self.suite.retrieve_page(page_id=page_id)
         self.assertIsInstance(page, BasePage)

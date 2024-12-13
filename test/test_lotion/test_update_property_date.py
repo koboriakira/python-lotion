@@ -4,7 +4,7 @@ from unittest import TestCase
 import pytest
 
 from datetime_utils import JST
-from potion import Potion
+from lotion import Lotion
 from properties.date import Date
 from properties.property import Property
 from properties.title import Title
@@ -16,7 +16,7 @@ class TestUpdateProperty(TestCase):
     PROP_NAME = "日付"
 
     def setUp(self) -> None:
-        self.suite = Potion.get_instance()
+        self.suite = Lotion.get_instance()
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )

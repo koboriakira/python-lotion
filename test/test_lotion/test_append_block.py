@@ -15,7 +15,7 @@ from src.block.paragraph import Paragraph
 from src.block.quote import Quote
 from src.block.to_do import ToDo
 from src.block.video import Video
-from src.potion import Potion
+from src.lotion import Lotion
 
 
 @pytest.mark.api()
@@ -23,7 +23,7 @@ class TestAppendBlock(TestCase):
     PAGE_ID = "1596567a3bbf8049803de1ffe3616d9e"
 
     def setUp(self):
-        self.suite = Potion.get_instance()
+        self.suite = Lotion.get_instance()
         self.suite.clear_page(self.PAGE_ID)
 
     def test_パラグラフを追加する(self):

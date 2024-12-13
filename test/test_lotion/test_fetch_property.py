@@ -3,7 +3,7 @@ from unittest import TestCase
 import pytest
 
 from datetime_utils import jst_now
-from potion import Potion
+from lotion import Lotion
 from properties.title import Title
 
 
@@ -12,7 +12,7 @@ class TestFetchProperty(TestCase):
     DATABASE_ID = "1596567a3bbf80fc9aacdc21f9f5c516"
 
     def setUp(self) -> None:
-        self.suite = Potion.get_instance()
+        self.suite = Lotion.get_instance()
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
