@@ -1,12 +1,12 @@
 import sys
 from unittest import TestCase
 
-from src.page.page_id import PageId
+from lotion.page.page_id import PageId
 
 sys.path.append("notion_api")
 
 # クラス名の一致をチェックするロジックがあるので、完全に合わせておく
-from src.properties.title import Title
+from lotion.properties.title import Title
 
 
 class TestTitle(TestCase):

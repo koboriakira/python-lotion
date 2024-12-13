@@ -16,7 +16,7 @@
     "useTypeStubForTypeshed": true
   },
   "python.analysis.extraPaths": [
-    "./src"
+    "./lo"
   ],
   "python.analysis.fixAll": [
     "source.unusedImports",

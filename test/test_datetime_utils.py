@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta, timezone
 from unittest import TestCase
 
-from datetime_utils import convert_to_date_or_datetime
+from lotion.datetime_utils import convert_to_date_or_datetime
 
 JST = timezone(timedelta(hours=+9), "JST")
 

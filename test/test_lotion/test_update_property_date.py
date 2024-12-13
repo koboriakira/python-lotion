@@ -3,11 +3,11 @@ from unittest import TestCase
 
 import pytest
 
-from datetime_utils import JST
-from lotion import Lotion
-from properties.date import Date
-from properties.property import Property
-from properties.title import Title
+from lotion.datetime_utils import JST
+from lotion.lotion import Lotion
+from lotion.properties.date import Date
+from lotion.properties.property import Property
+from lotion.properties.title import Title
 
 
 @pytest.mark.api()

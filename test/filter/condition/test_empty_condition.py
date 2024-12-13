@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.filter.condition.empty_condition import EmptyCondition
-from src.properties.relation import Relation
+from lotion.filter.condition.empty_condition import EmptyCondition
+from lotion.properties.relation import Relation
 
 
 class TestEmptyCondition(TestCase):

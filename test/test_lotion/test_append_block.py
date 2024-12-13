@@ -1,21 +1,21 @@
 from unittest import TestCase
 
 import pytest
-from src.block.block import Block
-from src.block.bookmark import Bookmark
-from src.block.bulleted_list_item import BulletedlistItem
-from src.block.callout import Callout
-from src.block.code import Code
-from src.block.divider import Divider
-from src.block.embed import Embed
-from src.block.heading import Heading
-from src.block.image import Image
-from src.block.numbered_list_item import NumberedListItem
-from src.block.paragraph import Paragraph
-from src.block.quote import Quote
-from src.block.to_do import ToDo
-from src.block.video import Video
-from src.lotion import Lotion
+from lotion.block.block import Block
+from lotion.block.bookmark import Bookmark
+from lotion.block.bulleted_list_item import BulletedlistItem
+from lotion.block.callout import Callout
+from lotion.block.code import Code
+from lotion.block.divider import Divider
+from lotion.block.embed import Embed
+from lotion.block.heading import Heading
+from lotion.block.image import Image
+from lotion.block.numbered_list_item import NumberedListItem
+from lotion.block.paragraph import Paragraph
+from lotion.block.quote import Quote
+from lotion.block.to_do import ToDo
+from lotion.block.video import Video
+from lotion.lotion import Lotion
 
 
 @pytest.mark.api()

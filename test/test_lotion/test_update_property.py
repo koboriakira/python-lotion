@@ -2,18 +2,18 @@ from unittest import TestCase
 
 import pytest
 
-from page.page_id import PageId
-from lotion import Lotion
-from properties.checkbox import Checkbox
-from properties.email import Email
-from properties.number import Number
-from properties.phone_number import PhoneNumber
-from properties.property import Property
-from properties.relation import Relation
-from properties.status import Status
-from properties.text import Text
-from properties.title import Title
-from properties.url import Url
+from lotion.page.page_id import PageId
+from lotion.lotion import Lotion
+from lotion.properties.checkbox import Checkbox
+from lotion.properties.email import Email
+from lotion.properties.number import Number
+from lotion.properties.phone_number import PhoneNumber
+from lotion.properties.property import Property
+from lotion.properties.relation import Relation
+from lotion.properties.status import Status
+from lotion.properties.text import Text
+from lotion.properties.title import Title
+from lotion.properties.url import Url
 
 
 @pytest.mark.api()
