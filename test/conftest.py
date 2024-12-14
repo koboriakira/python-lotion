@@ -7,6 +7,7 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "api: As using the Notion API")
     config.addinivalue_line("markers", "slow: As slow ones")
     config.addinivalue_line("markers", "minimum: 最低限やっておきたいテスト")
+    config.addinivalue_line("markers", "all: 全てのテスト. -m allで実行すると自動的に付与される")
 
 
 def pytest_collection_modifyitems(config, items):

@@ -30,17 +30,15 @@ class TestApiSelect(TestCase):
             database_id=self.DATABASE_ID,
         )
 
-        # When: セレクトA、セレクトB、空白の2つの選択肢があること
-        self.assertEqual(len(actual), 3)
-        actual_select_names = [select.selected_name for select in actual]
-        self.assertIn("セレクトA", actual_select_names)
-        self.assertIn("セレクトB", actual_select_names)
-        self.assertIn("", actual_select_names)
+        # When: セレクトA、セレクトBの2つの選択肢があること
+        self.assertEqual(actual.size, 2)
+        self.assertIsNotNone(actual.get("セレクトA"))
+        self.assertIsNotNone(actual.get("セレクトB"))
 
     def test_セレクトを更新する(self):
         # Given
         selects = self.suite.fetch_all_selects(database_id=self.DATABASE_ID)
-        select_b_prop = [select for select in selects if select.selected_name == "セレクトB"][0]
+        select_b_prop = selects.get("セレクトB")
         page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )

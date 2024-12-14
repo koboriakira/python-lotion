@@ -72,3 +72,18 @@ class Select(Property):
 
     def __eq__(self, other):
         return self.selected_id == other.selected_id
+
+
+@dataclass(frozen=True)
+class Selects:
+    values: list[Select]
+
+    def get(self, status_name: str) -> Select:
+        for value in self.values:
+            if value.selected_name == status_name:
+                return value
+        raise ValueError(f"Select not found: {status_name}")
+
+    @property
+    def size(self) -> int:
+        return len(self.values)
