@@ -23,3 +23,33 @@ from .last_edited_by import LastEditedBy
 from .created_time import CreatedTime
 from .last_edited_time import LastEditedTime
 from .button import Button
+from .multi_select import MultiSelect
+
+__all__ = [
+    "Property",
+    "Properties",
+    "Date",
+    "Title",
+    "Url",
+    "Relation",
+    "Status",
+    "Text",
+    "MultiSelect",
+    "Select",
+    "Checkbox",
+    "Number",
+    "NotionDatetime",
+    "Cover",
+    "Icon",
+    "Parent",
+    "Rollup",
+    "People",
+    "Email",
+    "PhoneNumber",
+    "CreatedBy",
+    "LastEditedBy",
+    "CreatedTime",
+    "LastEditedTime",
+    "Button",
+    "MultiSelect",
+]
