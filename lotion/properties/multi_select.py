@@ -21,6 +21,28 @@ class MultiSelectElement:
             result["color"] = self.color
         return result
 
+    def __hash__(self) -> int:
+        return hash(self.id)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, MultiSelectElement):
+            return False
+        return self.id == other.id
+
+
+@dataclass
+class MultiSelectElements:
+    values: list[MultiSelectElement]
+
+    def get(self, multi_select_name: str | list[str]) -> list[MultiSelectElement]:
+        if isinstance(multi_select_name, str):
+            return [value for value in self.values if value.name == multi_select_name]
+        return [value for value in self.values if value.name in multi_select_name]
+
+    @property
+    def size(self) -> int:
+        return len(self.values)
+
 
 @dataclass
 class MultiSelect(Property):

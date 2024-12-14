@@ -11,9 +11,19 @@ from lotion.base_page import BasePage
 from lotion.block import Block, BlockFactory
 from lotion.filter.filter_builder import FilterBuilder
 from lotion.page import PageId
-from lotion.properties import Cover, Icon, Properties, Property, Title
+from lotion.properties import (
+    Cover,
+    Icon,
+    Properties,
+    Property,
+    Title,
+    MultiSelect,
+    Select,
+    Selects,
+    MultiSelectElement,
+    MultiSelectElements,
+)
 from lotion.property_translator import PropertyTranslator
-from lotion.properties import Select, Selects
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
@@ -202,23 +212,42 @@ class Lotion:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)
 
-    def fetch_all_selects(self, database_id: str) -> Selects:
+    def fetch_all_selects(self, database_id: str, name: str) -> Selects:
         """指定されたデータベースのセレクト一覧を取得する"""
         results = self.retrieve_database(database_id=database_id)
         selects = []
         for page in results:
             for prop in page.properties.values:
-                if isinstance(prop, Select) and not prop.is_empty():
+                if isinstance(prop, Select) and prop.name == name and not prop.is_empty():
                     selects.append(prop)
         return Selects(list(set(selects)))
 
-    def fetch_select(self, database_id: str, status_name: str) -> Select:
+    def fetch_select(self, database_id: str, name: str, status_name: str) -> Select:
         """
         指定されたデータベースのセレクトを取得する。
         ただし現在のデータベースで利用されていないセレクトを取得することはできない。
         """
-        selects = self.fetch_all_selects(database_id=database_id)
+        selects = self.fetch_all_selects(database_id=database_id, name=name)
         return selects.get(status_name)
+
+    def fetch_all_multi_select_elements(self, database_id: str, name: str) -> MultiSelectElements:
+        """指定されたデータベースのマルチセレクト一覧を取得する"""
+        pages = self.retrieve_database(database_id=database_id)
+        results: list[MultiSelectElement] = []
+        for page in pages:
+            for prop in page.properties.values:
+                if isinstance(prop, MultiSelect) and prop.name == name:
+                    results.extend(prop.values)
+        return MultiSelectElements(list(set(results)))
+
+    def fetch_multi_select(self, database_id: str, name: str, multi_select_names: list[str]) -> MultiSelect:
+        """
+        指定されたデータベースのマルチセレクトを取得する。
+        ただし現在のデータベースで利用されていないマルチセレクトを取得することはできない。
+        """
+        all_elements = self.fetch_all_multi_select_elements(database_id=database_id, name=name)
+        multi_element_list = all_elements.get(multi_select_names)
+        return MultiSelect(name=name, values=multi_element_list)
 
     def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> dict:
         try:
