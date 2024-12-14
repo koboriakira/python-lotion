@@ -37,14 +37,13 @@ class TestApiSelect(TestCase):
 
     def test_セレクトを更新する(self):
         # Given
-        selects = self.suite.fetch_all_selects(database_id=self.DATABASE_ID)
-        select_b_prop = selects.get("セレクトB")
         page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
 
         # When
-        properties = page.properties.append_property(select_b_prop)
+        select_prop = self.suite.fetch_select(database_id=self.DATABASE_ID, status_name="セレクトB")
+        properties = page.properties.append_property(select_prop)
         self.suite.update_page(page_id=page.page_id.value, properties=properties.values)
         actual = self.suite.retrieve_page(page_id=page.page_id.value)
 

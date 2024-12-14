@@ -44,7 +44,6 @@ class PropertyTranslator:
             case "multi_select":
                 return MultiSelect.of(key, property_)
             case "select":
-                print(property_)
                 return Select.of(key, property_)
             case "number":
                 return Number.of(key, property_)

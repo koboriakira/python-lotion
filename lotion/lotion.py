@@ -203,7 +203,7 @@ class Lotion:
         self.__archive(page_id=page_id)
 
     def fetch_all_selects(self, database_id: str) -> Selects:
-        """指定されたデータベースのセレクトを取得する"""
+        """指定されたデータベースのセレクト一覧を取得する"""
         results = self.retrieve_database(database_id=database_id)
         selects = []
         for page in results:
@@ -211,6 +211,14 @@ class Lotion:
                 if isinstance(prop, Select) and not prop.is_empty():
                     selects.append(prop)
         return Selects(list(set(selects)))
+
+    def fetch_select(self, database_id: str, status_name: str) -> Select:
+        """
+        指定されたデータベースのセレクトを取得する。
+        ただし現在のデータベースで利用されていないセレクトを取得することはできない。
+        """
+        selects = self.fetch_all_selects(database_id=database_id)
+        return selects.get(status_name)
 
     def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> dict:
         try:
