@@ -64,7 +64,6 @@ class TestUpdateProperty(TestCase):
         actual = self._update_page(property=email_prop)
         self.assertEqual(actual.get_email(name="メール").value, "sample@example.com")
 
-    @pytest.mark.current()
     def test_電話番号を変更する(self):
         phone_number_prop = PhoneNumber.create(name="電話", phone_number="090-1234-5678")
         actual = self._update_page(property=phone_number_prop)
