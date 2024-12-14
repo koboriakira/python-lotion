@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from lotion.block.block import Block
 from lotion.block.block_type import BlockType
 from lotion.block.bookmark import Bookmark
-from lotion.block.bulleted_list_item import BulletedlistItem
+from lotion.block.bulleted_list_item import BulletedListItem
 from lotion.block.callout import Callout
 from lotion.block.child_database import ChildDatabase
 from lotion.block.child_page import ChildPage
@@ -47,7 +47,7 @@ class BlockFactory:
             case BlockType.DIVIDER:
                 return Divider.of(block)
             case BlockType.BULLETED_LIST_ITEM:
-                return BulletedlistItem.of(block)
+                return BulletedListItem.of(block)
             case BlockType.EMBED:
                 return Embed.of(block)
             case BlockType.BOOKMARK:

@@ -6,7 +6,7 @@ from .quote import Quote
 from .block_factory import BlockFactory
 from .heading import Heading
 from .divider import Divider
-from .bulleted_list_item import BulletedlistItem
+from .bulleted_list_item import BulletedListItem
 from .embed import Embed
 from .bookmark import Bookmark
 from .code import Code
@@ -28,7 +28,7 @@ __all__ = [
     "BlockFactory",
     "Heading",
     "Divider",
-    "BulletedlistItem",
+    "BulletedListItem",
     "Embed",
     "Bookmark",
     "Code",
