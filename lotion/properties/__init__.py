@@ -6,7 +6,7 @@ from .url import Url
 from .relation import Relation
 from .status import Status
 from .text import Text
-from .multi_select import MultiSelect
+from .multi_select import MultiSelect, MultiSelectElement, MultiSelectElements
 from .select import Select, Selects
 from .checkbox import Checkbox
 from .number import Number
@@ -35,6 +35,8 @@ __all__ = [
     "Status",
     "Text",
     "MultiSelect",
+    "MultiSelectElement",
+    "MultiSelectElements",
     "Select",
     "Selects",
     "Checkbox",
