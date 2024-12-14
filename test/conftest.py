@@ -1,6 +1,21 @@
+import pytest
+
+
 def pytest_configure(config):
     config.addinivalue_line("markers", "current: As current ones")
     config.addinivalue_line("markers", "learning: As learning exercises")
     config.addinivalue_line("markers", "api: As using the Notion API")
     config.addinivalue_line("markers", "slow: As slow ones")
     config.addinivalue_line("markers", "minimum: 最低限やっておきたいテスト")
+
+
+def pytest_collection_modifyitems(config, items):
+    """apiマークがついているテストを自動的に除外する。ただし、-mオプションで指定された場合は除外しない。"""
+    selected_marker = config.getoption("-m")  # -mで指定されたマークを取得
+
+    for item in items:
+        # "api" がマークされているかどうかを確認
+        if "api" in item.keywords:
+            # -m で "api" が指定されていなければ、スキップマークを追加
+            if "api" not in selected_marker:
+                item.add_marker(pytest.mark.skip(reason="api マークがついているのでスキップ"))
