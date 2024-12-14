@@ -4,7 +4,6 @@ import pytest
 
 from lotion import Lotion
 from lotion.properties import Title
-from lotion.properties import Select
 
 
 @pytest.mark.api()
@@ -15,19 +14,11 @@ class TestApiSelect(TestCase):
     def setUp(self) -> None:
         self.suite = Lotion.get_instance()
 
-        select_a_prop = Select.of(
-            name="セレクトA",
-            param={
-                "id": "oHJt",
-                "type": "select",
-                "select": {"id": "d9d95b7b-53e9-4497-8d8f-9aac9bb281ac", "name": "セレクトA", "color": "purple"},
-            },
-        )
-
     def test_すべての選択肢を取得する(self):
         # Then
         actual = self.suite.fetch_all_selects(
             database_id=self.DATABASE_ID,
+            name="セレクト",
         )
 
         # When: セレクトA、セレクトBの2つの選択肢があること
@@ -42,7 +33,7 @@ class TestApiSelect(TestCase):
         )
 
         # When
-        select_prop = self.suite.fetch_select(database_id=self.DATABASE_ID, status_name="セレクトB")
+        select_prop = self.suite.fetch_select(database_id=self.DATABASE_ID, name="セレクト", status_name="セレクトB")
         properties = page.properties.append_property(select_prop)
         self.suite.update_page(page_id=page.page_id.value, properties=properties.values)
         actual = self.suite.retrieve_page(page_id=page.page_id.value)

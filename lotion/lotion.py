@@ -212,22 +212,22 @@ class Lotion:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)
 
-    def fetch_all_selects(self, database_id: str) -> Selects:
+    def fetch_all_selects(self, database_id: str, name: str) -> Selects:
         """指定されたデータベースのセレクト一覧を取得する"""
         results = self.retrieve_database(database_id=database_id)
         selects = []
         for page in results:
             for prop in page.properties.values:
-                if isinstance(prop, Select) and not prop.is_empty():
+                if isinstance(prop, Select) and prop.name == name and not prop.is_empty():
                     selects.append(prop)
         return Selects(list(set(selects)))
 
-    def fetch_select(self, database_id: str, status_name: str) -> Select:
+    def fetch_select(self, database_id: str, name: str, status_name: str) -> Select:
         """
         指定されたデータベースのセレクトを取得する。
         ただし現在のデータベースで利用されていないセレクトを取得することはできない。
         """
-        selects = self.fetch_all_selects(database_id=database_id)
+        selects = self.fetch_all_selects(database_id=database_id, name=name)
         return selects.get(status_name)
 
     def fetch_all_multi_select_elements(self, database_id: str, name: str) -> MultiSelectElements:
