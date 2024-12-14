@@ -2,7 +2,7 @@ from lotion.block import Block
 from lotion.block.rich_text import RichText
 
 
-class BulletedlistItem(Block):
+class BulletedListItem(Block):
     rich_text: RichText
     color: str
 
@@ -22,10 +22,10 @@ class BulletedlistItem(Block):
         self.color = color
 
     @staticmethod
-    def of(block: dict) -> "BulletedlistItem":
+    def of(block: dict) -> "BulletedListItem":
         bulleted_list_item = block["bulleted_list_item"]
         rich_text = RichText.from_entity(bulleted_list_item["rich_text"])
-        return BulletedlistItem(
+        return BulletedListItem(
             id=block["id"],
             archived=block["archived"],
             created_time=block["created_time"],
@@ -40,12 +40,12 @@ class BulletedlistItem(Block):
         return f"- {self.rich_text.to_slack_text()}"
 
     @staticmethod
-    def from_rich_text(rich_text: RichText) -> "BulletedlistItem":
-        return BulletedlistItem(rich_text=rich_text)
+    def from_rich_text(rich_text: RichText) -> "BulletedListItem":
+        return BulletedListItem(rich_text=rich_text)
 
     @staticmethod
-    def from_plain_text(text: str) -> "BulletedlistItem":
-        return BulletedlistItem(rich_text=RichText.from_plain_text(text))
+    def from_plain_text(text: str) -> "BulletedListItem":
+        return BulletedListItem(rich_text=RichText.from_plain_text(text))
 
     @property
     def type(self) -> str:

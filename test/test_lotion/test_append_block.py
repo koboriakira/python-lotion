@@ -1,7 +1,22 @@
 from unittest import TestCase
 
 import pytest
-from lotion.block import Block, Bookmark, BulletedlistItem, Callout, Code, Divider, Embed, Heading, Image, NumberedListItem, Paragraph, Quote, ToDo, Video
+from lotion.block import (
+    Block,
+    Bookmark,
+    BulletedListItem,
+    Callout,
+    Code,
+    Divider,
+    Embed,
+    Heading,
+    Image,
+    NumberedListItem,
+    Paragraph,
+    Quote,
+    ToDo,
+    Video,
+)
 from lotion import Lotion
 
 
@@ -22,9 +37,9 @@ class TestAppendBlock(TestCase):
         self._append_block_test(block=bookmark)
 
     def test_リストを追加する(self):
-        list_block = BulletedlistItem.from_plain_text(text="テスト1")
+        list_block = BulletedListItem.from_plain_text(text="テスト1")
         self._append_block_test(block=list_block)
-        list_block = BulletedlistItem.from_plain_text(text="テスト2")
+        list_block = BulletedListItem.from_plain_text(text="テスト2")
         self._append_block_test(block=list_block)
 
     def test_区切り線を追加する(self):
