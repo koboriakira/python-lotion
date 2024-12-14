@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.filter.condition.relation_condition import RelationCondition
-from src.properties.relation import Relation
+from lotion.filter.condition.relation_condition import RelationCondition
+from lotion.properties.relation import Relation
 
 
 class TestRelationCondition(TestCase):

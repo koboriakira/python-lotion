@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.block.code import Code
+from lotion.block.code import Code
 
 
 class TestCode(TestCase):

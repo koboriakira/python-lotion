@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.block.to_do import ToDo
+from lotion.block.to_do import ToDo
 
 
 class TestToDo(TestCase):

@@ -1,16 +1,16 @@
 from datetime import date
 from unittest import TestCase
 
-from src.filter.condition.date_condition import DateCondition
-from src.filter.condition.number_condition import NumberCondition
-from src.filter.condition.or_condition import OrCondition as Or
-from src.filter.condition.string_condition import StringCondition
-from src.filter.filter_builder import FilterBuilder
-from src.properties.date import Date
-from src.properties.number import Number
-from src.properties.select import Select
-from src.properties.status import Status
-from src.properties.url import Url
+from lotion.filter.condition.date_condition import DateCondition
+from lotion.filter.condition.number_condition import NumberCondition
+from lotion.filter.condition.or_condition import OrCondition as Or
+from lotion.filter.condition.string_condition import StringCondition
+from lotion.filter import FilterBuilder
+from lotion.properties.date import Date
+from lotion.properties.number import Number
+from lotion.properties.select import Select
+from lotion.properties.status import Status
+from lotion.properties.url import Url
 
 # https://developers.notion.com/reference/post-database-query-filter
 

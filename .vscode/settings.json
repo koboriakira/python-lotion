@@ -15,12 +15,10 @@
     "reportMissingTypeStubs": true,
     "useTypeStubForTypeshed": true
   },
-  "python.analysis.extraPaths": [
-    "./src"
-  ],
+  "python.analysis.extraPaths": ["./lotion"],
   "python.analysis.fixAll": [
     "source.unusedImports",
-    "source.convertImportFormat",
+    "source.convertImportFormat"
   ],
   "python.analysis.importFormat": "absolute",
   "python.analysis.typeCheckingMode": "basic",

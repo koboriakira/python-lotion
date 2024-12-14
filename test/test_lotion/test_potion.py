@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import pytest
-from src.base_page import BasePage
+from lotion.base_page import BasePage
 
 from lotion import Lotion
 
@@ -123,7 +123,7 @@ class TestClientWrapper(TestCase):
     def test_現在のタスクを取得する(self):
         pass
         # # pytest test/notion_client_wrapper/test_client_wrapper.py::TestClientWrapper::test_現在のタスクを取得する
-        # from src.task.domain.task import ToDoTask
+        # from lotion.task.domain.task import ToDoTask
 
         # # Given
         # filter_param = {

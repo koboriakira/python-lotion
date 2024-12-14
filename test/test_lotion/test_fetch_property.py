@@ -2,9 +2,9 @@ from unittest import TestCase
 
 import pytest
 
-from datetime_utils import jst_now
+from lotion.datetime_utils import jst_now
 from lotion import Lotion
-from properties.title import Title
+from lotion.properties import Title
 
 
 @pytest.mark.api()

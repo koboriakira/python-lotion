@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.base_page import BasePage
-
+from lotion.base_page import BasePage
+from lotion.properties.title import Title
 
 class TestBasePage(TestCase):
     def test_ページを作成する(self):
@@ -16,7 +16,6 @@ class TestBasePage(TestCase):
         import sys
 
         sys.path.append("notion_api")
-        from src.properties.title import Title
 
         # Given
         base_page = BasePage.create(
