@@ -8,21 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  stop_if_not_merged:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if PR is merged
-        id: check-merged
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.event.action }}" != "closed" ]; then
-            echo "PR is not closed. Exiting..."
-            exit 1
-          fi
-          if [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.event.pull_request.merged }}" != "true" ]; then
-            echo "PR is not merged. Exiting..."
-            exit 1
-          fi
-
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
@@ -54,7 +39,7 @@ jobs:
   publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
-    if: startsWith(github.ref, 'refs/tags/') 
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     needs: [build]
     runs-on: ubuntu-latest
     environment:
