@@ -1,6 +1,28 @@
 from typing import Any
 
-from lotion.properties import PhoneNumber, CreatedBy, Email, LastEditedBy, Button, Checkbox, CreatedTime, Date, LastEditedTime, MultiSelect, Number, Properties, Property, Relation, Rollup, Select, Status, Text, Title, Url, People
+from lotion.properties import (
+    PhoneNumber,
+    CreatedBy,
+    Email,
+    LastEditedBy,
+    Button,
+    Checkbox,
+    CreatedTime,
+    Date,
+    LastEditedTime,
+    MultiSelect,
+    Number,
+    Properties,
+    Property,
+    Relation,
+    Rollup,
+    Select,
+    Status,
+    Text,
+    Title,
+    Url,
+    People,
+)
 
 
 class PropertyTranslator:
@@ -22,6 +44,7 @@ class PropertyTranslator:
             case "multi_select":
                 return MultiSelect.of(key, property_)
             case "select":
+                print(property_)
                 return Select.of(key, property_)
             case "number":
                 return Number.of(key, property_)

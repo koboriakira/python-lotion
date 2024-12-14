@@ -13,6 +13,7 @@ from lotion.filter.filter_builder import FilterBuilder
 from lotion.page import PageId
 from lotion.properties import Cover, Icon, Properties, Property, Title
 from lotion.property_translator import PropertyTranslator
+from lotion.properties import Select
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
@@ -200,6 +201,16 @@ class Lotion:
     def remove_page(self, page_id: str) -> None:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)
+
+    def fetch_all_selects(self, database_id: str) -> list[Select]:
+        """指定されたデータベースのセレクトを取得する"""
+        results = self.retrieve_database(database_id=database_id)
+        selects = []
+        for page in results:
+            for prop in page.properties.values:
+                if isinstance(prop, Select):
+                    selects.append(prop)
+        return list(set(selects))
 
     def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> dict:
         try:

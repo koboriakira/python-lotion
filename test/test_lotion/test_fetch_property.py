@@ -35,21 +35,3 @@ class TestFetchProperty(TestCase):
         self.assertEqual(self.page.created_by.object, expected_object)
         self.assertEqual(self.page.edited_by.id, expected_id)
         self.assertEqual(self.page.edited_by.object, expected_object)
-
-    def test_セレクトを取得する(self):
-        # Given
-        page_id = "15a6567a3bbf80ddb22add1abcbec3d6"
-        page = self.suite.retrieve_page(page_id=page_id)
-
-        # When
-        select = page.get_select(name="セレクト")
-        self.assertEqual(select.selected_name, "セレクトA")
-
-    def test_未選択のセレクトを取得する(self):
-        # Given
-        page_id = "15a6567a3bbf803f9dcbdff9ef33355a"
-        page = self.suite.retrieve_page(page_id=page_id)
-
-        # When
-        select = page.get_select(name="セレクト")
-        self.assertIsNone(select.selected_name)

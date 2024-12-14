@@ -4,7 +4,7 @@ from lotion.properties.property import Property
 
 @dataclass
 class Select(Property):
-    selected_name: str | None
+    selected_name: str
     selected_id: str | None
     selected_color: str | None
     type: str = "select"
@@ -12,7 +12,7 @@ class Select(Property):
     def __init__(
         self,
         name: str,
-        selected_name: str | None = None,
+        selected_name: str = "",
         selected_id: str | None = None,
         selected_color: str | None = None,
         id: str | None = None,
@@ -20,8 +20,8 @@ class Select(Property):
         self.name = name
         self.id = id
         self.selected_name = selected_name
-        self.selected_id = selected_id if selected_id is not None else "default"
-        self.selected_color = selected_color if selected_color is not None else "default"
+        self.selected_id = selected_id
+        self.selected_color = selected_color
 
     @staticmethod
     def of(name: str, param: dict) -> "Select":
@@ -36,8 +36,15 @@ class Select(Property):
             id=param["id"],
         )
 
+    @staticmethod
+    def empty(name: str) -> "Select":
+        return Select(name=name)
+
+    def is_empty(self) -> bool:
+        return self.selected_name == ""
+
     def __dict__(self):
-        if self.selected_name is None:
+        if self.selected_id is None:
             return {
                 self.name: {
                     "type": self.type,
@@ -58,3 +65,10 @@ class Select(Property):
 
     def value_for_filter(self) -> str:
         return self.selected_name if self.selected_name is not None else ""
+
+    # __hash__と__eq__を実装することで、リストやセットの中で比較が可能になる
+    def __hash__(self):
+        return hash(self.selected_id)
+
+    def __eq__(self, other):
+        return self.selected_id == other.selected_id
