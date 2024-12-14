@@ -7,6 +7,7 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "api: As using the Notion API")
     config.addinivalue_line("markers", "slow: As slow ones")
     config.addinivalue_line("markers", "minimum: 最低限やっておきたいテスト")
+    config.addinivalue_line("markers", "all: 全てのテスト. -m allで実行すると自動的に付与される")
 
 
 def pytest_collection_modifyitems(config, items):
@@ -20,3 +21,6 @@ def pytest_collection_modifyitems(config, items):
             # if "api" not in selected_marker:
             if selected_marker is None or len(selected_marker) == 0:
                 item.add_marker(pytest.mark.skip(reason="api マークがついているのでスキップ"))
+
+        if "all" in selected_marker:
+            item.add_marker(pytest.mark.all())

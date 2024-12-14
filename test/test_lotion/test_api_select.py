@@ -14,22 +14,39 @@ class TestApiSelect(TestCase):
 
     def setUp(self) -> None:
         self.suite = Lotion.get_instance()
-        created_page = self.suite.create_page_in_database(
-            database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
+
+        select_a_prop = Select.of(
+            name="セレクトA",
+            param={
+                "id": "oHJt",
+                "type": "select",
+                "select": {"id": "d9d95b7b-53e9-4497-8d8f-9aac9bb281ac", "name": "セレクトA", "color": "purple"},
+            },
         )
-        self.setup_page = self.suite.retrieve_page(page_id=created_page.page_id.value)
-        return super().setUp()
+
+    def test_すべての選択肢を取得する(self):
+        # Then
+        actual = self.suite.fetch_all_selects(
+            database_id=self.DATABASE_ID,
+        )
+
+        # When: セレクトA、セレクトBの2つの選択肢があること
+        self.assertEqual(actual.size, 2)
+        self.assertIsNotNone(actual.get("セレクトA"))
+        self.assertIsNotNone(actual.get("セレクトB"))
 
     def test_セレクトを更新する(self):
         # Given
-        select_prop = Select.from_plain_text(name="セレクト", text="セレクトA")
-        properties = self.setup_page.properties.append_property(select_prop)
-
-        # Then
-        page_id = self.setup_page.page_id.value
-        self.suite.update_page(page_id=page_id, properties=properties.values)
-        actual = self.suite.retrieve_page(page_id=page_id)
+        page = self.suite.create_page_in_database(
+            database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
+        )
 
         # When
+        select_prop = self.suite.fetch_select(database_id=self.DATABASE_ID, status_name="セレクトB")
+        properties = page.properties.append_property(select_prop)
+        self.suite.update_page(page_id=page.page_id.value, properties=properties.values)
+        actual = self.suite.retrieve_page(page_id=page.page_id.value)
+
+        # Then
         select = actual.get_select(name="セレクト")
-        self.assertEqual(select.selected_name, "セレクトA")
+        self.assertEqual(select.selected_name, "セレクトB")

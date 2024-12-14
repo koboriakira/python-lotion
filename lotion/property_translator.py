@@ -1,6 +1,28 @@
 from typing import Any
 
-from lotion.properties import PhoneNumber, CreatedBy, Email, LastEditedBy, Button, Checkbox, CreatedTime, Date, LastEditedTime, MultiSelect, Number, Properties, Property, Relation, Rollup, Select, Status, Text, Title, Url, People
+from lotion.properties import (
+    PhoneNumber,
+    CreatedBy,
+    Email,
+    LastEditedBy,
+    Button,
+    Checkbox,
+    CreatedTime,
+    Date,
+    LastEditedTime,
+    MultiSelect,
+    Number,
+    Properties,
+    Property,
+    Relation,
+    Rollup,
+    Select,
+    Status,
+    Text,
+    Title,
+    Url,
+    People,
+)
 
 
 class PropertyTranslator:

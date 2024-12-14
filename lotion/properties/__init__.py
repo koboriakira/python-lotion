@@ -7,7 +7,7 @@ from .relation import Relation
 from .status import Status
 from .text import Text
 from .multi_select import MultiSelect
-from .select import Select
+from .select import Select, Selects
 from .checkbox import Checkbox
 from .number import Number
 from .notion_datetime import NotionDatetime
@@ -36,6 +36,7 @@ __all__ = [
     "Text",
     "MultiSelect",
     "Select",
+    "Selects",
     "Checkbox",
     "Number",
     "NotionDatetime",
