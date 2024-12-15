@@ -11,38 +11,42 @@ class Email(Property):
     {'id': 'Io%7C%3A', 'type': 'email', 'email': 'sample@example.com'}
     """
 
-    value: str | None
+    value: str
 
     def __init__(
         self,
         name: str,
+        value: str = "",
         id: str | None = None,  # noqa: A002
-        value: str | None = None,
     ) -> None:
         self.name = name
-        self.id = id
         self.value = value
+        self.id = id
 
     @staticmethod
     def of(key: str, param: dict) -> "Email":
-        return Email(
-            id=param["id"],
-            name=key,
-            value=param.get("email"),
-        )
+        value = param.get("email")
+        if value is not None and not isinstance(value, str):
+            raise ValueError(f"email must be str, but got {type(value)}")
+        return Email(id=param["id"], name=key, value=value or "")
 
     @staticmethod
     def from_email(name: str, email: str) -> "Email":
         return Email(name=name, value=email)
+
+    @staticmethod
+    def empty(name: str) -> "Email":
+        return Email(name=name)
 
     @property
     def type(self) -> str:
         return "email"
 
     def __dict__(self) -> dict:
+        print(self)
         result = {
             "type": self.type,
-            "email": self.value,
+            "email": None if self.value == "" else self.value,
         }
         if self.id is not None:
             result["id"] = self.id

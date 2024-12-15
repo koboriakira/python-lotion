@@ -2,14 +2,10 @@ from unittest import TestCase
 
 import pytest
 
-from lotion.page.page_id import PageId
 from lotion import Lotion
 from lotion.properties.checkbox import Checkbox
-from lotion.properties.email import Email
 from lotion.properties.number import Number
-from lotion.properties.phone_number import PhoneNumber
 from lotion.properties.property import Property
-from lotion.properties.relation import Relation
 from lotion.properties.status import Status
 from lotion.properties.text import Text
 from lotion.properties.title import Title
@@ -47,38 +43,8 @@ class TestUpdateProperty(TestCase):
         actual = self._update_page(property=number_prop)
         self.assertEqual(actual.get_number(name="数値").number, 1)
 
-    def test_セレクトを変更する(self):
-        self.skipTest("ユーザが名前ベースでセレクトを選べるようにしたい")
-
-    def test_マルチセレクトを変更する(self):
-        self.skipTest("ユーザが名前ベースでマルチセレクトを選べるようにしたい")
-
     def test_ファイルを変更する(self):
         self.skipTest("ファイルプロパティを作成するところから")
-
-    def test_ユーザーを変更する(self):
-        self.skipTest("ユーザープロパティを作成するところから")
-
-    def test_メールを変更する(self):
-        email_prop = Email.from_email(name="メール", email="sample@example.com")
-        actual = self._update_page(property=email_prop)
-        self.assertEqual(actual.get_email(name="メール").value, "sample@example.com")
-
-    def test_電話番号を変更する(self):
-        phone_number_prop = PhoneNumber.create(name="電話", phone_number="090-1234-5678")
-        actual = self._update_page(property=phone_number_prop)
-        self.assertEqual(actual.get_phone_number(name="電話").value, "090-1234-5678")
-
-    def test_数式を変更する(self):
-        self.skipTest("数式プロパティを作成するところから")
-
-    def test_ロールアップを変更する(self):
-        self.skipTest("ロールアッププロパティを作成するところから")
-
-    def test_ステータスを変更する(self):
-        status_prop = Status.from_status_name(name="ステータス", status_name="未着手")
-        actual = self._update_page(property=status_prop)
-        self.assertEqual(actual.get_status(name="ステータス").status_name, "未着手")
 
     def test_チェックボックスを変更する(self):
         checkbox_prop = Checkbox.true(name="チェックボックス")

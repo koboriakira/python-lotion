@@ -11,25 +11,28 @@ class PhoneNumber(Property):
     {'id': 'FCsG', 'type': 'phone_number', 'phone_number': '03-1234-5678'}
     """
 
-    value: str | None
+    value: str
 
     def __init__(
         self,
         name: str,
+        value: str = "",
         id: str | None = None,  # noqa: A002
-        value: str | None = None,
     ) -> None:
         self.name = name
-        self.id = id
         self.value = value
+        self.id = id
 
     @staticmethod
     def of(key: str, param: dict) -> "PhoneNumber":
-        return PhoneNumber(
-            id=param["id"],
-            name=key,
-            value=param.get("phone_number"),
-        )
+        value = param.get("phone_number")
+        if value is not None and not isinstance(value, str):
+            raise ValueError(f"phone_number must be str, but got {type(value)}")
+        return PhoneNumber(id=param["id"], name=key, value=value or "")
+
+    @staticmethod
+    def empty(name: str) -> "PhoneNumber":
+        return PhoneNumber(name=name)
 
     @staticmethod
     def create(name: str, phone_number: str) -> "PhoneNumber":
@@ -42,7 +45,7 @@ class PhoneNumber(Property):
     def __dict__(self) -> dict:
         result = {
             "type": self.type,
-            "phone_number": self.value,
+            "phone_number": self.value if self.value != "" else None,
         }
         if self.id is not None:
             result["id"] = self.id
