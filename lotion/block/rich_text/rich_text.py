@@ -12,6 +12,10 @@ class RichText:
         return RichText(elements=list(map(lambda x: RichTextElement.from_entity(x), rich_text)))
 
     @staticmethod
+    def empty() -> "RichText":
+        return RichText(elements=[])
+
+    @staticmethod
     def from_plain_text(text: str) -> "RichText":
         rich_text_element = RichTextTextElement.of(content=text)
         return RichText(elements=[rich_text_element])

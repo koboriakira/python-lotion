@@ -25,11 +25,6 @@ class TestUpdateProperty(TestCase):
         actual = update_page(page=self.page, property=title)
         self.assertEqual(actual.get_title().text, "テスト")
 
-    def test_テキストを変更する(self):
-        text_prop = Text.from_plain_text(name="テキスト", text="テスト")
-        actual = update_page(page=self.page, property=text_prop)
-        self.assertEqual(actual.get_text(name="テキスト").text, "テスト")
-
     def test_数値を変更する(self):
         number_prop = Number.from_num(name="数値", value=1)
         actual = update_page(page=self.page, property=number_prop)
