@@ -7,6 +7,14 @@ on:
   pull_request:
     branches:
       - main  # mainブランチへのPRが対象
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: read  
+  pull-requests: write  
 
 jobs:
   test:
@@ -41,12 +49,12 @@ jobs:
         run: |
           pipenv install --dev  # Pipfileのすべての依存関係（開発用依存関係も）をインストール
 
-      - name: Run Pytest
+      - name: Build coverage file
         run: |
-          pipenv run pytest --junitxml=test-results/results.xml --cov=./  # pytestをJUnit形式の出力付きで実行
+          pipenv run pytest -m all -n auto --dist=loadfile --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=lotion test/ | tee pytest-coverage.txt
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v3  # テストの結果をGitHubのアーティファクトとして保存
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
-          name: test-results
-          path: test-results/results.xml
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
