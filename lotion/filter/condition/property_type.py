@@ -16,3 +16,5 @@ class Prop(Enum):
     STATUS = "status"
     # TIMESTAMP = "timestamp"
     ID = "unique_id"
+    CREATED_TIME = "created_time"
+    LAST_EDITED_TIME = "last_edited_time"

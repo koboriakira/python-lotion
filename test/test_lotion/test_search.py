@@ -54,6 +54,12 @@ class TestSearch(TestCase):
         }
         self._search_and_assert(filter_param, 2)
 
+    @pytest.mark.current()
+    def test_最終更新日時で検索(self):
+        # Given
+        filter_param = Builder.create().add_last_edited_at(Cond.AFTER, "2021-01-01").build()
+        self._search_and_assert(filter_param, 2)
+
     def _search_and_assert(self, filter_param: dict, expected: int):
         # When
         actual = self.suite.retrieve_database(
