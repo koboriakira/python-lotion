@@ -90,6 +90,38 @@ RULESET[Prop.ID] = {
     Cond.IS_EMPTY: [bool],
     Cond.IS_NOT_EMPTY: [bool],
 }
+RULESET[Prop.CREATED_TIME] = {
+    Cond.EQUALS: [str],
+    Cond.AFTER: [str],
+    Cond.ON_OR_AFTER: [str],
+    Cond.BEFORE: [str],
+    Cond.ON_OR_BEFORE: [str],
+    Cond.IS_EMPTY: [bool],
+    Cond.IS_NOT_EMPTY: [bool],
+    Cond.NEXT_WEEK: [NoneType],
+    Cond.NEXT_MONTH: [NoneType],
+    Cond.NEXT_YEAR: [NoneType],
+    Cond.PAST_WEEK: [NoneType],
+    Cond.PAST_MONTH: [NoneType],
+    Cond.PAST_YEAR: [NoneType],
+    Cond.THIS_WEEK: [NoneType],
+}
+RULESET[Prop.LAST_EDITED_TIME] = {
+    Cond.EQUALS: [str],
+    Cond.AFTER: [str],
+    Cond.ON_OR_AFTER: [str],
+    Cond.BEFORE: [str],
+    Cond.ON_OR_BEFORE: [str],
+    Cond.IS_EMPTY: [bool],
+    Cond.IS_NOT_EMPTY: [bool],
+    Cond.NEXT_WEEK: [NoneType],
+    Cond.NEXT_MONTH: [NoneType],
+    Cond.NEXT_YEAR: [NoneType],
+    Cond.PAST_WEEK: [NoneType],
+    Cond.PAST_MONTH: [NoneType],
+    Cond.PAST_YEAR: [NoneType],
+    Cond.THIS_WEEK: [NoneType],
+}
 
 
 @dataclass(frozen=True)
