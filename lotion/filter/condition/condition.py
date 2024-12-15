@@ -1,5 +1,7 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 
 class Condition(metaclass=ABCMeta):
-    pass
+    @abstractmethod
+    def __dict__(self) -> dict:
+        pass
