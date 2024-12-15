@@ -15,7 +15,7 @@
     "reportMissingTypeStubs": true,
     "useTypeStubForTypeshed": true
   },
-  "python.analysis.extraPaths": ["./lotion"],
+  "python.analysis.extraPaths": ["./src"],
   "python.analysis.fixAll": [
     "source.unusedImports",
     "source.convertImportFormat"
