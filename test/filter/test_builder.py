@@ -27,7 +27,6 @@ class TestBuilder(TestCase):
         }
         self.assertEqual(expected, actual)
 
-    @pytest.mark.current()
     def test_作成日時で絞り込む(self):
         actual = Builder.create().add_created_at(cond_type=Cond.ON_OR_BEFORE, value="2024-12-16").build()
         expected = {
