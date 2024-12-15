@@ -54,6 +54,13 @@ class Text(Property):
             rich_text=RichText.from_plain_text(text=text),
         )
 
+    @staticmethod
+    def empty(name: str) -> "Text":
+        return Text(
+            name=name,
+            rich_text=RichText.empty(),
+        )
+
     @property
     def text(self) -> str:
         return self.rich_text.to_plain_text()

@@ -16,7 +16,7 @@ class Number(Property):
     ) -> None:
         self.name = name
         self.id = id
-        self.number = number or 0
+        self.number = number
 
     def add(self, count: int) -> "Number":
         prev = self.number if self.number is not None else 0
@@ -36,13 +36,24 @@ class Number(Property):
             number=param["number"],
         )
 
+    @staticmethod
+    def empty(name: str) -> "Number":
+        return Number(name=name)
+
+    def is_empty(self) -> bool:
+        return self.number is None
+
+    @property
+    def value(self) -> int:
+        return self.number or 0
+
     def __dict__(self) -> dict:
-        result = {}
+        result = {
+            "type": self.type,
+            self.type: self.number,
+        }
         if self.id is not None:
             result["id"] = self.id
-        if self.number is not None:
-            result["type"] = self.type
-            result["number"] = self.number
         return {
             self.name: result,
         }
@@ -54,5 +65,5 @@ class Number(Property):
             number=value,
         )
 
-    def value_for_filter(self) -> int:
+    def value_for_filter(self):
         return self.number

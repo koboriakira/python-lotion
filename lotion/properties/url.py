@@ -5,19 +5,19 @@ from lotion.properties.property import Property
 
 @dataclass
 class Url(Property):
-    url: str
-    type: str = "url"
+    url: str = ""
 
-    def __init__(self, name: str, url: str, id: str | None = None):
+    def __init__(self, name: str, url: str = "", id: str | None = None):
         self.name = name
         self.url = url
         self.id = id
 
     @staticmethod
     def of(name: str, param: dict) -> "Url":
+        url = param["url"] if param.get("url") else ""
         return Url(
             name=name,
-            url=param["url"],
+            url=url,
             id=param["id"],
         )
 
@@ -28,13 +28,21 @@ class Url(Property):
             url=url,
         )
 
+    @staticmethod
+    def empty(name: str = "URL") -> "Url":
+        return Url(name=name)
+
+    @property
+    def type(self) -> str:
+        return "url"
+
     def value_for_filter(self) -> str:
         return self.url
 
     def __dict__(self):
         result = {
             "type": self.type,
-            "url": self.url,
+            "url": self.url if self.url != "" else None,
         }
         if self.id is not None:
             result["id"] = self.id
