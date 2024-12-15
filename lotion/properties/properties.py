@@ -60,12 +60,13 @@ class Properties:
                 return value
         return None
 
-    def exclude_for_update(self) -> "Properties":
+    def exclude_button(self) -> "Properties":
         """
-        更新時にエラーとなるプロパティを除外する
+        ボタンのプロパティは更新時にエラーとなるため、除外する。
         """
-        exclude_types = ["button", "created_by", "last_edited_by", "formula"]
-        return Properties(values=[prop for prop in self.values if prop.type not in exclude_types])
+        return Properties(
+            values=[prop for prop in self.values if prop.type not in ["button", "created_by", "last_edited_by"]]
+        )
 
     def is_empty(self) -> bool:
         return len(self.values) == 0

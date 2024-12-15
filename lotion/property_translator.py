@@ -22,7 +22,6 @@ from lotion.properties import (
     Title,
     Url,
     People,
-    Formula,
 )
 
 
@@ -76,8 +75,6 @@ class PropertyTranslator:
                 return CreatedBy.of(key, property_)
             case "last_edited_by":
                 return LastEditedBy.of(key, property_)
-            case "formula":
-                return Formula.of(key, property_)
             case _:
                 msg = f"Unsupported property type: {type_} {property_}"
                 raise Exception(msg)
