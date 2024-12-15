@@ -8,7 +8,7 @@ from lotion.properties import Relation
 
 
 @pytest.mark.api()
-class TestApiSelect(TestCase):
+class TestApiRelationAndRollup(TestCase):
     DATABASE_ID = "15d6567a3bbf804e942dc49d808bf73a"
 
     def setUp(self) -> None:

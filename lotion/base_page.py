@@ -22,6 +22,7 @@ from lotion.properties.title import Title
 from lotion.properties.url import Url
 from lotion.properties.formula import Formula
 from lotion.properties.rollup import Rollup
+from lotion.properties.unique_id import UniqueId
 
 
 class NotCreatedError(Exception):
@@ -132,6 +133,9 @@ class BasePage:
 
     def get_rollup(self, name: str) -> Rollup:
         return self._get_property(name=name, instance_class=Rollup)  # type: ignore
+
+    def get_unique_id(self, name: str) -> UniqueId:
+        return self._get_property(name=name, instance_class=UniqueId)  # type: ignore
 
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)

@@ -9,7 +9,7 @@ from lotion.properties import Select
 
 
 @pytest.mark.api()
-class TestApiSelect(TestCase):
+class TestApiMultiSelect(TestCase):
     DATABASE_ID = "15c6567a3bbf80818512f43db108616f"
 
     def setUp(self) -> None:
