@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/koboriakira/lotion/compare/v0.4.0...v0.5.0) (2024-12-15)
+
+
+### Features
+
+* 作成日時などの更新に対応 ([#29](https://github.com/koboriakira/lotion/issues/29)) ([6daa2e9](https://github.com/koboriakira/lotion/commit/6daa2e97d134a807c69f24b30293e72c5a4b64ce))
+
 ## [0.4.0](https://github.com/koboriakira/lotion/compare/v0.3.0...v0.4.0) (2024-12-15)
 
 
