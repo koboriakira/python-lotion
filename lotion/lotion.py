@@ -146,6 +146,22 @@ class Lotion:
             self._logger.warning(warning_message)
         return results[0]
 
+    def find_page_by_unique_id(
+        self,
+        database_id: str,
+        name: str,
+        unique_id: int,
+    ) -> BasePage | None:
+        """UniqueIdをもとにデータベースのページを取得する"""
+        filter_param = FilterBuilder.build_simple_equal_unique_id_condition(name=name, number=unique_id)
+        results = self.retrieve_database(
+            database_id=database_id,
+            filter_param=filter_param,
+        )
+        if len(results) == 0:
+            return None
+        return results[0]
+
     def _database_query(
         self,
         database_id: str,

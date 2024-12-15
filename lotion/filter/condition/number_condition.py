@@ -6,14 +6,15 @@ from lotion.filter.condition import Condition
 
 
 class NumberConditionType(Enum):
-    EQUALS= "equals"
+    EQUALS = "equals"
+
 
 @dataclass(frozen=True)
 class NumberCondition(Condition):
     property_name: str
     property_type: str
     condition_type: NumberConditionType
-    value: str
+    value: int
 
     @staticmethod
     def equal(property: Property) -> "NumberCondition":
