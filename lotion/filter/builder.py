@@ -14,7 +14,7 @@ class Builder:
         return Builder(conditions=[])
 
     def add(self, prop_type: Prop, prop_name: str, cond_type: Cond, value: Any) -> "Builder":
-        ConditionRuleset.validate(prop_type, cond_type, value)
+        ConditionRuleset(prop_type, cond_type, value).validate()
         param = {
             "property": prop_name,
             prop_type.value: {

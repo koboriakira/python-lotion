@@ -15,11 +15,13 @@ class TestBuilder(TestCase):
     @pytest.mark.current()
     def test_タイトルで絞りこむ(self):
         actual = (
-            Builder.create().add(prop_type=Prop.TITLE, prop_name="名前", cond_type=Cond.EQUALS, value="テストA").build()
+            Builder.create()
+            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストA")
+            .build()
         )
         expected = {
             "property": "名前",
-            "title": {
+            "rich_text": {
                 "equals": "テストA",
             },
         }

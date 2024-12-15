@@ -3,7 +3,7 @@ from enum import Enum
 
 class Cond(Enum):
     EQUALS = "equals"
-    NOT_EQUAL = "does_not_equal"
+    DOES_NOT_EQUAL = "does_not_equal"
     IS_EMPTY = "is_empty"
     IS_NOT_EMPTY = "is_not_empty"
     CONTAINS = "contains"
@@ -13,7 +13,7 @@ class Cond(Enum):
     LESS_THAN = "less_than"
     LESS_THAN_OR_EQUAL_TO = "less_than_or_equal_to"
     STARTS_WITH = "starts_with"
-    END_WITH = "ends_with"
+    ENDS_WITH = "ends_with"
     AFTER = "after"
     ON_OR_AFTER = "on_or_after"
     BEFORE = "before"
