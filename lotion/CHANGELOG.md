@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.0](https://github.com/koboriakira/lotion/compare/v0.2.0...v0.3.0) (2024-12-15)
+
+
+### Features
+
+* ユニークIDに対応 ([#23](https://github.com/koboriakira/lotion/issues/23)) ([566eae0](https://github.com/koboriakira/lotion/commit/566eae0461a9bde6542c9dbc6cdbf7a71dd58e74))
+* ロールアップのあるページに対応 ([#22](https://github.com/koboriakira/lotion/issues/22)) ([ab0ce93](https://github.com/koboriakira/lotion/commit/ab0ce93422eb2d1a8cbc81a10ad333a9fd897ec3))
+* 数式プロパティの入ったページを操作可能にする ([#20](https://github.com/koboriakira/lotion/issues/20)) ([d3709df](https://github.com/koboriakira/lotion/commit/d3709dfabc2bb6c1e085e8c6fb38390b78793ba4))
+
 ## [0.2.0](https://github.com/koboriakira/lotion/compare/v0.1.0...v0.2.0) (2024-12-14)
 
 
