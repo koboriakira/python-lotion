@@ -5,43 +5,43 @@ from lotion.properties.property import Property
 
 @dataclass
 class Rollup(Property):
-    rollup_type: str
-    rollup_value: str
-    rollup_function: str
-    type: str = "rollup"
+    """Rollup class
 
+    ex.
+    {'id': '%3BXyX', 'type': 'rollup', 'rollup': {'type': 'number', 'number': 0, 'function': 'count_values'}}
+    """
 
-    def __init__(self, name: str, rollup_type: str, rollup_value: str, rollup_function: str, id: str | None = None):
+    _rollup: dict
+
+    def __init__(
+        self,
+        name: str,
+        rollup: dict = {},
+        id: str | None = None,  # noqa: A002
+    ) -> None:
         self.name = name
+        self._rollup = rollup
         self.id = id
-        self.rollup_type = rollup_type
-        self.rollup_value = rollup_value
-        self.rollup_function = rollup_function
-
 
     @staticmethod
-    def of(name: str, param: dict) -> "Rollup":
-        rollup_param = param["rollup"]
-        if rollup_param["type"] != "number":
-            raise NotImplementedError(f"Unsupported rollup type: {rollup_param['type']}")
+    def of(key: str, param: dict) -> "Rollup":
         return Rollup(
-            name=name,
             id=param["id"],
-            rollup_type=rollup_param["type"],
-            rollup_value=rollup_param["number"],
-            rollup_function=rollup_param["function"],
+            name=key,
+            rollup=param["rollup"],
         )
 
-    def __dict__(self):
-        return {
-            "id": self.id,
-            "type": self.type,
-            "rollup": {
-                "type": self.rollup_type,
-                self.rollup_type: self.rollup_value,
-                "function": self.rollup_function,
-            },
-        }
+    @property
+    def value(self) -> dict:
+        rollup_type = self._rollup["type"]
+        return self._rollup[rollup_type]
+
+    @property
+    def type(self) -> str:
+        return "rollup"
+
+    def __dict__(self) -> dict:
+        raise NotImplementedError("this dict method must not be called")
 
     def value_for_filter(self) -> str:
         raise NotImplementedError

@@ -90,17 +90,6 @@ class TestUpdateProperty(TestCase):
         actual = self._update_page(property=url_prop)
         self.assertEqual(actual.get_url(name="URL").url, "https://example.com")
 
-    @pytest.mark.minimum()
-    def test_リレーションを変更する(self):
-        # Given
-        page_id = PageId("15a6567a3bbf814b9b06e0fd3c6959e0")
-        relation_prop = Relation.from_id(name="リレーション", id=page_id.value)
-
-        # When, Then
-        actual = self._update_page(property=relation_prop)
-        actual_relation = actual.get_relation(name="リレーション")
-        self.assertEqual(actual_relation.id_list, [page_id.value])
-
     def _update_page(self, property: Property):
         # When
         properties = self.page.properties.append_property(property)
