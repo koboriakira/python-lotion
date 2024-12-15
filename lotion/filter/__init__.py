@@ -1,4 +1,4 @@
-from .filter_builder import FilterBuilder
 from .condition_ruleset import ConditionRuleset
+from .builder import Builder
 
-__all__ = ["FilterBuilder", "ConditionRuleset"]
+__all__ = ["Builder", "ConditionRuleset"]

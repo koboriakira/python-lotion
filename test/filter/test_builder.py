@@ -1,6 +1,5 @@
 from unittest import TestCase
 
-import pytest
 
 from lotion.filter.builder import Builder
 from lotion.filter.condition import Prop, Cond
@@ -12,7 +11,6 @@ class TestBuilder(TestCase):
     def setUp(self) -> None:
         return super().setUp()
 
-    @pytest.mark.current()
     def test_タイトルで絞りこむ(self):
         actual = (
             Builder.create()
