@@ -345,7 +345,7 @@ class Lotion:
         try:
             return self.client.pages.update(
                 page_id=page_id,
-                properties=properties.exclude_button().__dict__(),
+                properties=properties.exclude_for_update().__dict__(),
             )
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
@@ -367,7 +367,7 @@ class Lotion:
             return self.client.pages.create(
                 parent={"type": "database_id", "database_id": database_id},
                 cover=cover,
-                properties=properties if properties != {} else None,
+                properties=properties,
             )
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):

@@ -11,17 +11,17 @@ class Formula(Property):
     {'id': 'h_pG', 'type': 'formula', 'formula': {'type': 'number', 'number': 50}}
     """
 
-    _formula: dict | None = None
+    _formula: dict
 
     def __init__(
         self,
         name: str,
+        formula: dict = {},
         id: str | None = None,  # noqa: A002
-        formula: dict | None = None,
     ) -> None:
         self.name = name
-        self.id = id
         self._formula = formula
+        self.id = id
 
     @staticmethod
     def of(key: str, param: dict) -> "Formula":
@@ -32,18 +32,16 @@ class Formula(Property):
         )
 
     @property
+    def value(self) -> dict:
+        formula_type = self._formula["type"]
+        return self._formula[formula_type]
+
+    @property
     def type(self) -> str:
         return "formula"
 
     def __dict__(self) -> dict:
-        result = {
-            "id": self.id,
-            "type": self.type,
-            "formula": self._formula,
-        }
-        return {
-            self.name: result,
-        }
+        raise NotImplementedError("this dict method must not be called")
 
     def value_for_filter(self) -> str:
         raise NotImplementedError
