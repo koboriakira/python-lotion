@@ -149,11 +149,20 @@ class Lotion:
     def find_page_by_unique_id(
         self,
         database_id: str,
-        name: str,
         unique_id: int,
     ) -> BasePage | None:
         """UniqueIdをもとにデータベースのページを取得する"""
-        filter_param = FilterBuilder.build_simple_equal_unique_id_condition(name=name, number=unique_id)
+        unique_id_prop_name = None
+        base_page = self._fetch_sample_page(database_id=database_id)
+        for propety in base_page.properties.values:
+            if propety.type == "unique_id":
+                unique_id_prop_name = propety.name
+                break
+
+        if unique_id_prop_name is None:
+            raise ValueError("unique_id property is not found")
+
+        filter_param = FilterBuilder.build_simple_equal_unique_id_condition(name=unique_id_prop_name, number=unique_id)
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
@@ -404,11 +413,20 @@ class Lotion:
                 )
             raise NotionApiError(database_id=database_id, e=e, properties=properties) from e
 
+    def _fetch_sample_page(self, database_id: str) -> BasePage:
+        """指定されたデータベースのサンプルページを取得する"""
+        data = self.__database_query(database_id=database_id, page_size=1)
+        pages: list[dict] = data.get("results")
+        if len(pages) == 0:
+            raise ValueError(f"Database has no page. Please create any page. database_id: {database_id}")
+        return self.__convert_page_model(page_entity=pages[0], include_children=False)
+
     def __database_query(
         self,
         database_id: str,
         start_cursor: str | None = None,
         filter_param: dict | None = None,
+        page_size: int = 100,
         retry_count: int = 0,
     ) -> dict:
         try:
@@ -416,11 +434,13 @@ class Lotion:
                 return self.client.databases.query(
                     database_id=database_id,
                     start_cursor=start_cursor,
+                    page_size=page_size,
                 )
             return self.client.databases.query(
                 database_id=database_id,
                 start_cursor=start_cursor,
                 filter=filter_param,
+                page_size=page_size,
             )
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):

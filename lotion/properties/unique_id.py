@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 from lotion.properties.property import Property
 
@@ -42,5 +43,5 @@ class UniqueId(Property):
     def __dict__(self) -> dict:
         raise NotImplementedError("this dict method must not be called")
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError("this dict method must not be called")
+    def value_for_filter(self) -> Any:
+        return self.number

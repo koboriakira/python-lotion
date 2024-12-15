@@ -25,9 +25,10 @@ class TestApiUniqueId(TestCase):
         # Then: 更新が可能なこともついでに確かめる
         self.suite.update_page(page_id=page_id, properties=page.properties.values)
 
+    @pytest.mark.current()
     def test_ユニークIDをもとにページを取得する(self):
         # When
-        actual = self.suite.find_page_by_unique_id(database_id=self.DATABASE_ID, name="ID", unique_id=1)
+        actual = self.suite.find_page_by_unique_id(database_id=self.DATABASE_ID, unique_id=1)
 
         # Then
         self.assertIsNotNone(actual)
