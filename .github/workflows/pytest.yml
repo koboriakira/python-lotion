@@ -54,6 +54,7 @@ jobs:
           pipenv run pytest -m all -n auto --dist=loadfile --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=lotion test/ | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
+        if: ${{ github.event_name == 'pull_request' }}
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./pytest-coverage.txt
