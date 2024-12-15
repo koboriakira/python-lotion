@@ -109,7 +109,6 @@ class Lotion:
     def retrieve_database(  # noqa: PLR0913
         self,
         database_id: str,
-        title: str | None = None,
         filter_param: dict | None = None,
         include_children: bool | None = None,
     ) -> list[BasePage]:
@@ -122,8 +121,6 @@ class Lotion:
                 include_children=include_children or False,
             )
             pages.append(page)
-        if title is not None:
-            pages = list(filter(lambda p: p.properties.get_title().text == title, pages))
         return pages
 
     def find_page_by_title(

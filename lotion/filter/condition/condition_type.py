@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Field(Enum):
+class Cond(Enum):
     EQUALS = "equals"
     NOT_EQUAL = "does_not_equal"
     IS_EMPTY = "is_empty"
@@ -29,3 +29,6 @@ class Field(Enum):
     DATE = "date"
     NUMBER = "number"
     STRING = "string"
+    ANY = "any"
+    EVERY = "every"
+    NONE = "none"

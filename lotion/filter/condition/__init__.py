@@ -6,3 +6,7 @@ from .string_condition import StringCondition, StringConditionType
 from .empty_condition import EmptyCondition, EmptyConditionType
 from .relation_condition import RelationCondition, RelationConditionType
 from .or_condition import OrCondition as Or
+from .property_type import Prop
+from .condition_type import Cond
+
+__all__ = ["Prop", "Cond"]

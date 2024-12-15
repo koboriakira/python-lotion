@@ -1,5 +1,5 @@
 from enum import Enum
 
 
-class PropType(Enum):
+class Prop(Enum):
     TITLE = "title"
