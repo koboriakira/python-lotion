@@ -43,7 +43,6 @@ class Email(Property):
         return "email"
 
     def __dict__(self) -> dict:
-        print(self)
         result = {
             "type": self.type,
             "email": None if self.value == "" else self.value,
