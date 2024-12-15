@@ -9,7 +9,6 @@ from lotion.datetime_utils import JST
 from lotion.base_operator import BaseOperator
 from lotion.base_page import BasePage
 from lotion.block import Block, BlockFactory
-from lotion.filter.filter_builder import FilterBuilder
 from lotion.page import PageId
 from lotion.properties import (
     Cover,
@@ -24,6 +23,8 @@ from lotion.properties import (
     MultiSelectElements,
 )
 from lotion.property_translator import PropertyTranslator
+from lotion.filter import Builder
+from lotion.filter.condition import Prop, Cond
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
@@ -109,7 +110,6 @@ class Lotion:
     def retrieve_database(  # noqa: PLR0913
         self,
         database_id: str,
-        title: str | None = None,
         filter_param: dict | None = None,
         include_children: bool | None = None,
     ) -> list[BasePage]:
@@ -122,19 +122,16 @@ class Lotion:
                 include_children=include_children or False,
             )
             pages.append(page)
-        if title is not None:
-            pages = list(filter(lambda p: p.properties.get_title().text == title, pages))
         return pages
 
     def find_page_by_title(
         self,
         database_id: str,
         title: str,
-        title_key_name: str | None = "名前",
+        title_key_name: str = "名前",
     ) -> BasePage | None:
         """タイトルだけをもとにデータベースのページを取得する"""
-        title_property = Title.from_plain_text(text=title)
-        filter_param = FilterBuilder.build_simple_equal_condition(title_property)
+        filter_param = Builder.create().add(Prop.RICH_TEXT, title_key_name, Cond.EQUALS, title).build()
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
@@ -162,7 +159,8 @@ class Lotion:
         if unique_id_prop_name is None:
             raise ValueError("unique_id property is not found")
 
-        filter_param = FilterBuilder.build_simple_equal_unique_id_condition(name=unique_id_prop_name, number=unique_id)
+        # filter_param = FilterBuilder.build_simple_equal_unique_id_condition(name=unique_id_prop_name, number=unique_id)
+        filter_param = Builder.create().add(Prop.ID, unique_id_prop_name, Cond.EQUALS, unique_id).build()
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
