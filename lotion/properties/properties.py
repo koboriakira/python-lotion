@@ -64,7 +64,7 @@ class Properties:
         """
         更新時にエラーとなるプロパティを除外する
         """
-        exclude_types = ["button", "created_by", "last_edited_by", "formula"]
+        exclude_types = ["button", "created_by", "last_edited_by", "formula", "rollup"]
         return Properties(values=[prop for prop in self.values if prop.type not in exclude_types])
 
     def is_empty(self) -> bool:

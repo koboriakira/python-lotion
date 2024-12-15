@@ -21,6 +21,7 @@ from lotion.properties.text import Text
 from lotion.properties.title import Title
 from lotion.properties.url import Url
 from lotion.properties.formula import Formula
+from lotion.properties.rollup import Rollup
 
 
 class NotCreatedError(Exception):
@@ -128,6 +129,9 @@ class BasePage:
 
     def get_formula(self, name: str) -> Formula:
         return self._get_property(name=name, instance_class=Formula)  # type: ignore
+
+    def get_rollup(self, name: str) -> Rollup:
+        return self._get_property(name=name, instance_class=Rollup)  # type: ignore
 
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)
