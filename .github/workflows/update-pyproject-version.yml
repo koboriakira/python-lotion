@@ -18,16 +18,20 @@ permissions:
 jobs:
   stop_if_not_release_please:
     runs-on: ubuntu-latest
+    outputs:
+      ENABLE_SKIP: ${{ steps.check.outputs.ENABLE_SKIP }}
     steps:
       - name: Check 
         id: check
         run: |
           # GITHUB_REFがrelease-please--branches--main以外の場合はスキップ
           if [ "${{ github.head_ref }}" != "release-please--branches--main" ]; then
-            exit 1
+            echo ENABLE_SKIP=true >> $GITHUB_OUTPUT
           fi
 
   update_version:
+    needs: [stop_if_not_release_please]
+    if: ${{ needs.stop_if_not_release_please.outputs.ENABLE_SKIP != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
