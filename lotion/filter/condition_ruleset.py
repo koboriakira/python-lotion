@@ -1,10 +1,11 @@
 from dataclasses import dataclass
+from types import NoneType
 from typing import Any
 from lotion.filter.condition import Prop, Cond
 from lotion.page import PageId
 import re
 
-RULESET: dict[Prop, dict[Cond, list[type | None]]] = {}
+RULESET: dict[Prop, dict[Cond, list[type]]] = {}
 RULESET[Prop.RICH_TEXT] = {
     Cond.EQUALS: [str],
     Cond.DOES_NOT_EQUAL: [str],
@@ -27,13 +28,13 @@ RULESET[Prop.DATE] = {
     Cond.ON_OR_BEFORE: [str],
     Cond.IS_EMPTY: [bool],
     Cond.IS_NOT_EMPTY: [bool],
-    Cond.NEXT_WEEK: [None],
-    Cond.NEXT_MONTH: [None],
-    Cond.NEXT_YEAR: [None],
-    Cond.PAST_WEEK: [None],
-    Cond.PAST_MONTH: [None],
-    Cond.PAST_YEAR: [None],
-    Cond.THIS_WEEK: [None],
+    Cond.NEXT_WEEK: [NoneType],
+    Cond.NEXT_MONTH: [NoneType],
+    Cond.NEXT_YEAR: [NoneType],
+    Cond.PAST_WEEK: [NoneType],
+    Cond.PAST_MONTH: [NoneType],
+    Cond.PAST_YEAR: [NoneType],
+    Cond.THIS_WEEK: [NoneType],
 }
 RULESET[Prop.FILES] = {
     Cond.IS_EMPTY: [bool],
@@ -139,5 +140,10 @@ class ConditionRuleset:
             return
         # "2021-05-10"、"2021-05-10T12:00:00"、"2021-10-15T12:00:00-07:00"
         # のような形式であるかどうかを正規表現で確認する
-        if not re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}[-+]?\d{2}:\d{2}", self.value):
-            raise ValueError(f"Date value {self.value} is invalid")
+        if re.match(r"\d{4}-\d{2}-\d{2}", self.value):
+            return
+        if re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}", self.value):
+            return
+        if re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}[-+]?\d{2}:\d{2}", self.value):
+            return
+        raise ValueError(f"Date value {self.value} is invalid")

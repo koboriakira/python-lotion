@@ -13,12 +13,12 @@ class Builder:
     def create() -> "Builder":
         return Builder(conditions=[])
 
-    def add(self, prop_type: Prop, prop_name: str, cond_type: Cond, value: Any) -> "Builder":
+    def add(self, prop_type: Prop, prop_name: str, cond_type: Cond, value: Any = None) -> "Builder":
         ConditionRuleset(prop_type, cond_type, value).validate()
         param = {
             "property": prop_name,
             prop_type.value: {
-                cond_type.value: value,
+                cond_type.value: value if value is not None else {},
             },
         }
         return Builder(conditions=[*self.conditions, param])
