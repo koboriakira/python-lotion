@@ -7,7 +7,6 @@ from test.test_lotion.lotion_utils import create_empty_page, remove_page, update
 
 
 @pytest.mark.api()
-@pytest.mark.current()
 class TestApiStatus(TestCase):
     DATABASE_ID = "15d6567a3bbf80c18391ec4c8d780e6a"
 
