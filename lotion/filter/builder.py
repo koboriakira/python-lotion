@@ -28,6 +28,9 @@ class Builder:
         }
         return Builder(conditions=[*self.conditions, param])
 
+    def add_filter_param(self, param: dict) -> "Builder":
+        return Builder(conditions=[*self.conditions, param])
+
     def add_created_at(self, cond_type: Cond, value: Any) -> "Builder":
         return self._add_timestamp(Prop.CREATED_TIME, cond_type, value)
 
@@ -47,11 +50,15 @@ class Builder:
     def is_empty(self) -> bool:
         return len(self.conditions) == 0
 
-    def build(self) -> dict:
+    def build(self, mode: str = "and") -> dict:
+        """
+        :param mode: "and" or "or"
+
+        """
         if len(self.conditions) == 0:
             raise ValueError("Filter is empty")
         if len(self.conditions) == 1:
             return self.conditions[0]
         return {
-            "and": self.conditions,
+            mode: self.conditions,
         }
