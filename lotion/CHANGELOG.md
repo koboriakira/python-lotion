@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/koboriakira/lotion/compare/v0.3.0...v0.4.0) (2024-12-15)
+
+
+### Features
+
+* プロパティを空欄で更新できる ([#26](https://github.com/koboriakira/lotion/issues/26)) ([7f2f999](https://github.com/koboriakira/lotion/commit/7f2f9993a1ad4648ddeb102d3923963a1e3d0d8f))
+
 ## [0.3.0](https://github.com/koboriakira/lotion/compare/v0.2.0...v0.3.0) (2024-12-15)
 
 
