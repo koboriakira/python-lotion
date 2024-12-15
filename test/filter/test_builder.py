@@ -36,3 +36,26 @@ class TestBuilder(TestCase):
             },
         }
         self.assertEqual(expected, actual)
+
+    @pytest.mark.current()
+    def test_and条件で絞り込む(self):
+        actual = (
+            Builder.create()
+            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストA")
+            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストB")
+            .build()
+        )
+        print(actual)
+        expected = {
+            "and": [
+                {
+                    "property": "名前",
+                    "rich_text": {"equals": "テストA"},
+                },
+                {
+                    "property": "名前",
+                    "rich_text": {"equals": "テストB"},
+                },
+            ],
+        }
+        self.assertEqual(expected, actual)
