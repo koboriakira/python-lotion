@@ -20,7 +20,6 @@ from lotion.properties.status import Status
 from lotion.properties.text import Text
 from lotion.properties.title import Title
 from lotion.properties.url import Url
-from lotion.properties.formula import Formula
 
 
 class NotCreatedError(Exception):
@@ -125,9 +124,6 @@ class BasePage:
 
     def get_phone_number(self, name: str) -> PhoneNumber:
         return self._get_property(name=name, instance_class=PhoneNumber)  # type: ignore
-
-    def get_formula(self, name: str) -> Formula:
-        return self._get_property(name=name, instance_class=Formula)  # type: ignore
 
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)

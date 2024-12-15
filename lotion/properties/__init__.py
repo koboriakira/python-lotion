@@ -23,7 +23,7 @@ from .last_edited_by import LastEditedBy
 from .created_time import CreatedTime
 from .last_edited_time import LastEditedTime
 from .button import Button
-from .formula import Formula
+from .multi_select import MultiSelect
 
 __all__ = [
     "Property",
@@ -55,5 +55,4 @@ __all__ = [
     "LastEditedTime",
     "Button",
     "MultiSelect",
-    "Formula",
 ]
