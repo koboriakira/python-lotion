@@ -5,12 +5,12 @@ from logging import Logger, getLogger
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
-from lotion.datetime_utils import JST
-from lotion.base_operator import BaseOperator
-from lotion.base_page import BasePage
-from lotion.block import Block, BlockFactory
-from lotion.page import PageId
-from lotion.properties import (
+from .datetime_utils import JST
+from .base_operator import BaseOperator
+from .base_page import BasePage
+from .block import Block, BlockFactory
+from .page import PageId
+from .properties import (
     Cover,
     Icon,
     Properties,
@@ -22,9 +22,9 @@ from lotion.properties import (
     MultiSelectElement,
     MultiSelectElements,
 )
-from lotion.property_translator import PropertyTranslator
-from lotion.filter import Builder
-from lotion.filter.condition import Prop, Cond
+from .property_translator import PropertyTranslator
+from .filter import Builder
+from .filter.condition import Prop, Cond
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 

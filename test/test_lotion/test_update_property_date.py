@@ -1,11 +1,11 @@
 from datetime import date, datetime
 from unittest import TestCase
 
+from lotion.properties.date import Date
 import pytest
 
 from lotion.datetime_utils import JST
 from lotion import Lotion
-from lotion.properties.date import Date
 from lotion.properties.property import Property
 from lotion.properties.title import Title
 
