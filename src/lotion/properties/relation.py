@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 
-from lotion.page.page_id import PageId
-from lotion.properties.property import Property
+from ..page.page_id import PageId
+from .property import Property
 
 
 @dataclass
 class Relation(Property):
     id_list: list[str]
-    text_list: list[str]  # NOTE: Notionのデータとしては扱わない。id_listに変換するために必要になることが多いため
+    text_list: list[
+        str
+    ]  # NOTE: Notionのデータとしては扱わない。id_listに変換するために必要になることが多いため
     type: str = "relation"
     has_more: bool = False
 

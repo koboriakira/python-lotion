@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass
@@ -18,7 +18,9 @@ class LastEditedBy(Property):
 
     @staticmethod
     def of(key: str, param: dict) -> "LastEditedBy":
-        return LastEditedBy(id=param["id"], name=key, last_edited_by=param["last_edited_by"])
+        return LastEditedBy(
+            id=param["id"], name=key, last_edited_by=param["last_edited_by"]
+        )
 
     def __dict__(self) -> dict[str, Any]:
         return {

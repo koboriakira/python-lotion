@@ -1,4 +1,4 @@
-from lotion.block import Block
+from .block import Block
 
 
 class Embed(Block):

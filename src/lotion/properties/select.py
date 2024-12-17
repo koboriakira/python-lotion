@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass

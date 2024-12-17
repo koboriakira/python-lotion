@@ -1,28 +1,28 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from lotion.properties.phone_number import PhoneNumber
-from lotion.properties.email import Email
-from lotion.base_operator import BaseOperator
-from lotion.block import Block
-from lotion.page.page_id import PageId
-from lotion.properties.checkbox import Checkbox
-from lotion.properties.cover import Cover
-from lotion.properties.date import Date
-from lotion.properties.icon import Icon
-from lotion.properties.multi_select import MultiSelect
-from lotion.properties.number import Number
-from lotion.properties.properties import Properties
-from lotion.properties.property import Property
-from lotion.properties.relation import Relation
-from lotion.properties.select import Select
-from lotion.properties.status import Status
-from lotion.properties.text import Text
-from lotion.properties.title import Title
-from lotion.properties.url import Url
-from lotion.properties.formula import Formula
-from lotion.properties.rollup import Rollup
-from lotion.properties.unique_id import UniqueId
+from .base_operator import BaseOperator
+from .block.block import Block
+from .page.page_id import PageId
+from .properties.phone_number import PhoneNumber
+from .properties.email import Email
+from .properties.checkbox import Checkbox
+from .properties.cover import Cover
+from .properties.date import Date
+from .properties.icon import Icon
+from .properties.multi_select import MultiSelect
+from .properties.number import Number
+from .properties.properties import Properties
+from .properties.property import Property
+from .properties.relation import Relation
+from .properties.select import Select
+from .properties.status import Status
+from .properties.text import Text
+from .properties.title import Title
+from .properties.url import Url
+from .properties.formula import Formula
+from .properties.rollup import Rollup
+from .properties.unique_id import UniqueId
 
 
 class NotCreatedError(Exception):
@@ -51,7 +51,9 @@ class BasePage:
     object = "page"
 
     @staticmethod
-    def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
+    def create(
+        properties: list[Property] | None = None, blocks: list[Block] | None = None
+    ) -> "BasePage":
         return BasePage(
             id_=None,
             url=None,
@@ -140,7 +142,9 @@ class BasePage:
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)
         if result is None:
-            raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=name)
+            raise NotFoundPropertyError(
+                class_name=instance_class.__name__, prop_name=name
+            )
         return result
 
     def get_parant_database_id(self) -> str | None:

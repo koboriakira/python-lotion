@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass(frozen=True)
@@ -49,7 +49,9 @@ class MultiSelect(Property):
     values: list[MultiSelectElement]
     type: str = "multi_select"
 
-    def __init__(self, name: str, values: list[MultiSelectElement], id: str | None = None) -> None:  # noqa: A002
+    def __init__(
+        self, name: str, values: list[MultiSelectElement], id: str | None = None
+    ) -> None:  # noqa: A002
         self.name = name
         self.values = values
         self.id = id
@@ -87,7 +89,10 @@ class MultiSelect(Property):
         Returns:
             MultiSelect: MultiSelect instance.
         """
-        multi_select = [MultiSelectElement(id=element["id"], name=element["name"]) for element in values]
+        multi_select = [
+            MultiSelectElement(id=element["id"], name=element["name"])
+            for element in values
+        ]
         return MultiSelect(
             name=name,
             values=multi_select,

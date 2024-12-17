@@ -1,7 +1,5 @@
-
-from lotion.block import Block
-from lotion.block.rich_text import RichText
-
+from .block import Block
+from .rich_text.rich_text import RichText
 
 class Heading(Block):
     heading_type: str  # heading_1, heading_2, heading_3

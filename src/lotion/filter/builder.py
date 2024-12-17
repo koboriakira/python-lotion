@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Any
 
-from lotion.filter.condition_ruleset import ConditionRuleset
-from lotion.filter.condition import Prop, Cond
+from .condition_ruleset import ConditionRuleset
+from .condition.condition_type import Cond
+from .condition.property_type import Prop
 
 
 @dataclass(frozen=True)
@@ -13,7 +14,9 @@ class Builder:
     def create() -> "Builder":
         return Builder(conditions=[])
 
-    def add(self, prop_type: Prop, prop_name: str, cond_type: Cond, value: Any = None) -> "Builder":
+    def add(
+        self, prop_type: Prop, prop_name: str, cond_type: Cond, value: Any = None
+    ) -> "Builder":
         if prop_type == Prop.CREATED_TIME:
             raise ValueError(f"You use add_created_at() method for {prop_type}")
         if prop_type == Prop.LAST_EDITED_TIME:

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from datetime import date, datetime
 
-from lotion.properties.property import Property
-from lotion.datetime_utils import convert_to_date_or_datetime
+from .property import Property
+from ..datetime_utils import convert_to_date_or_datetime
 
 
 @dataclass

@@ -1,6 +1,6 @@
 [project]
 name = "lotion"
-version = "0.5.0"
+version = "0.6.0a1"
 requires-python = ">=3.11"
 description = "A wrapper of Notion client for Python"
 readme = "README.md"

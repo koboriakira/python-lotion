@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from lotion.properties.property import Property
-from lotion.properties.title import Title
+from .property import Property
+from .title import Title
 
 
 @dataclass(frozen=True)
@@ -19,13 +19,6 @@ class Properties:
         for value in self.values:
             result = {**result, **value.__dict__()}
         return result
-
-    @staticmethod
-    def from_dict(properties: dict[str, dict]) -> "Properties":
-        values = []
-        for key, value in properties.items():
-            values.append(Property.from_dict(key, value))
-        return Properties(values=values)
 
     def append_property(self, prop: Property) -> "Properties":
         props = []
@@ -64,8 +57,17 @@ class Properties:
         """
         更新時にエラーとなるプロパティを除外する
         """
-        exclude_types = ["button", "created_by", "last_edited_by", "formula", "rollup", "unique_id"]
-        return Properties(values=[prop for prop in self.values if prop.type not in exclude_types])
+        exclude_types = [
+            "button",
+            "created_by",
+            "last_edited_by",
+            "formula",
+            "rollup",
+            "unique_id",
+        ]
+        return Properties(
+            values=[prop for prop in self.values if prop.type not in exclude_types]
+        )
 
     def is_empty(self) -> bool:
         return len(self.values) == 0

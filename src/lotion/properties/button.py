@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass
@@ -10,7 +10,7 @@ class Button(Property):
     type: str = "button"
 
     @staticmethod
-    def of(key: str, property:dict) -> "Button":
+    def of(key: str, property: dict) -> "Button":
         return Button(id=property["id"], name=key)
 
     def value_for_filter(self) -> str:

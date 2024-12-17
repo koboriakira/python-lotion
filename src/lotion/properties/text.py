@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from lotion.block.rich_text import RichText
-from lotion.properties.property import Property
+from ..block.rich_text import RichText
+from .property import Property
 
 
 @dataclass

@@ -1,8 +1,5 @@
 from dataclasses import dataclass
-
-from requests import HTTPError
-
-from lotion.unsplash.unsplash_photo import UnsplashPhoto
+from typing import Any
 
 
 @dataclass
@@ -10,7 +7,9 @@ class Cover:
     type: str
     external_url: str | None = None
 
-    def __init__(self, type: str, external_url: str | None = None) -> None:  # noqa: A002
+    def __init__(
+        self, type: str, external_url: str | None = None
+    ) -> None:  # noqa: A002
         self.type = type
         self.external_url = external_url
 
@@ -28,17 +27,8 @@ class Cover:
             external_url=external_url,
         )
 
-    @staticmethod
-    def random(query_words: list[str] | None = None) -> "Cover | None":
-        query_words = query_words or ["nature"]
-        try:
-            external_url = UnsplashPhoto().get_random_photo_url(query_words=query_words)
-            return Cover.from_external_url(external_url=external_url)
-        except HTTPError:
-            return None
-
     def __dict__(self) -> dict:
-        result = {
+        result: dict[str, Any] = {
             "type": self.type,
         }
         if self.external_url is not None:

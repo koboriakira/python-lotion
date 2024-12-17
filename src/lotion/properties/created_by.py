@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass

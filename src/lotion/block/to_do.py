@@ -1,6 +1,5 @@
-from tabnanny import check
-from lotion.block import Block
-from lotion.block.rich_text import RichText
+from .block import Block
+from .rich_text.rich_text import RichText
 
 
 class ToDo(Block):

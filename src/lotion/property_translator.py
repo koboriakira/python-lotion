@@ -1,30 +1,29 @@
+
 from typing import Any
 
-from lotion.properties import (
-    PhoneNumber,
-    CreatedBy,
-    Email,
-    LastEditedBy,
-    Button,
-    Checkbox,
-    CreatedTime,
-    Date,
-    LastEditedTime,
-    MultiSelect,
-    Number,
-    Properties,
-    Property,
-    Relation,
-    Rollup,
-    Select,
-    Status,
-    Text,
-    Title,
-    Url,
-    People,
-    Formula,
-    UniqueId,
-)
+from .properties.button import Button
+from .properties.checkbox import Checkbox
+from .properties.created_by import CreatedBy
+from .properties.created_time import CreatedTime
+from .properties.date import Date
+from .properties.email import Email
+from .properties.formula import Formula
+from .properties.last_edited_by import LastEditedBy
+from .properties.last_edited_time import LastEditedTime
+from .properties.multi_select import MultiSelect
+from .properties.number import Number
+from .properties.person import People
+from .properties.phone_number import PhoneNumber
+from .properties.properties import Properties
+from .properties.property import Property
+from .properties.relation import Relation
+from .properties.rollup import Rollup
+from .properties.select import Select
+from .properties.status import Status
+from .properties.text import Text
+from .properties.title import Title
+from .properties.unique_id import UniqueId
+from .properties.url import Url
 
 
 class PropertyTranslator:

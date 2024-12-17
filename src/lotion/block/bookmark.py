@@ -1,4 +1,4 @@
-from lotion.block import Block
+from .block import Block
 
 
 class Bookmark(Block):
@@ -16,7 +16,9 @@ class Bookmark(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.bookmark_url = bookmark_url
         self.caption = caption or []
 

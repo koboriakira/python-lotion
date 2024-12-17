@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass
@@ -10,19 +10,21 @@ class Status(Property):
     status_color: str | None
     type: str = "status"
 
-    def __init__(self,
-                 name: str,
-                 status_name: str,
-                 id: str | None = None,
-                 status_id: str | None = None,
-                 status_color: str | None = None):
+    def __init__(
+        self,
+        name: str,
+        status_name: str,
+        id: str | None = None,
+        status_id: str | None = None,
+        status_color: str | None = None,
+    ):
         self.name = name
         self.status_name = status_name
         self.id = id
         self.status_id = status_id
         self.status_color = status_color
 
-    @ staticmethod
+    @staticmethod
     def of(name: str, param: dict) -> "Status":
         return Status(
             name=name,

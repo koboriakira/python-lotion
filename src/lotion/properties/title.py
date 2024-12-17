@@ -1,8 +1,11 @@
 from dataclasses import dataclass
 
-from lotion.block.rich_text.rich_text_element import RichTextMentionElement, RichTextTextElement
-from lotion.page.page_id import PageId
-from lotion.properties.property import Property
+from ..block.rich_text.rich_text_element import (
+    RichTextMentionElement,
+    RichTextTextElement,
+)
+from ..page.page_id import PageId
+from .property import Property
 
 
 @dataclass
@@ -108,7 +111,9 @@ class Title(Property):
         if prefix != "":
             rich_text_element = RichTextTextElement.of(content=prefix)
             values.append(rich_text_element.to_dict())
-        rich_text_element = RichTextMentionElement.from_page_type(mentioned_page_id.value)
+        rich_text_element = RichTextMentionElement.from_page_type(
+            mentioned_page_id.value
+        )
         values.append(rich_text_element.to_dict())
         if suffix != "":
             rich_text_element = RichTextTextElement.of(content=suffix)

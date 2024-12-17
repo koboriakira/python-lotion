@@ -5,26 +5,21 @@ from logging import Logger, getLogger
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
-from .datetime_utils import JST
 from .base_operator import BaseOperator
 from .base_page import BasePage
 from .block import Block, BlockFactory
-from .page import PageId
-from .properties import (
-    Cover,
-    Icon,
-    Properties,
-    Property,
-    Title,
-    MultiSelect,
-    Select,
-    Selects,
-    MultiSelectElement,
-    MultiSelectElements,
-)
+from .datetime_utils import JST
+from .filter.builder import Builder
+from .filter.condition.condition_type import Cond
+from .filter.condition.property_type import Prop
+from .page.page_id import PageId
+from .properties.cover import Cover
+from .properties.icon import Icon
+from .properties.multi_select import MultiSelect, MultiSelectElement, MultiSelectElements
+from .properties.properties import Properties
+from .properties.property import Property
+from .properties.select import Select, Selects
 from .property_translator import PropertyTranslator
-from .filter import Builder
-from .filter.condition import Prop, Cond
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 

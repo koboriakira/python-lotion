@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from types import NoneType
 from typing import Any
-from lotion.filter.condition import Prop, Cond
-from lotion.page import PageId
+from .condition.condition_type import Cond
+from .condition.property_type import Prop
+from ..page.page_id import PageId
 import re
 
 RULESET: dict[Prop, dict[Cond, list[type]]] = {}
@@ -176,6 +177,8 @@ class ConditionRuleset:
             return
         if re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}", self.value):
             return
-        if re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}[-+]?\d{2}:\d{2}", self.value):
+        if re.match(
+            r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}[-+]?\d{2}:\d{2}", self.value
+        ):
             return
         raise ValueError(f"Date value {self.value} is invalid")

@@ -1,4 +1,4 @@
-from lotion.block import Block
+from .block import Block
 
 
 class ColumnList(Block):
@@ -15,7 +15,9 @@ class ColumnList(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(id, archived, has_children, created_time, last_edited_time, parent)
+        super().__init__(
+            id, archived, has_children, created_time, last_edited_time, parent
+        )
         self.column_list = column_list
 
     @staticmethod

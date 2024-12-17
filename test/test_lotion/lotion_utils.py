@@ -1,7 +1,7 @@
 from lotion import Lotion
 from lotion.base_page import BasePage
+from lotion.page.page_id import PageId
 from lotion.properties.property import Property
-from lotion.page import PageId
 
 
 def create_empty_page(database_id: str):

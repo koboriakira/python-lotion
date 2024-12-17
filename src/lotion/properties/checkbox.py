@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from lotion.properties.property import Property
+from .property import Property
 
 
 @dataclass
@@ -8,7 +8,9 @@ class Checkbox(Property):
     checked: bool
     type: str = "checkbox"
 
-    def __init__(self, name: str, checked: bool, id: str | None = None) -> None:  # noqa: A002, FBT001
+    def __init__(
+        self, name: str, checked: bool, id: str | None = None
+    ) -> None:  # noqa: A002, FBT001
         self.name = name
         self.checked = checked or False
         self.id = id

@@ -1,5 +1,5 @@
-from lotion.block import Block
-from lotion.block.rich_text import RichText
+from .block import Block
+from .rich_text.rich_text import RichText
 
 
 class Paragraph(Block):
@@ -17,7 +17,9 @@ class Paragraph(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.rich_text = rich_text
         self.color = color
 

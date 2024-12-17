@@ -1,9 +1,8 @@
 from unittest import TestCase
 
 import pytest
-
 from lotion import Lotion
-from lotion.page import PageId
+from lotion.page.page_id import PageId
 from lotion.properties import Relation
 
 

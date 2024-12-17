@@ -1,5 +1,5 @@
-from lotion.block import Block
-from lotion.block.rich_text.rich_text import RichText
+from .block import Block
+from .rich_text.rich_text import RichText
 
 
 class Image(Block):
@@ -22,7 +22,9 @@ class Image(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
+        super().__init__(
+            id, archived, created_time, last_edited_time, has_children, parent
+        )
         self.image_caption = image_caption
         self.image_type = image_type
         self.image_file = image_file
