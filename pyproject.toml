@@ -1,6 +1,6 @@
 [project]
 name = "lotion"
-version = "0.5.0"
+version = "0.6.0a1"
 requires-python = ">=3.11"
 description = "A wrapper of Notion client for Python"
 readme = "README.md"
@@ -22,8 +22,8 @@ convention = "google" # docstringの形式を指定
 # 以下はビルド用の設定
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.hatch.build.targets.wheel]
-packages = ["lotion"]
+[tool.setuptools]
+package-dir = {"" = "src"}
