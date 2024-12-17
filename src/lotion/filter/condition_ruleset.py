@@ -1,10 +1,11 @@
+import re
 from dataclasses import dataclass
 from types import NoneType
 from typing import Any
-from .condition.condition_type import Cond
-from .condition.property_type import Prop
+
 from ..page.page_id import PageId
-import re
+from .condition.cond import Cond
+from .condition.prop import Prop
 
 RULESET: dict[Prop, dict[Cond, list[type]]] = {}
 RULESET[Prop.RICH_TEXT] = {

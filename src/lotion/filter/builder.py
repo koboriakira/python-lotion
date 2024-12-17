@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Any
 
+from .condition.cond import Cond
+from .condition.prop import Prop
 from .condition_ruleset import ConditionRuleset
-from .condition.condition_type import Cond
-from .condition.property_type import Prop
 
 
 @dataclass(frozen=True)

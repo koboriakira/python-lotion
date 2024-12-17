@@ -10,8 +10,8 @@ from .base_page import BasePage
 from .block import Block, BlockFactory
 from .datetime_utils import JST
 from .filter.builder import Builder
-from .filter.condition.condition_type import Cond
-from .filter.condition.property_type import Prop
+from .filter.condition.cond import Cond
+from .filter.condition.prop import Prop
 from .page.page_id import PageId
 from .properties.cover import Cover
 from .properties.icon import Icon
