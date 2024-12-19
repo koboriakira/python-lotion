@@ -1,28 +1,31 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from lotion.datetime_utils import JST
+from lotion.property_translator import PropertyTranslator
 
 from .base_operator import BaseOperator
 from .block.block import Block
 from .page.page_id import PageId
-from .properties.phone_number import PhoneNumber
-from .properties.email import Email
 from .properties.checkbox import Checkbox
 from .properties.cover import Cover
 from .properties.date import Date
+from .properties.email import Email
+from .properties.formula import Formula
 from .properties.icon import Icon
 from .properties.multi_select import MultiSelect
 from .properties.number import Number
+from .properties.phone_number import PhoneNumber
 from .properties.properties import Properties
 from .properties.property import Property
 from .properties.relation import Relation
+from .properties.rollup import Rollup
 from .properties.select import Select
 from .properties.status import Status
 from .properties.text import Text
 from .properties.title import Title
-from .properties.url import Url
-from .properties.formula import Formula
-from .properties.rollup import Rollup
 from .properties.unique_id import UniqueId
+from .properties.url import Url
 
 
 class NotCreatedError(Exception):
@@ -51,9 +54,7 @@ class BasePage:
     object = "page"
 
     @staticmethod
-    def create(
-        properties: list[Property] | None = None, blocks: list[Block] | None = None
-    ) -> "BasePage":
+    def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
         return BasePage(
             id_=None,
             url=None,
@@ -142,9 +143,7 @@ class BasePage:
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)
         if result is None:
-            raise NotFoundPropertyError(
-                class_name=instance_class.__name__, prop_name=name
-            )
+            raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=name)
         return result
 
     def get_parant_database_id(self) -> str | None:
@@ -199,3 +198,31 @@ class BasePage:
         if self._last_edited_by is None:
             raise NotCreatedError("created_by is None.")
         return self._last_edited_by
+
+    @staticmethod
+    def from_data(data: dict, block_children: list[Block] | None = None) -> "BasePage":
+        id_ = PageId(data["id"])
+        url = data["url"]
+        created_time = datetime.fromisoformat(data["created_time"]) + timedelta(hours=9)
+        last_edited_time = datetime.fromisoformat(data["last_edited_time"]) + timedelta(hours=9)
+        created_by = BaseOperator.of(data["created_by"])
+        last_edited_by = BaseOperator.of(data["last_edited_by"])
+        cover = Cover.of(data["cover"]) if data["cover"] is not None else None
+        icon = Icon.of(data["icon"]) if data["icon"] is not None else None
+        archived = data["archived"]
+        properties = PropertyTranslator.from_dict(data["properties"])
+        block_children = block_children or []
+
+        return BasePage(
+            id_=id_,
+            url=url,
+            created_time=created_time.replace(tzinfo=JST),
+            last_edited_time=last_edited_time.replace(tzinfo=JST),
+            _created_by=created_by,
+            _last_edited_by=last_edited_by,
+            cover=cover,
+            icon=icon,
+            archived=archived,
+            properties=properties,
+            block_children=block_children,
+        )

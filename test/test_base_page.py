@@ -1,7 +1,10 @@
+import json
 from unittest import TestCase
 
+import pytest
 from lotion.base_page import BasePage
 from lotion.properties.title import Title
+
 
 class TestBasePage(TestCase):
     def test_ページを作成する(self):
@@ -28,3 +31,12 @@ class TestBasePage(TestCase):
 
         # Then
         self.assertEqual("<http://example.com|タイトル>", actual)
+
+    @pytest.mark.current()
+    def test_webhookからのリクエストボディを処理できる(self):
+        given = json.load(open("test/base_page_test/pattern1.json"))
+        print(given)
+
+        actual = BasePage.from_data(given)
+        print(actual)
+        self.assertEqual(given["id"], actual.page_id.value)
