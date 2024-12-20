@@ -19,11 +19,9 @@ class TestTitle(TestCase):
 
     def test_テキストとページメンションを合わせて利用(self) -> None:
         input = "dummy"
-        page_id = PageId.dummy()
+        page_id = PageId.dummy().value
         page_title = "Mentioned Page"
-        actual = Title.from_mentioned_page(
-            mentioned_page_id=page_id, mentioned_page_title=page_title, prefix=input
-        )
+        actual = Title.from_mentioned_page(mentioned_page_id=page_id, mentioned_page_title=page_title, prefix=input)
 
         # Then
         self.assertEqual(actual.text, "dummyMentioned Page")

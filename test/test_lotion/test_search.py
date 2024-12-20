@@ -2,8 +2,7 @@ from unittest import TestCase
 
 import pytest
 
-from lotion.filter.builder import Builder
-from lotion.filter.condition import Prop, Cond
+from lotion.filter import Builder, Prop, Cond
 from lotion import Lotion
 
 

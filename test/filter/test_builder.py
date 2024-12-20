@@ -1,8 +1,7 @@
 from unittest import TestCase
 
 
-from lotion.filter.builder import Builder
-from lotion.filter.condition import Prop, Cond
+from lotion.filter import Builder, Cond, Prop
 
 # https://developers.notion.com/reference/post-database-query-filter
 
