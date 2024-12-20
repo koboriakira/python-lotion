@@ -1,15 +1,12 @@
 from dataclasses import dataclass
 
-from ..page.page_id import PageId
 from .property import Property
 
 
 @dataclass
 class Relation(Property):
     id_list: list[str]
-    text_list: list[
-        str
-    ]  # NOTE: Notionのデータとしては扱わない。id_listに変換するために必要になることが多いため
+    text_list: list[str]  # NOTE: Notionのデータとしては扱わない。id_listに変換するために必要になることが多いため
     type: str = "relation"
     has_more: bool = False
 
@@ -46,19 +43,8 @@ class Relation(Property):
         )
 
     @staticmethod
-    def from_page_id_list(name: str, page_id_list: list[PageId]) -> "Relation":
-        return Relation(
-            name=name,
-            id_list=[page_id.value for page_id in page_id_list],
-        )
-
-    @staticmethod
     def from_id(name: str, id: str) -> "Relation":
         return Relation.from_id_list(name=name, id_list=[id])
-
-    @property
-    def page_id_list(self) -> list[PageId]:
-        return [PageId(id_) for id_ in self.id_list]
 
     def __dict__(self) -> dict:
         result = {
