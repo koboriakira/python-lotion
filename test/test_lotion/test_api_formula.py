@@ -4,6 +4,7 @@ import pytest
 
 from lotion import Lotion
 from lotion.properties.number import Number
+from lotion.properties.property import Property
 
 
 @pytest.mark.api()
@@ -25,16 +26,16 @@ class TestApiFormula(TestCase):
 
     def test_数式の入ったページを更新する(self):
         # When
-        properties = [
+        properties: list[Property] = [
             Number.from_num(name="数値", value=200),
         ]
         new_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID,
             properties=properties,
         )
-        properties = new_page.properties.append_property(Number.from_num(name="数値", value=300))
+        new_page_properties = new_page.properties.append_property(Number.from_num(name="数値", value=300))
         self.suite.update_page(
-            page_id=new_page.page_id.value,
-            properties=properties.values,
+            page_id=new_page.id,
+            properties=new_page_properties.values,
         )
-        actual = self.suite.retrieve_page(page_id=new_page.page_id.value)
+        _ = self.suite.retrieve_page(page_id=new_page.id)

@@ -289,32 +289,9 @@ class Lotion:
         include_children = (
             include_children if include_children is not None else True
         )  # 未指定の場合はchildrenを取得する
-
         id_ = PageId(page_entity["id"])
-        url = page_entity["url"]
-        created_time = datetime.fromisoformat(page_entity["created_time"]) + timedelta(hours=9)
-        last_edited_time = datetime.fromisoformat(page_entity["last_edited_time"]) + timedelta(hours=9)
-        created_by = BaseOperator.of(page_entity["created_by"])
-        last_edited_by = BaseOperator.of(page_entity["last_edited_by"])
-        cover = Cover.of(page_entity["cover"]) if page_entity["cover"] is not None else None
-        icon = Icon.of(page_entity["icon"]) if page_entity["icon"] is not None else None
-        archived = page_entity["archived"]
-        properties = PropertyTranslator.from_dict(page_entity["properties"])
         block_children = self.__get_block_children(page_id=id_.value) if include_children else []
-
-        return BasePage(
-            id_=id_,
-            url=url,
-            created_time=created_time.replace(tzinfo=JST),
-            last_edited_time=last_edited_time.replace(tzinfo=JST),
-            _created_by=created_by,
-            _last_edited_by=last_edited_by,
-            cover=cover,
-            icon=icon,
-            archived=archived,
-            properties=properties,
-            block_children=block_children,
-        )
+        return BasePage.from_data(data=page_entity, block_children=block_children)
 
     def __retrieve_page(self, page_id: str, retry_count: int = 0) -> dict:
         try:

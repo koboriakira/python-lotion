@@ -39,4 +39,4 @@ class TestBasePage(TestCase):
 
         actual = BasePage.from_data(given)
         print(actual)
-        self.assertEqual(given["id"], actual.page_id.value)
+        self.assertEqual(given["id"], actual.id)

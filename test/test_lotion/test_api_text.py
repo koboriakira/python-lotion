@@ -15,7 +15,7 @@ class TestApiText(TestCase):
         return super().setUp()
 
     def tearDown(self) -> None:
-        remove_page(page_id=self.page.page_id)
+        remove_page(page_id=self.page.id)
         return super().setUp()
 
     def test_テキストを変更する(self):

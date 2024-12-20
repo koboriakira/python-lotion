@@ -34,8 +34,8 @@ class TestApiSelect(TestCase):
         # When
         select_prop = self.suite.fetch_select(database_id=self.DATABASE_ID, name="セレクト", status_name="セレクトB")
         properties = page.properties.append_property(select_prop)
-        self.suite.update_page(page_id=page.page_id.value, properties=properties.values)
-        actual = self.suite.retrieve_page(page_id=page.page_id.value)
+        self.suite.update_page(page_id=page.id, properties=properties.values)
+        actual = self.suite.retrieve_page(page_id=page.id)
 
         # Then
         select = actual.get_select(name="セレクト")

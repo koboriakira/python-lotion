@@ -41,8 +41,8 @@ class NotFoundPropertyError(Exception):
 class BasePage:
     properties: Properties
     block_children: list[Block] = field(default_factory=list)
-    id_: PageId | str | None = None
-    url: str | None = None
+    id_: str | None = None
+    url_: str | None = None
     created_time: datetime | None = None
     last_edited_time: datetime | None = None
     _created_by: BaseOperator | None = None
@@ -57,7 +57,7 @@ class BasePage:
     def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
         return BasePage(
             id_=None,
-            url=None,
+            url_=None,
             created_time=None,
             last_edited_time=None,
             _created_by=None,
@@ -154,7 +154,7 @@ class BasePage:
 
     def update_id_and_url(self, page_id: str, url: str) -> None:
         self.id_ = page_id
-        self.url = url
+        self.url_ = url
 
     def title_for_slack(self) -> str:
         """Slackでの表示用のリンクつきタイトルを返す"""
@@ -165,23 +165,21 @@ class BasePage:
         return f"[{self.get_title_text()}]({self.url})"
 
     @property
-    def id(self) -> str | None:
-        if isinstance(self.id_, str):
-            return self.id_
-        return self.id_.value if self.id_ is not None else None
+    def id(self) -> str:
+        if self.id_ is None:
+            raise NotCreatedError("id is None.")
+        return PageId(self.id_).value
 
     @property
-    def page_id(self) -> PageId:
-        if self.id_ is None:
-            raise NotCreatedError("page_id is None.")
-        return PageId(self.id_) if isinstance(self.id_, str) else self.id_
+    def url(self) -> str:
+        if self.url_ is None:
+            raise NotCreatedError("url is None.")
+        return self.url_
 
     def is_created(self) -> bool:
-        return self.id is not None
+        return self.id_ is not None
 
     def get_id_and_url(self) -> dict[str, str]:
-        if self.id is None or self.url is None:
-            raise NotCreatedError("id or url is None")
         return {
             "id": self.id,
             "url": self.url,
@@ -201,8 +199,8 @@ class BasePage:
 
     @staticmethod
     def from_data(data: dict, block_children: list[Block] | None = None) -> "BasePage":
-        id_ = PageId(data["id"])
-        url = data["url"]
+        id_ = PageId(data["id"]).value if data["id"] is not None else None
+        url_ = data["url"] if "url" in data else None
         created_time = datetime.fromisoformat(data["created_time"]) + timedelta(hours=9)
         last_edited_time = datetime.fromisoformat(data["last_edited_time"]) + timedelta(hours=9)
         created_by = BaseOperator.of(data["created_by"])
@@ -215,7 +213,7 @@ class BasePage:
 
         return BasePage(
             id_=id_,
-            url=url,
+            url_=url_,
             created_time=created_time.replace(tzinfo=JST),
             last_edited_time=last_edited_time.replace(tzinfo=JST),
             _created_by=created_by,
