@@ -100,7 +100,7 @@ class Title(Property):
 
     @staticmethod
     def from_mentioned_page(
-        mentioned_page_id: PageId,
+        mentioned_page_id: str,
         mentioned_page_title: str,
         name: str = "名前",
         prefix: str = "",
@@ -111,9 +111,8 @@ class Title(Property):
         if prefix != "":
             rich_text_element = RichTextTextElement.of(content=prefix)
             values.append(rich_text_element.to_dict())
-        rich_text_element = RichTextMentionElement.from_page_type(
-            mentioned_page_id.value
-        )
+        page_id_object = PageId(mentioned_page_id)
+        rich_text_element = RichTextMentionElement.from_page_type(page_id_object.value)
         values.append(rich_text_element.to_dict())
         if suffix != "":
             rich_text_element = RichTextTextElement.of(content=suffix)
