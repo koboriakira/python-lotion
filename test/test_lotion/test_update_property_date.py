@@ -20,11 +20,11 @@ class TestUpdateProperty(TestCase):
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
-        self.page = self.suite.retrieve_page(page_id=created_page.page_id.value)
+        self.page = self.suite.retrieve_page(page_id=created_page.id)
         return super().setUp()
 
     def tearDown(self) -> None:
-        self.suite.remove_page(self.page.page_id.value)
+        self.suite.remove_page(self.page.id)
         return super().setUp()
 
     def test_開始日を変更する(self):
@@ -94,8 +94,8 @@ class TestUpdateProperty(TestCase):
     def _update_page(self, property: Property):
         # When
         properties = self.page.properties.append_property(property)
-        self.suite.update_page(page_id=self.page.page_id.value, properties=properties.values)
+        self.suite.update_page(page_id=self.page.id, properties=properties.values)
 
         # Then
-        page = self.suite.retrieve_page(page_id=self.page.page_id.value)
+        page = self.suite.retrieve_page(page_id=self.page.id)
         return page.get_date(name=self.PROP_NAME)

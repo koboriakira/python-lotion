@@ -15,7 +15,7 @@ class TestUpdateProperty(TestCase):
         return super().setUp()
 
     def tearDown(self) -> None:
-        remove_page(page_id=self.page.page_id)
+        remove_page(page_id=self.page.id)
         return super().setUp()
 
     def test_URLを変更する(self):

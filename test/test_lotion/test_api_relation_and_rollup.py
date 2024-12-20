@@ -2,7 +2,6 @@ from unittest import TestCase
 
 import pytest
 from lotion import Lotion
-from lotion.page.page_id import PageId
 from lotion.properties import Relation
 
 
@@ -18,15 +17,15 @@ class TestApiRelationAndRollup(TestCase):
         page = self.suite.create_page_in_database(database_id=self.DATABASE_ID)
 
         # Given
-        page_id = PageId("15d6567a3bbf804191c4e0dbd42644fe")
-        relation_prop = Relation.from_id(name="リレーション", id=page_id.value)
+        page_id = "15d6567a-3bbf-8041-91c4-e0dbd42644fe"
+        relation_prop = Relation.from_id(name="リレーション", id=page_id)
 
         # When, Then
         properties = page.properties.append_property(relation_prop)
-        self.suite.update_page(page_id=page.page_id.value, properties=properties.values)
-        actual = self.suite.retrieve_page(page_id=page.page_id.value)
+        self.suite.update_page(page_id=page.id, properties=properties.values)
+        actual = self.suite.retrieve_page(page_id=page.id)
         actual_relation = actual.get_relation(name="リレーション")
-        self.assertEqual(actual_relation.id_list, [page_id.value])
+        self.assertEqual(actual_relation.id_list, [page_id])
 
     def test_ロールアップを取得する(self):
         # When

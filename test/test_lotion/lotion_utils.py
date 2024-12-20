@@ -1,6 +1,5 @@
 from lotion import Lotion
 from lotion.base_page import BasePage
-from lotion.page.page_id import PageId
 from lotion.properties.property import Property
 
 
@@ -13,12 +12,12 @@ def update_page(page: BasePage, property: Property):
     # When
     lotion = Lotion.get_instance()
     properties = page.properties.append_property(property)
-    lotion.update_page(page_id=page.page_id.value, properties=properties.values)
+    lotion.update_page(page_id=page.id, properties=properties.values)
 
     # Then
-    return lotion.retrieve_page(page_id=page.page_id.value)
+    return lotion.retrieve_page(page_id=page.id)
 
 
-def remove_page(page_id: PageId):
+def remove_page(page_id: str):
     lotion = Lotion.get_instance()
-    lotion.remove_page(page_id.value)
+    lotion.remove_page(page_id)

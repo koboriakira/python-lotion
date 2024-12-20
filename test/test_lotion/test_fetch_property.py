@@ -16,12 +16,12 @@ class TestFetchProperty(TestCase):
         created_page = self.suite.create_page_in_database(
             database_id=self.DATABASE_ID, properties=[Title.from_plain_text(text="テスト")]
         )
-        self.page = self.suite.retrieve_page(page_id=created_page.page_id.value)
+        self.page = self.suite.retrieve_page(page_id=created_page.id)
         self.now = jst_now().replace(second=0, microsecond=0)
         return super().setUp()
 
     def tearDown(self) -> None:
-        self.suite.remove_page(self.page.page_id.value)
+        self.suite.remove_page(self.page.id)
         return super().setUp()
 
     def test_作成日時と更新日時を取得する(self):
