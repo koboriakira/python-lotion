@@ -1,6 +1,6 @@
-
 from typing import Any
 
+from .properties.files import Files
 from .properties.button import Button
 from .properties.checkbox import Checkbox
 from .properties.created_by import CreatedBy
@@ -80,6 +80,8 @@ class PropertyTranslator:
                 return Formula.of(key, property_)
             case "unique_id":
                 return UniqueId.of(key, property_)
+            case "files":
+                return Files.of(key, property_)
             case _:
                 msg = f"Unsupported property type: {type_} {property_}"
                 raise Exception(msg)

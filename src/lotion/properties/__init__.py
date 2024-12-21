@@ -25,6 +25,7 @@ from .last_edited_time import LastEditedTime
 from .button import Button
 from .formula import Formula
 from .unique_id import UniqueId
+from .files import Files
 
 __all__ = [
     "Property",
@@ -58,4 +59,5 @@ __all__ = [
     "MultiSelect",
     "Formula",
     "UniqueId",
+    "Files",
 ]

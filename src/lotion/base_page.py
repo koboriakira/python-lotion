@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
-from lotion.datetime_utils import JST
-from lotion.property_translator import PropertyTranslator
-
+from .datetime_utils import JST
+from .properties.files import Files
+from .property_translator import PropertyTranslator
 from .base_operator import BaseOperator
 from .block.block import Block
 from .page.page_id import PageId
@@ -139,6 +139,9 @@ class BasePage:
 
     def get_unique_id(self, name: str) -> UniqueId:
         return self._get_property(name=name, instance_class=UniqueId)  # type: ignore
+
+    def get_files(self, name: str) -> Files:
+        return self._get_property(name=name, instance_class=Files)  # type: ignore
 
     def _get_property(self, name: str, instance_class: type) -> Property:
         result = self.properties.get_property(name=name, instance_class=instance_class)

@@ -32,7 +32,6 @@ class TestBasePage(TestCase):
         # Then
         self.assertEqual("<http://example.com|タイトル>", actual)
 
-    @pytest.mark.current()
     def test_webhookからのリクエストボディを処理できる(self):
         given = json.load(open("test/base_page_test/pattern1.json"))
         print(given)

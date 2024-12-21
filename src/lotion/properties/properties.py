@@ -64,10 +64,9 @@ class Properties:
             "formula",
             "rollup",
             "unique_id",
+            "files",
         ]
-        return Properties(
-            values=[prop for prop in self.values if prop.type not in exclude_types]
-        )
+        return Properties(values=[prop for prop in self.values if prop.type not in exclude_types])
 
     def is_empty(self) -> bool:
         return len(self.values) == 0
