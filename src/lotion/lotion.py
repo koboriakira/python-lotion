@@ -195,11 +195,11 @@ class Lotion:
         """指定されたブロックの子ブロックを取得する"""
         return self.__get_block_children(page_id=block_id)
 
-    def append_block(self, block_id: str, block: Block) -> dict:
+    def append_block(self, block_id: str, block: Block) -> None:
         """指定されたブロックに子ブロックを追加する"""
         return self.append_blocks(block_id=block_id, blocks=[block])
 
-    def append_blocks(self, block_id: str, blocks: list[Block]) -> dict:
+    def append_blocks(self, block_id: str, blocks: list[Block]) -> None:
         """指定されたブロックに子ブロックを追加する"""
         return self.__append_block_children(
             block_id=block_id,
@@ -262,9 +262,9 @@ class Lotion:
         multi_element_list = all_elements.get(multi_select_names)
         return MultiSelect(name=name, values=multi_element_list)
 
-    def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> dict:
+    def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> None:
         try:
-            return self.client.blocks.children.append(block_id=block_id, children=children)
+            _ = self.client.blocks.children.append(block_id=block_id, children=children)
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
                 return self.__append_block_children(block_id=block_id, children=children, retry_count=retry_count + 1)

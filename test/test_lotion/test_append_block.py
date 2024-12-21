@@ -47,8 +47,7 @@ class TestAppendBlock(TestCase):
         blocks.append(Code.from_plain_text(text="print('hello')", language="python"))
 
         for i in range(len(blocks)):
-            actual = self.suite.append_block(block_id=self.PAGE_ID, block=blocks[i])
-            self.assertTrue("results" in actual)
+            self.suite.append_block(block_id=self.PAGE_ID, block=blocks[i])
 
         page = self.suite.retrieve_page(self.PAGE_ID)
         for i in range(len(blocks)):
