@@ -43,7 +43,7 @@ jobs:
         run: |
           # .release-please-manifest.jsonからバージョンを取得
           # 上記ファイルには `{"lotion":"0.1.0"}` のような形式でバージョンが記載されている
-          version=$(jq -r '.lotion' .release-please-manifest.json)
+          version=$(jq -r '."src/lotion"' .release-please-manifest.json)
 
           # pyproject.tomlのバージョンを更新
           # 行先頭からversion.*の部分をversion = "0.1.0"に置換
