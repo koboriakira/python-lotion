@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.1](https://github.com/koboriakira/python-lotion/compare/v0.6.0...v0.6.1) (2024-12-21)
+
+
+### Features
+
+* ファイルの操作に対応 ([3342cbf](https://github.com/koboriakira/python-lotion/commit/3342cbf15e3e9f682efab4dfdb7989c4a5a3a57d))
+* 受け取ったページのデータからBasePageを作成できる ([f99009b](https://github.com/koboriakira/python-lotion/commit/f99009b0ccf97754fa3e7ac24b0978330c70002a))
+
+
+### Bug Fixes
+
+* IS_EMPTYのときは文字列チェックをしない ([1bc48e8](https://github.com/koboriakira/python-lotion/commit/1bc48e8830abeb286d1a4290733cc0c547d65f56))
+* PageIdを隠蔽する ([#34](https://github.com/koboriakira/python-lotion/issues/34)) ([545ea62](https://github.com/koboriakira/python-lotion/commit/545ea624605c5ef42a3c15b83876c234211c788b))
+* Titleインスタンスの生成でPageIdを利用しない ([c7bf7c6](https://github.com/koboriakira/python-lotion/commit/c7bf7c67f21c7246c57b0426787904f638d99be9))
+
 ## [0.5.0](https://github.com/koboriakira/lotion/compare/v0.4.0...v0.5.0) (2024-12-15)
 
 
