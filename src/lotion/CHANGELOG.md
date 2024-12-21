@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/koboriakira/python-lotion/compare/v0.6.1...v0.6.2) (2024-12-21)
+
+
+### Features
+
+* 日付メンションに対応 ([8197bca](https://github.com/koboriakira/python-lotion/commit/8197bca585832a50cecec774a7f3913d1a8bc4fb))
+
 ## [0.6.1](https://github.com/koboriakira/python-lotion/compare/v0.6.0...v0.6.1) (2024-12-21)
 
 
