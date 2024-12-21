@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/koboriakira/python-lotion/compare/v0.6.2...v0.6.3) (2024-12-21)
+
+
+### Features
+
+* 見出しブロックにリッチテキストを指定可能にする ([97733e1](https://github.com/koboriakira/python-lotion/commit/97733e1eeee4c584782a32b4f7790141b3f2b166))
+
 ## [0.6.2](https://github.com/koboriakira/python-lotion/compare/v0.6.1...v0.6.2) (2024-12-21)
 
 
