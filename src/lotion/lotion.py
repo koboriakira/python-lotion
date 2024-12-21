@@ -1,25 +1,20 @@
 import os
-from datetime import datetime, timedelta
 from logging import Logger, getLogger
 
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
-from .base_operator import BaseOperator
 from .base_page import BasePage
 from .block import Block, BlockFactory
-from .datetime_utils import JST
 from .filter.builder import Builder
 from .filter.condition.cond import Cond
 from .filter.condition.prop import Prop
 from .page.page_id import PageId
 from .properties.cover import Cover
-from .properties.icon import Icon
 from .properties.multi_select import MultiSelect, MultiSelectElement, MultiSelectElements
 from .properties.properties import Properties
 from .properties.property import Property
 from .properties.select import Select, Selects
-from .property_translator import PropertyTranslator
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
@@ -73,10 +68,10 @@ class Lotion:
         page_entity = self.__retrieve_page(page_id=page_id)
         return self.__convert_page_model(page_entity=page_entity, include_children=True)
 
-    def update_page(self, page_id: str, properties: list[Property] | None = None) -> dict:
+    def update_page(self, page_id: str, properties: list[Property] | None = None) -> None:
         """指定されたページを更新する"""
         update_properties = Properties(values=properties or [])
-        return self.__update(page_id=page_id, properties=update_properties)
+        self.__update(page_id=page_id, properties=update_properties)
 
     def retrieve_comments(self, page_id: str) -> list[dict]:
         """指定されたページのコメントを取得する"""
@@ -336,9 +331,9 @@ class Lotion:
                 return self.__archive(page_id=page_id, retry_count=retry_count + 1)
             raise NotionApiError(page_id=page_id, e=e) from e
 
-    def __update(self, page_id: str, properties: Properties, retry_count: int = 0) -> dict:
+    def __update(self, page_id: str, properties: Properties, retry_count: int = 0) -> None:
         try:
-            return self.client.pages.update(
+            _ = self.client.pages.update(
                 page_id=page_id,
                 properties=properties.exclude_for_update().__dict__(),
             )
