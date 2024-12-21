@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+from datetime import date
+from typing import Any
 
 
 class RichTextElement(metaclass=ABCMeta):
@@ -190,18 +192,32 @@ class RichTextMentionElement(RichTextElement):
             object_id=page_id,
         )
 
+    @staticmethod
+    def of_date(start: date, end: date | None = None) -> "RichTextMentionElement":
+        return RichTextMentionElement(
+            mention_type="date",
+            start_date=start.isoformat(),
+            end_date=end.isoformat() if end is not None else None,
+        )
+
     def get_type(self) -> str:
         return "mention"
 
-    def to_dict_sub(self) -> str:
+    def to_dict_sub(self) -> dict:
         """Text, Mention, Equationのそれぞれで実装する"""
-        result = {
+        result: dict[str, Any] = {
             "type": self.mention_type,
         }
         if self.mention_type in ["database", "page"]:
             result[self.mention_type] = {
                 "id": self.object_id,
             }
+        if self.mention_type == "date":
+            result["date"] = {
+                "start": self.start_date,
+            }
+            if self.end_date is not None:
+                result["date"]["end"] = self.end_date
 
         return result
 
