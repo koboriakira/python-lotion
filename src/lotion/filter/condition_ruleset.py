@@ -159,6 +159,8 @@ class ConditionRuleset:
     def validate_page_id(self) -> None:
         if self.prop not in [Prop.PEOPLE, Prop.RELATION]:
             return
+        if self.cond not in [Cond.CONTAINS, Cond.DOES_NOT_CONTAIN]:
+            return
         # ユーザもしくはリレーションの場合は、ページIDに変換できるかどうかを確認する
         PageId(self.value)
 
@@ -178,8 +180,6 @@ class ConditionRuleset:
             return
         if re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}", self.value):
             return
-        if re.match(
-            r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}[-+]?\d{2}:\d{2}", self.value
-        ):
+        if re.match(r"\d{4}-\d{2}-\d{2}T?\d{2}:\d{2}:\d{2}[-+]?\d{2}:\d{2}", self.value):
             return
         raise ValueError(f"Date value {self.value} is invalid")
