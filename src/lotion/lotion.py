@@ -91,7 +91,9 @@ class Lotion:
         page = self.__create_page(
             database_id=database_id,
             cover=cover.__dict__() if cover is not None else None,
-            properties=(Properties(values=properties).__dict__() if properties is not None else {}),
+            properties=(
+                Properties(values=properties).exclude_for_update().__dict__() if properties is not None else {}
+            ),
         )
         if blocks is not None:
             self.append_blocks(block_id=page["id"], blocks=blocks)
