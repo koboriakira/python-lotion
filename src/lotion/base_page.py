@@ -163,6 +163,10 @@ class BasePage:
         """Slackでの表示用のリンクつきタイトルを返す"""
         return f"<{self.url}|{self.get_title_text()}>"
 
+    def copy(self) -> "BasePage":
+        """コピーを作成する。新しいページになる"""
+        return BasePage.create(properties=self.properties.values, blocks=self.block_children)
+
     def title_for_markdown(self) -> str:
         """Markdownでの表示用のリンクつきタイトルを返す"""
         return f"[{self.get_title_text()}]({self.url})"
