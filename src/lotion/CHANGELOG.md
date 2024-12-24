@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.4](https://github.com/koboriakira/python-lotion/compare/v0.6.3...v0.6.4) (2024-12-24)
+
+
+### Features
+
+* BasePageのコピー関数を追加 ([018a16c](https://github.com/koboriakira/python-lotion/commit/018a16c5a17c4adc134250ed7d142619bc48aa30))
+
+
+### Bug Fixes
+
+* ページ新規作成時にも使わないプロパティは取り除く ([cc18c8c](https://github.com/koboriakira/python-lotion/commit/cc18c8c5b206aa711254009c9210a0d2928b0c79))
+
 ## [0.6.3](https://github.com/koboriakira/python-lotion/compare/v0.6.2...v0.6.3) (2024-12-21)
 
 
