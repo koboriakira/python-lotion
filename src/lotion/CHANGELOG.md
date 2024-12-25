@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.0](https://github.com/koboriakira/python-lotion/compare/v0.6.4...v0.7.0) (2024-12-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Titleプロパティの扱いを改善 ([#40](https://github.com/koboriakira/python-lotion/issues/40))
+
+### Features
+
+* Titleプロパティの扱いを改善 ([#40](https://github.com/koboriakira/python-lotion/issues/40)) ([64dff55](https://github.com/koboriakira/python-lotion/commit/64dff55f4119b92db2a91ddec109089bcf29ca73))
+
 ## [0.6.4](https://github.com/koboriakira/python-lotion/compare/v0.6.3...v0.6.4) (2024-12-24)
 
 
