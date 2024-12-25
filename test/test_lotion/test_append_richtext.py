@@ -31,3 +31,8 @@ class TestAppendBlock(TestCase):
         builder = builder.add_text(content="テスト")
         rich_text = builder.build()
         self.suite.append_block(block_id=self.PAGE_ID, block=Paragraph(rich_text=rich_text))
+
+    def test_できあがったRichTextの先頭に文字を追加(self):
+        rich_text = RichTextBuilder.create().add_text("テスト").build()
+        rich_text = RichTextBuilder.create().add_text("prefix").add_rich_text(rich_text).build()
+        self.suite.append_block(block_id=self.PAGE_ID, block=Paragraph(rich_text=rich_text))

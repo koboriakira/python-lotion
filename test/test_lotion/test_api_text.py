@@ -29,7 +29,6 @@ class TestApiText(TestCase):
         actual = update_page(page=self.page, property=text_empty_prop)
         self.assertEqual(actual.get_text(name="テキスト").text, "")
 
-    @pytest.mark.current()
     def test_タイトルを変更する(self) -> None:
         # Given
         rich_text = (
