@@ -4,12 +4,10 @@ from unittest import TestCase
 import pytest
 from lotion import Lotion
 from lotion.block.paragraph import Paragraph
-from lotion.block.rich_text.rich_text import RichText
 from lotion.block.rich_text.rich_text_builder import RichTextBuilder
 
 
 @pytest.mark.api()
-@pytest.mark.current()
 class TestAppendBlock(TestCase):
     PAGE_ID = "1636567a3bbf80e8b2f3eb7b0587e8d2"
 
@@ -32,4 +30,9 @@ class TestAppendBlock(TestCase):
         builder = builder.add_date_mention(start=today)
         builder = builder.add_text(content="テスト")
         rich_text = builder.build()
+        self.suite.append_block(block_id=self.PAGE_ID, block=Paragraph(rich_text=rich_text))
+
+    def test_できあがったRichTextの先頭に文字を追加(self):
+        rich_text = RichTextBuilder.create().add_text("テスト").build()
+        rich_text = RichTextBuilder.create().add_text("prefix").add_rich_text(rich_text).build()
         self.suite.append_block(block_id=self.PAGE_ID, block=Paragraph(rich_text=rich_text))

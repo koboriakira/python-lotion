@@ -41,7 +41,6 @@ class TestBasePage(TestCase):
         print(actual)
         self.assertEqual(given["id"], actual.id)
 
-    @pytest.mark.current()
     def test_コピーを作成する(self):
         # Given
         base_page = BasePage.create(
