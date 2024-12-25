@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from lotion.block.rich_text.rich_text import RichText
+
 from ..block.rich_text.rich_text_element import (
     RichTextMentionElement,
     RichTextTextElement,
@@ -97,6 +99,10 @@ class Title(Property):
             name=name,
             text=text,
         )
+
+    @staticmethod
+    def from_rich_text(name: str, rich_text: RichText) -> "Title":
+        return Title(name=name, value=rich_text.to_dict())
 
     @staticmethod
     def from_mentioned_page(
