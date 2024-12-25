@@ -80,7 +80,7 @@ class BasePage:
         return self.properties.get_title()
 
     def get_title_text(self) -> str:
-        return self.get_title().text
+        return self.get_title().rich_text.to_plain_text()
 
     @property
     def title(self) -> str:
