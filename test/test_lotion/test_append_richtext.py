@@ -9,7 +9,6 @@ from lotion.block.rich_text.rich_text_builder import RichTextBuilder
 
 
 @pytest.mark.api()
-@pytest.mark.current()
 class TestAppendBlock(TestCase):
     PAGE_ID = "1636567a3bbf80e8b2f3eb7b0587e8d2"
 

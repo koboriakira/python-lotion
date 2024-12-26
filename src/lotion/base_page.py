@@ -1,16 +1,16 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from typing import Type, TypeVar
 
-from .datetime_utils import JST
-from .properties.files import Files
-from .property_translator import PropertyTranslator
 from .base_operator import BaseOperator
 from .block.block import Block
+from .datetime_utils import JST
 from .page.page_id import PageId
 from .properties.checkbox import Checkbox
 from .properties.cover import Cover
 from .properties.date import Date
 from .properties.email import Email
+from .properties.files import Files
 from .properties.formula import Formula
 from .properties.icon import Icon
 from .properties.multi_select import MultiSelect
@@ -26,6 +26,7 @@ from .properties.text import Text
 from .properties.title import Title
 from .properties.unique_id import UniqueId
 from .properties.url import Url
+from .property_translator import PropertyTranslator
 
 
 class NotCreatedError(Exception):
@@ -35,6 +36,9 @@ class NotCreatedError(Exception):
 class NotFoundPropertyError(Exception):
     def __init__(self, class_name: str, prop_name: str):
         super().__init__(f"{class_name} property not found. name: {prop_name}")
+
+
+T = TypeVar("T", bound="BasePage")
 
 
 @dataclass
@@ -52,6 +56,13 @@ class BasePage:
     archived: bool | None = False
     parent: dict | None = None
     object = "page"
+
+    @classmethod
+    def _cast(cls: Type[T], base_page: "BasePage") -> T:
+        """BasePageを指定されたクラスに変換する"""
+        instance = cls.__new__(cls)
+        instance.__dict__ = base_page.__dict__
+        return instance
 
     @staticmethod
     def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
@@ -97,6 +108,12 @@ class BasePage:
         if self.last_edited_time is None:
             raise NotCreatedError("created_at is None.")
         return self.last_edited_time
+
+    def get(self, cls: Type[Property]) -> Type[Property]:
+        print(self)
+        print(cls)
+        prop = self._get_property(name=cls.PROP_NAME, instance_class=Text)
+        return cls._cast(prop)
 
     def get_status(self, name: str) -> Status:
         return self._get_property(name=name, instance_class=Status)  # type: ignore

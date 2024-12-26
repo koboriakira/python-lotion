@@ -1,5 +1,6 @@
 import os
 from logging import Logger, getLogger
+from typing import Type, TypeVar
 
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
@@ -17,6 +18,8 @@ from .properties.property import Property
 from .properties.select import Select, Selects
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
+
+T = TypeVar("T", bound="BasePage")
 
 
 class AppendBlockError(Exception):
@@ -63,10 +66,11 @@ class Lotion:
         client = Client(auth=os.getenv("NOTION_SECRET"))
         return Lotion(client, max_retry_count=max_retry_count, logger=logger)
 
-    def retrieve_page(self, page_id: str) -> BasePage:
+    def retrieve_page(self, page_id: str, cls: Type[T]) -> T:
         """指定されたページを取得する"""
         page_entity = self.__retrieve_page(page_id=page_id)
-        return self.__convert_page_model(page_entity=page_entity, include_children=True)
+        base_page = self.__convert_page_model(page_entity=page_entity, include_children=True)
+        return cls._cast(base_page)
 
     def update_page(self, page_id: str, properties: list[Property] | None = None) -> None:
         """指定されたページを更新する"""

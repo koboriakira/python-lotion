@@ -54,6 +54,14 @@ class Text(Property):
             rich_text=RichText.empty(),
         )
 
+    @classmethod
+    def _cast(cls, text_prop: "Text"):
+        return cls(
+            name=text_prop.name,
+            rich_text=text_prop.rich_text,
+            id=text_prop.id,
+        )
+
     @property
     def text(self) -> str:
         return self.rich_text.to_plain_text()
