@@ -105,11 +105,7 @@ class BasePage:
         return self.last_edited_time
 
     def get_prop(self, instance_class: Type[P]) -> P:
-        error_message = "instance_class must be one of the following classes: Checkbox, Date, Email, MultiSelect, \
-        Number, PhoneNumber, Relation, Select, Status, Text, Title, Url"
-        if not instance_class.__bases__:
-            raise ValueError(error_message)
-        parent_class = instance_class.__bases__[0]
+        parent_class = self.__get_parent_class(instance_class)
         if parent_class not in [
             Checkbox,
             Date,
@@ -124,11 +120,19 @@ class BasePage:
             Title,
             Url,
         ]:
+            error_message = "instance_class must be one of the following classes: Checkbox, Date, Email, MultiSelect, \
+                Number, PhoneNumber, Relation, Select, Status, Text, Title, Url"
             raise ValueError(error_message)
         result = self.properties.get_property(name=instance_class.PROP_NAME, instance_class=parent_class)
         if result is None:
             raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=instance_class.PROP_NAME)
         return cast(P, result)
+
+    def __get_parent_class(self, instance_class: Type[P]) -> Type[P]:
+        parent_classes = instance_class.__bases__
+        if not parent_classes:
+            return instance_class
+        return parent_classes[0]
 
     def set_prop(self, value: Property) -> None:
         self.properties = self.properties.append_property(value)
