@@ -245,3 +245,13 @@ class BasePage:
             properties=properties,
             block_children=block_children,
         )
+
+    @classmethod
+    def _get_database_id(cls) -> str:
+        result = cls.DATABASE_ID
+        if result is None:
+            raise ValueError("DATABASE_ID is null")
+        return result
+
+    def _get_own_database_id(self) -> str:
+        return self.__class__._get_database_id()

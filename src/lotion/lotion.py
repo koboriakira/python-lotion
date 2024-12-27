@@ -103,6 +103,16 @@ class Lotion:
             self.append_blocks(block_id=page["id"], blocks=blocks)
         return self.retrieve_page(page_id=page["id"], cls=cls)
 
+    def create_page(self, page: T) -> T:
+        """ページを新規作成する"""
+        return self.create_page_in_database(
+            database_id=page._get_own_database_id(),
+            cover=page.cover,
+            properties=page.properties.values,
+            blocks=page.block_children,
+            cls=type(page),
+        )
+
     def retrieve_database(  # noqa: PLR0913
         self,
         database_id: str,
@@ -128,11 +138,8 @@ class Lotion:
         filter_param: dict | None = None,
         include_children: bool | None = None,
     ) -> list[T]:
-        database_id = cls.DATABASE_ID
-        if database_id is None:
-            raise ValueError(f"DATABASE_ID is not set in {cls}")
         return self.retrieve_database(
-            database_id=database_id,
+            database_id=cls._get_database_id(),
             filter_param=filter_param,
             include_children=include_children,
             cls=cls,

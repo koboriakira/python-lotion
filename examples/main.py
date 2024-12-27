@@ -22,3 +22,11 @@ tasks = lotion.retrieve_pages(Task)
 for task in tasks:
     print(task.task_title.text)
     print(task.started_at.start_date)
+
+new_task = Task.create(
+    properties=[
+        TaskTitle.from_plain_text(name=TaskTitle.PROP_NAME, text="New Task"),
+    ]
+)
+created_page = lotion.create_page(page=new_task)
+print(created_page.task_title.text)
