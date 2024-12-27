@@ -16,6 +16,7 @@ class Title(Property):
     rich_text: RichText
     type: str = "title"
     # mentioned_page_id: str | None = None
+    PROP_NAME = "名前"  # 自分のデータベース用にデフォルトの名前を指定している
 
     def __init__(
         self,
@@ -62,17 +63,17 @@ class Title(Property):
         )
 
     @classmethod
-    def from_plain_text(cls: Type[T], name: str = "名前", text: str = "") -> T:
+    def from_plain_text(cls: Type[T], text: str, name: str | None = None) -> T:
         rich_text = RichText.from_plain_text(text)
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             rich_text=rich_text,
         )
 
     @classmethod
-    def from_rich_text(cls: Type[T], name: str, rich_text: RichText) -> T:
+    def from_rich_text(cls: Type[T], rich_text: RichText, name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             rich_text=rich_text,
         )
 
@@ -80,9 +81,9 @@ class Title(Property):
     def from_mentioned_page(
         cls: Type[T],
         mentioned_page_id: str,
-        name: str = "名前",
         prefix: str = "",
         suffix: str = "",
+        name: str | None = None,
     ) -> T:
         rich_text_builder = RichTextBuilder.create()
         if prefix != "":
@@ -91,19 +92,20 @@ class Title(Property):
         if suffix != "":
             rich_text_builder.add_text(suffix)
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             rich_text=rich_text_builder.build(),
         )
 
-    @staticmethod
+    @classmethod
     def from_mentioned_page_id(
+        cls: Type[T],
         page_id: str,
-        name: str = "名前",
-    ) -> "Title":
+        name: str | None = None,
+    ) -> T:
         rich_text_builder = RichTextBuilder.create()
         rich_text_builder.add_page_mention(page_id)
-        return Title(
-            name=name,
+        return cls(
+            name=name or cls.PROP_NAME,
             rich_text=rich_text_builder.build(),
         )
 

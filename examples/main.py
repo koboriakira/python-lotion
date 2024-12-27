@@ -25,7 +25,7 @@ for task in tasks:
 
 new_task = Task.create(
     properties=[
-        TaskTitle.from_plain_text(name=TaskTitle.PROP_NAME, text="New Task"),
+        TaskTitle.from_plain_text(text="New Task"),
     ]
 )
 created_page = lotion.create_page(page=new_task)
