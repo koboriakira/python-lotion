@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.1](https://github.com/koboriakira/python-lotion/compare/v0.8.0...v0.8.1) (2024-12-27)
+
+
+### Features
+
+* fetch_multi_select関数を改善 ([729fa76](https://github.com/koboriakira/python-lotion/commit/729fa76f9f1cfb4f0fa734a19f19d638b572c649))
+* fetch_select関数を改善 ([d1ce7a5](https://github.com/koboriakira/python-lotion/commit/d1ce7a527b137b8c6ec82f333884706cbf5dc60a))
+* ページの作成状況によって関数を呼び出し分ける ([a3beedd](https://github.com/koboriakira/python-lotion/commit/a3beedd95da305d9ff11bf6fe44208f3232e3cba))
+
 ## [0.8.0](https://github.com/koboriakira/python-lotion/compare/v0.7.1...v0.8.0) (2024-12-27)
 
 
