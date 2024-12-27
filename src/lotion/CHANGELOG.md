@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/koboriakira/python-lotion/compare/v0.7.1...v0.8.0) (2024-12-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* アノテーションを利用して独自プロパティ、ページを作成できるようにする ([#48](https://github.com/koboriakira/python-lotion/issues/48))
+
+### Features
+
+* アノテーションを利用して独自プロパティ、ページを作成できるようにする ([#48](https://github.com/koboriakira/python-lotion/issues/48)) ([64efa31](https://github.com/koboriakira/python-lotion/commit/64efa31c3cbd9f5287766b890529a63df9ffdd19))
+
 ## [0.7.1](https://github.com/koboriakira/python-lotion/compare/v0.7.0...v0.7.1) (2024-12-27)
 
 
