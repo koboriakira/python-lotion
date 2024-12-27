@@ -29,7 +29,7 @@ from .properties.url import Url
 from .property_translator import PropertyTranslator
 
 T = TypeVar("T", bound="BasePage")
-
+P = TypeVar("P", bound="Property")
 
 class NotCreatedError(Exception):
     pass
@@ -104,9 +104,7 @@ class BasePage:
             raise NotCreatedError("created_at is None.")
         return self.last_edited_time
 
-    def get(self, cls: Type[Property]) -> Type[Property]:
-        print(self)
-        print(cls)
+    def get(self, cls: Type[P]) -> P:
         prop = self._get_property(name=cls.PROP_NAME, instance_class=Text)
         return cls._cast(prop)
 

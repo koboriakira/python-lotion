@@ -33,14 +33,16 @@ class TestApiText(TestCase):
         actual = update_page(page=self.page, property=text_empty_prop)
         self.assertEqual(actual.get_text(name="テキスト").text, "")
 
+    @pytest.mark.current
     def test_独自のテキストプロパティを作成する(self):
         # Given
         text_prop = OriginalText.from_plain_text(name="Text", text="テスト")
         self.assertIsInstance(text_prop, OriginalText)
 
         base_page = update_page(page=self.page, property=text_prop)
-        actual: OriginalText = base_page.get(OriginalText)
+        actual = base_page.get(OriginalText)
         self.assertIsInstance(actual, OriginalText)
+
     def test_タイトルを変更する(self) -> None:
         # Given
         title = Title.from_mentioned_page(
