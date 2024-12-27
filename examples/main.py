@@ -1,5 +1,5 @@
 from lotion import Lotion, BasePage, notion_database, notion_prop
-from lotion.properties import Title, Date
+from lotion.properties import Title, Date, Text
 
 
 @notion_prop(name="Title")
@@ -13,10 +13,22 @@ class TaskDate(Date):
     pass
 
 
+@notion_prop(name="Memo")
+class TaskMemo(Text):
+    pass
+
+
+@notion_prop(name="Goal")
+class TaskGoal(Text):
+    pass
+
+
 @notion_database(database_id="1696567a3bbf803e9817c7ae1e398b71")
 class Task(BasePage):
     task_title: TaskTitle
     started_at: TaskDate
+    memo: TaskMemo
+    goal: TaskGoal
 
 
 lotion = Lotion.get_instance()
@@ -24,6 +36,8 @@ tasks = lotion.retrieve_pages(Task)
 for task in tasks:
     print(task.task_title.text)
     print(task.started_at.start_date)
+    print(task.memo.text)
+    print(task.goal.text)
 
 new_task = Task.create(
     properties=[

@@ -33,7 +33,7 @@ def notion_database(database_id: str):
                     def setter(self, value: Any):
                         if not isinstance(value, typ):
                             raise TypeError(f"Expected {typ} for {name}, got {type(value)}")
-                        print(f"Setting {name} of type {typ} to {value}")  # デバッグ出力
+                        # print(f"Setting {name} of type {typ} to {value}")  # デバッグ出力
                         self.set_prop(value)  # `set` メソッドを直接呼び出す
 
                     return setter
