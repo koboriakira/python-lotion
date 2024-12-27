@@ -285,24 +285,31 @@ class Lotion:
             raise ValueError(f"Select not found in database: cls={cls.__name__}, prop={prop.__name__}, value={value}")
         return filtered_selects[0]
 
-    def fetch_all_multi_select_elements(self, database_id: str, name: str) -> MultiSelectElements:
+    def fetch_all_multi_select_elements(
+        self, database_id: str, name: str, prop_cls: Type[M]
+    ) -> list[MultiSelectElement]:
         """指定されたデータベースのマルチセレクト一覧を取得する"""
         pages = self.retrieve_database(database_id=database_id)
         results: list[MultiSelectElement] = []
         for page in pages:
-            for prop in page.properties.values:
-                if isinstance(prop, MultiSelect) and prop.name == name:
-                    results.extend(prop.values)
-        return MultiSelectElements(list(set(results)))
+            multi_select = page.get_prop(prop_cls)
+            results.extend(multi_select.values)
+        return list(set(results))
 
-    def fetch_multi_select(self, database_id: str, name: str, multi_select_names: list[str]) -> MultiSelect:
+    def fetch_multi_select(self, cls: Type[T], prop: Type[M], value: str | list[str]) -> M:
         """
         指定されたデータベースのマルチセレクトを取得する。
         ただし現在のデータベースで利用されていないマルチセレクトを取得することはできない。
         """
-        all_elements = self.fetch_all_multi_select_elements(database_id=database_id, name=name)
-        multi_element_list = all_elements.get(multi_select_names)
-        return MultiSelect(name=name, values=multi_element_list)
+        value = value if isinstance(value, list) else [value]
+        all_multi_select_elements = self.fetch_all_multi_select_elements(
+            database_id=cls._get_database_id(), name=prop.PROP_NAME, prop_cls=prop
+        )
+        multi_select_elements = [e for e in all_multi_select_elements if e.name in value]
+        return prop.from_elements(
+            name=prop.PROP_NAME,
+            elements=multi_select_elements,
+        )
 
     def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> None:
         try:

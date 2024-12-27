@@ -96,6 +96,10 @@ class MultiSelect(Property):
             values=multi_select,
         )
 
+    @classmethod
+    def from_elements(cls: Type[T], elements: list[MultiSelectElement], name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, values=elements)
+
     def __dict__(self) -> dict:
         result = {
             "type": self.type,
