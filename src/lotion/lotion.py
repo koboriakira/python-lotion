@@ -78,9 +78,13 @@ class Lotion:
         update_properties = Properties(values=properties or [])
         self.__update(page_id=page_id, properties=update_properties)
 
-    def update(self, page: BasePage) -> None:
+    def update(self, page: T) -> T:
         """ページを更新する"""
-        self.__update(page_id=page.id, properties=Properties(values=page.properties.values))
+        if page.is_created():
+            self.__update(page_id=page.id, properties=Properties(values=page.properties.values))
+            return page
+        created_page = self.create_page(page)
+        return created_page
 
     def retrieve_comments(self, page_id: str) -> list[dict]:
         """指定されたページのコメントを取得する"""
