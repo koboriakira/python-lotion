@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.7.1](https://github.com/koboriakira/python-lotion/compare/v0.7.0...v0.7.1) (2024-12-27)
+
+
+### Features
+
+* BasePageを継承可能なものにする ([#44](https://github.com/koboriakira/python-lotion/issues/44)) ([a327e56](https://github.com/koboriakira/python-lotion/commit/a327e56e7500e41d21d54e412550df4917f7a393))
+* 各プロパティを継承可能にする ([#47](https://github.com/koboriakira/python-lotion/issues/47)) ([4659ad0](https://github.com/koboriakira/python-lotion/commit/4659ad03f0e2759724df28caec4523ef2e02ff9a))
+
+## [0.7.0](https://github.com/koboriakira/python-lotion/compare/v0.6.4...v0.7.0) (2024-12-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Titleプロパティの扱いを改善 ([#40](https://github.com/koboriakira/python-lotion/issues/40))
+
+### Features
+
+* Titleプロパティの扱いを改善 ([#40](https://github.com/koboriakira/python-lotion/issues/40)) ([64dff55](https://github.com/koboriakira/python-lotion/commit/64dff55f4119b92db2a91ddec109089bcf29ca73))
+
+## [0.6.4](https://github.com/koboriakira/python-lotion/compare/v0.6.3...v0.6.4) (2024-12-24)
+
+
+### Features
+
+* BasePageのコピー関数を追加 ([018a16c](https://github.com/koboriakira/python-lotion/commit/018a16c5a17c4adc134250ed7d142619bc48aa30))
+
+
+### Bug Fixes
+
+* ページ新規作成時にも使わないプロパティは取り除く ([cc18c8c](https://github.com/koboriakira/python-lotion/commit/cc18c8c5b206aa711254009c9210a0d2928b0c79))
+
 ## [0.6.3](https://github.com/koboriakira/python-lotion/compare/v0.6.2...v0.6.3) (2024-12-21)
 
 

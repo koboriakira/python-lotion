@@ -1,36 +1,34 @@
 from dataclasses import dataclass
+from typing import Any, Type, TypeVar
 
-from ..block.rich_text.rich_text_element import (
-    RichTextMentionElement,
-    RichTextTextElement,
-)
-from ..page.page_id import PageId
+from lotion.block.rich_text.rich_text import RichText
+from lotion.block.rich_text.rich_text_builder import RichTextBuilder
+
 from .property import Property
+
+T = TypeVar("T", bound="Title")
 
 
 @dataclass
 class Title(Property):
-    text: str
-    value: list[dict]
+    # text: str
+    # value: list[dict]
+    rich_text: RichText
     type: str = "title"
-    mentioned_page_id: str | None = None
+    # mentioned_page_id: str | None = None
 
     def __init__(
         self,
         name: str,
+        rich_text: RichText,
         id: str | None = None,
-        value: list[dict] = [],
-        text: str | None = None,
-        mentioned_page_id: str | None = None,
     ):
         self.name = name
         self.id = id
-        self.value = value
-        self.text = text
-        self.mentioned_page_id = mentioned_page_id
+        self.rich_text = rich_text
 
     @classmethod
-    def from_properties(cls, properties: dict) -> "Title":
+    def from_properties(cls: Type[T], properties: dict) -> T:
         if "Name" in properties:
             return cls.__of("Name", properties["Name"])
         if "Title" in properties:
@@ -41,12 +39,12 @@ class Title(Property):
         raise Exception(msg)
 
     @classmethod
-    def from_property(cls, key: str, property: dict) -> "Title":
+    def from_property(cls: Type[T], key: str, property: dict) -> T:
         return cls.__of(key, property)
 
     def __dict__(self) -> dict:
-        result = {
-            "title": self._get_value(),
+        result: dict[str, Any] = {
+            "title": self.rich_text.to_dict(),
         }
         if self.id is not None:
             result["id"] = self.id
@@ -54,73 +52,47 @@ class Title(Property):
             self.name: result,
         }
 
-    def _get_value(self) -> list[dict]:
-        if self.value is not None and self.value != []:
-            return self.value
-        values = []
-        values.append(
-            {
-                "type": "text",
-                "text": {
-                    "content": self.text,
-                },
-            },
-        )
-        if self.mentioned_page_id is not None:
-            values.append(
-                {
-                    "type": "mention",
-                    "mention": {
-                        "type": "page",
-                        "page": {
-                            "id": self.mentioned_page_id,
-                        },
-                    },
-                    # "plain_text": self.text,
-                    # "href": f"https://www.notion.so/{self.mentioned_page_id}"
-                },
-            )
-        return values
-
-    @staticmethod
-    def __of(name: str, param: dict) -> "Title":
-        return Title(
+    @classmethod
+    def __of(cls: Type[T], name: str, param: dict) -> T:
+        rich_text = RichText.from_entity(param["title"])
+        return cls(
             name=name,
             id=param["id"],
-            value=param["title"],
-            text="".join([item["plain_text"] for item in param["title"]]),
+            rich_text=rich_text,
         )
 
-    @staticmethod
-    def from_plain_text(name: str = "名前", text: str = "") -> "Title":
-        return Title(
+    @classmethod
+    def from_plain_text(cls: Type[T], name: str = "名前", text: str = "") -> T:
+        rich_text = RichText.from_plain_text(text)
+        return cls(
             name=name,
-            text=text,
+            rich_text=rich_text,
         )
 
-    @staticmethod
+    @classmethod
+    def from_rich_text(cls: Type[T], name: str, rich_text: RichText) -> T:
+        return cls(
+            name=name,
+            rich_text=rich_text,
+        )
+
+    @classmethod
     def from_mentioned_page(
+        cls: Type[T],
         mentioned_page_id: str,
-        mentioned_page_title: str,
         name: str = "名前",
         prefix: str = "",
         suffix: str = "",
-    ) -> "Title":
-        title = prefix + mentioned_page_title + suffix
-        values = []
+    ) -> T:
+        rich_text_builder = RichTextBuilder.create()
         if prefix != "":
-            rich_text_element = RichTextTextElement.of(content=prefix)
-            values.append(rich_text_element.to_dict())
-        page_id_object = PageId(mentioned_page_id)
-        rich_text_element = RichTextMentionElement.from_page_type(page_id_object.value)
-        values.append(rich_text_element.to_dict())
+            rich_text_builder.add_text(prefix)
+        rich_text_builder.add_page_mention(mentioned_page_id)
         if suffix != "":
-            rich_text_element = RichTextTextElement.of(content=suffix)
-            values.append(rich_text_element.to_dict())
-        return Title(
+            rich_text_builder.add_text(suffix)
+        return cls(
             name=name,
-            value=values,
-            text=title,
+            rich_text=rich_text_builder.build(),
         )
 
     @staticmethod
@@ -128,11 +100,16 @@ class Title(Property):
         page_id: str,
         name: str = "名前",
     ) -> "Title":
+        rich_text_builder = RichTextBuilder.create()
+        rich_text_builder.add_page_mention(page_id)
         return Title(
             name=name,
-            text="",
-            mentioned_page_id=page_id,
+            rich_text=rich_text_builder.build(),
         )
+
+    @property
+    def text(self) -> str:
+        return self.rich_text.to_plain_text()
 
     def value_for_filter(self) -> str:
         return self.text

@@ -1,7 +1,9 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="LastEditedBy")
 
 
 @dataclass
@@ -16,11 +18,9 @@ class LastEditedBy(Property):
         self.last_edited_by = last_edited_by
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "LastEditedBy":
-        return LastEditedBy(
-            id=param["id"], name=key, last_edited_by=param["last_edited_by"]
-        )
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
+        return cls(id=param["id"], name=key, last_edited_by=param["last_edited_by"])
 
     def __dict__(self) -> dict[str, Any]:
         return {

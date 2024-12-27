@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Formula")
 
 
 @dataclass
@@ -23,9 +26,9 @@ class Formula(Property):
         self._formula = formula
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "Formula":
-        return Formula(
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
+        return cls(
             id=param["id"],
             name=key,
             formula=param["formula"],

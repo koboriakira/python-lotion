@@ -66,7 +66,7 @@ class Lotion:
         client = Client(auth=os.getenv("NOTION_SECRET"))
         return Lotion(client, max_retry_count=max_retry_count, logger=logger)
 
-    def retrieve_page(self, page_id: str, cls: Type[T]) -> T:
+    def retrieve_page(self, page_id: str, cls: Type[T] = BasePage) -> T:
         """指定されたページを取得する"""
         page_entity = self.__retrieve_page(page_id=page_id)
         return self.__convert_page_model(page_entity=page_entity, include_children=True, cls=cls)
@@ -89,30 +89,35 @@ class Lotion:
         cover: Cover | None = None,
         properties: list[Property] | None = None,
         blocks: list[Block] | None = None,
-    ) -> BasePage:
+        cls: Type[T] = BasePage,
+    ) -> T:
         """データベース上にページを新規作成する"""
         page = self.__create_page(
             database_id=database_id,
             cover=cover.__dict__() if cover is not None else None,
-            properties=(Properties(values=properties).__dict__() if properties is not None else {}),
+            properties=(
+                Properties(values=properties).exclude_for_update().__dict__() if properties is not None else {}
+            ),
         )
         if blocks is not None:
             self.append_blocks(block_id=page["id"], blocks=blocks)
-        return self.retrieve_page(page_id=page["id"])
+        return self.retrieve_page(page_id=page["id"], cls=cls)
 
     def retrieve_database(  # noqa: PLR0913
         self,
         database_id: str,
         filter_param: dict | None = None,
         include_children: bool | None = None,
-    ) -> list[BasePage]:
+        cls: Type[T] = BasePage,
+    ) -> list[T]:
         """指定されたデータベースのページを取得する"""
         results = self._database_query(database_id=database_id, filter_param=filter_param)
-        pages: list[BasePage] = []
+        pages: list[T] = []
         for page_entity in results:
             page = self.__convert_page_model(
                 page_entity=page_entity,
                 include_children=include_children or False,
+                cls=cls,
             )
             pages.append(page)
         return pages
@@ -122,12 +127,14 @@ class Lotion:
         database_id: str,
         title: str,
         title_key_name: str = "名前",
-    ) -> BasePage | None:
+        cls: Type[T] = BasePage,
+    ) -> T | None:
         """タイトルだけをもとにデータベースのページを取得する"""
         filter_param = Builder.create().add(Prop.RICH_TEXT, title_key_name, Cond.EQUALS, title).build()
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
+            cls=cls,
         )
         if len(results) == 0:
             return None
@@ -140,10 +147,11 @@ class Lotion:
         self,
         database_id: str,
         unique_id: int,
-    ) -> BasePage | None:
+        cls: Type[T] = BasePage,
+    ) -> T | None:
         """UniqueIdをもとにデータベースのページを取得する"""
         unique_id_prop_name = None
-        base_page = self._fetch_sample_page(database_id=database_id)
+        base_page = self._fetch_sample_page(database_id=database_id, cls=cls)
         for propety in base_page.properties.values:
             if propety.type == "unique_id":
                 unique_id_prop_name = propety.name
@@ -157,6 +165,7 @@ class Lotion:
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
+            cls=cls,
         )
         if len(results) == 0:
             return None
@@ -382,13 +391,13 @@ class Lotion:
                 )
             raise NotionApiError(database_id=database_id, e=e, properties=properties) from e
 
-    def _fetch_sample_page(self, database_id: str) -> BasePage:
+    def _fetch_sample_page(self, database_id: str, cls: Type[T] = BasePage) -> T:
         """指定されたデータベースのサンプルページを取得する"""
         data = self.__database_query(database_id=database_id, page_size=1)
-        pages: list[dict] = data.get("results")
+        pages: list[dict] = data["results"]
         if len(pages) == 0:
             raise ValueError(f"Database has no page. Please create any page. database_id: {database_id}")
-        return self.__convert_page_model(page_entity=pages[0], include_children=False)
+        return self.__convert_page_model(page_entity=pages[0], include_children=False, cls=cls)
 
     def __database_query(
         self,

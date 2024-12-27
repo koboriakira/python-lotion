@@ -5,13 +5,13 @@ from typing import Any
 
 class RichTextElement(metaclass=ABCMeta):
     annotations: dict[str, bool] | None
-    plain_text: dict[str, bool] | None
+    plain_text: str | None
     href: dict[str, bool] | None
 
     def __init__(
         self,
         annotations: dict[str, bool] | None = None,
-        plain_text: dict[str, bool] | None = None,
+        plain_text: str | None = None,
         href: dict[str, bool] | None = None,
     ) -> None:
         self.annotations = annotations
@@ -103,7 +103,7 @@ class RichTextTextElement(RichTextElement):
         content: str,
         link_url: str | None = None,
         annotations: dict[str, bool] | None = None,
-        plain_text: dict[str, bool] | None = None,
+        plain_text: str | None = None,
         href: dict[str, bool] | None = None,
     ) -> None:
         self.content = content
@@ -154,7 +154,7 @@ class RichTextMentionElement(RichTextElement):
         end_date: str | None = None,
         link_preview_url: str | None = None,
         annotations: dict[str, bool] | None = None,
-        plain_text: dict[str, bool] | None = None,
+        plain_text: str | None = None,
         href: dict[str, bool] | None = None,
     ) -> None:
         self.mention_type = mention_type
@@ -171,12 +171,10 @@ class RichTextMentionElement(RichTextElement):
     def to_slack_text(self) -> str:
         # TODO: メンションの場合、そのタイトルは再度クライアントを使ってretrieveしないといけない
         # これをどうするか迷うけど、とりあえず空文字で返す
-        return ""
+        return self.to_plain_text()
 
     def to_plain_text(self) -> str:
-        # TODO: メンションの場合、そのタイトルは再度クライアントを使ってretrieveしないといけない
-        # これをどうするか迷うけど、とりあえず空文字で返す
-        return ""
+        return self.plain_text if self.plain_text is not None else ""
 
     @staticmethod
     def of_database(database_id: str) -> "RichTextMentionElement":

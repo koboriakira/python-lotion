@@ -1,5 +1,8 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 from .property import Property
+
+T = TypeVar("T", bound="Select")
 
 
 @dataclass
@@ -23,12 +26,12 @@ class Select(Property):
         self.selected_id = selected_id
         self.selected_color = selected_color
 
-    @staticmethod
-    def of(name: str, param: dict) -> "Select":
+    @classmethod
+    def of(cls: Type[T], name: str, param: dict) -> T:
         select = param["select"]
         if select is None:
-            return Select(name=name)
-        return Select(
+            return cls(name=name)
+        return cls(
             name=name,
             selected_id=select["id"],
             selected_name=select["name"],
@@ -36,9 +39,9 @@ class Select(Property):
             id=param["id"],
         )
 
-    @staticmethod
-    def empty(name: str) -> "Select":
-        return Select(name=name)
+    @classmethod
+    def empty(cls: Type[T], name: str) -> T:
+        return cls(name=name)
 
     def is_empty(self) -> bool:
         return self.selected_name == ""

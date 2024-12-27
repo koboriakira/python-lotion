@@ -29,5 +29,9 @@ class RichTextBuilder:
         self.rich_text.append(RichTextMentionElement.of_date(start=start, end=end))
         return self
 
+    def add_rich_text(self, rich_text: RichText) -> "RichTextBuilder":
+        self.rich_text.extend(rich_text.elements)
+        return self
+
     def build(self) -> RichText:
         return RichText(elements=self.rich_text)

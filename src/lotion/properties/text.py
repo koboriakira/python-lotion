@@ -43,6 +43,14 @@ class Text(Property):
         }
         return {self.name: result}
 
+    def append_text(self, text: str):
+        updated_text = self.text + "\n" + text
+        cls = self.__class__
+        return cls(
+            name=self.name,
+            rich_text=RichText.from_plain_text(updated_text.strip()),
+        )
+
     @classmethod
     def from_plain_text(cls: Type[T], name: str, text: str) -> T:
         return cls(

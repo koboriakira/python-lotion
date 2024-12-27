@@ -28,6 +28,8 @@ from .properties.unique_id import UniqueId
 from .properties.url import Url
 from .property_translator import PropertyTranslator
 
+T = TypeVar("T", bound="BasePage")
+
 
 class NotCreatedError(Exception):
     pass
@@ -58,15 +60,8 @@ class BasePage:
     object = "page"
 
     @classmethod
-    def _cast(cls: Type[T], base_page: "BasePage") -> T:
-        """BasePageを指定されたクラスに変換する"""
-        instance = cls.__new__(cls)
-        instance.__dict__ = base_page.__dict__
-        return instance
-
-    @staticmethod
-    def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
-        return BasePage(
+    def create(cls: Type[T], properties: list[Property] | None = None, blocks: list[Block] | None = None) -> T:
+        return cls(
             id_=None,
             url_=None,
             created_time=None,
@@ -91,7 +86,7 @@ class BasePage:
         return self.properties.get_title()
 
     def get_title_text(self) -> str:
-        return self.get_title().text
+        return self.get_title().rich_text.to_plain_text()
 
     @property
     def title(self) -> str:
@@ -179,6 +174,11 @@ class BasePage:
     def title_for_slack(self) -> str:
         """Slackでの表示用のリンクつきタイトルを返す"""
         return f"<{self.url}|{self.get_title_text()}>"
+
+    def copy(self):
+        """コピーを作成する。新しいページになる"""
+        cls = self.__class__
+        return cls.create(properties=self.properties.values, blocks=self.block_children)
 
     def title_for_markdown(self) -> str:
         """Markdownでの表示用のリンクつきタイトルを返す"""

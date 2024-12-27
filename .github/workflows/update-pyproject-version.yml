@@ -10,6 +10,7 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
 
 permissions:
   contents: write
@@ -21,7 +22,7 @@ jobs:
     outputs:
       ENABLE_SKIP: ${{ steps.check.outputs.ENABLE_SKIP }}
     steps:
-      - name: Check 
+      - name: Check
         id: check
         run: |
           # GITHUB_REFがrelease-please--branches--main以外の場合はスキップ
@@ -71,4 +72,3 @@ jobs:
           git add pyproject.toml
           git commit -m "Update version to $version"
           git push
-

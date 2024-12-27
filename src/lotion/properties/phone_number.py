@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="PhoneNumber")
 
 
 @dataclass
@@ -23,20 +26,20 @@ class PhoneNumber(Property):
         self.value = value
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "PhoneNumber":
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
         value = param.get("phone_number")
         if value is not None and not isinstance(value, str):
             raise ValueError(f"phone_number must be str, but got {type(value)}")
-        return PhoneNumber(id=param["id"], name=key, value=value or "")
+        return cls(id=param["id"], name=key, value=value or "")
 
-    @staticmethod
-    def empty(name: str) -> "PhoneNumber":
-        return PhoneNumber(name=name)
+    @classmethod
+    def empty(cls: Type[T], name: str) -> T:
+        return cls(name=name)
 
-    @staticmethod
-    def create(name: str, phone_number: str) -> "PhoneNumber":
-        return PhoneNumber(name=name, value=phone_number)
+    @classmethod
+    def create(cls: Type[T], name: str, phone_number: str) -> T:
+        return cls(name=name, value=phone_number)
 
     @property
     def type(self) -> str:

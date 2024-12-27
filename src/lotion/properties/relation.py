@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Relation")
 
 
 @dataclass
@@ -30,21 +33,21 @@ class Relation(Property):
         """text_listがあるがid_listがない場合にTrueを返す"""
         return len(self.text_list) > 0 and len(self.id_list) == 0
 
-    @staticmethod
-    def of(name: str, property: dict[str, str]) -> "Relation":  # noqa: A002
+    @classmethod
+    def of(cls: Type[T], name: str, property: dict[str, str]) -> T:
         id_list = [r["id"] for r in property["relation"]]
-        return Relation(name=name, id_list=id_list, has_more=property["has_more"])
+        return cls(name=name, id_list=id_list, has_more=property["has_more"])
 
-    @staticmethod
-    def from_id_list(name: str, id_list: list[str]) -> "Relation":
-        return Relation(
+    @classmethod
+    def from_id_list(cls: Type[T], name: str, id_list: list[str]) -> T:
+        return cls(
             name=name,
             id_list=id_list,
         )
 
-    @staticmethod
-    def from_id(name: str, id: str) -> "Relation":
-        return Relation.from_id_list(name=name, id_list=[id])
+    @classmethod
+    def from_id(cls: Type[T], name: str, id: str) -> T:
+        return cls.from_id_list(name=name, id_list=[id])
 
     def __dict__(self) -> dict:
         result = {
