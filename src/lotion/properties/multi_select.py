@@ -79,7 +79,7 @@ class MultiSelect(Property):
         )
 
     @classmethod
-    def create(cls: Type[T], name: str, values: list[dict[str, str]]) -> T:
+    def create(cls: Type[T], values: list[dict[str, str]], name: str | None = None) -> T:
         """
         Create a MultiSelect instance from a list of dictionaries.
 
@@ -92,7 +92,7 @@ class MultiSelect(Property):
         """
         multi_select = [MultiSelectElement(id=element["id"], name=element["name"]) for element in values]
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             values=multi_select,
         )
 

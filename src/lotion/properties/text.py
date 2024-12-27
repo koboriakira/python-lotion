@@ -52,16 +52,20 @@ class Text(Property):
         )
 
     @classmethod
-    def from_plain_text(cls: Type[T], name: str, text: str) -> T:
+    def from_plain_text(cls: Type[T], text: str, name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             rich_text=RichText.from_plain_text(text=text),
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str) -> T:
+    def from_rich_text(cls: Type[T], rich_text: RichText, name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, rich_text=rich_text)
+
+    @classmethod
+    def empty(cls: Type[T], name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             rich_text=RichText.empty(),
         )
 

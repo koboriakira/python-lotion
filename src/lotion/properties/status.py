@@ -3,7 +3,6 @@ from typing import Type, TypeVar
 
 from .property import Property
 
-
 T = TypeVar("T", bound="Status")
 
 
@@ -39,14 +38,11 @@ class Status(Property):
         )
 
     @classmethod
-    def from_status_name(cls: Type[T], name: str, status_name: str) -> T:
+    def from_status_name(cls: Type[T], status_name: str, name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             status_name=status_name,
         )
-
-    def is_today(self) -> bool:
-        return self.status_name == "Today"
 
     def __dict__(self):
         result = {

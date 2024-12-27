@@ -10,6 +10,7 @@ T = TypeVar("T", bound="Checkbox")
 class Checkbox(Property):
     checked: bool
     type: str = "checkbox"
+    PROP_NAME: str = "checkbox"
 
     def __init__(self, name: str, checked: bool, id: str | None = None) -> None:  # noqa: A002, FBT001
         self.name = name
@@ -25,16 +26,16 @@ class Checkbox(Property):
         )
 
     @classmethod
-    def true(cls: Type[T], name: str) -> T:
+    def true(cls: Type[T], name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             checked=True,
         )
 
     @classmethod
-    def false(cls: Type[T], name: str) -> T:
+    def false(cls: Type[T], name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             checked=False,
         )
 

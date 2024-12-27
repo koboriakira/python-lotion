@@ -10,6 +10,8 @@ T = TypeVar("T", bound="Url")
 class Url(Property):
     url: str = ""
 
+    PROP_NAME = "url"  # 自分で使うために準備。本来は不要。
+
     def __init__(self, name: str, url: str = "", id: str | None = None):
         self.name = name
         self.url = url
@@ -25,15 +27,15 @@ class Url(Property):
         )
 
     @classmethod
-    def from_url(cls: Type[T], url: str, name: str = "URL") -> T:
+    def from_url(cls: Type[T], url: str, name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             url=url,
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str = "URL") -> T:
-        return cls(name=name)
+    def empty(cls: Type[T], name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME)
 
     @property
     def type(self) -> str:

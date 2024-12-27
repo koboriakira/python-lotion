@@ -34,12 +34,12 @@ class PhoneNumber(Property):
         return cls(id=param["id"], name=key, value=value or "")
 
     @classmethod
-    def empty(cls: Type[T], name: str) -> T:
-        return cls(name=name)
+    def empty(cls: Type[T], name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, value="")
 
     @classmethod
-    def create(cls: Type[T], name: str, phone_number: str) -> T:
-        return cls(name=name, value=phone_number)
+    def create(cls: Type[T], phone_number: str, name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, value=phone_number)
 
     @property
     def type(self) -> str:
