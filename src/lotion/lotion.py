@@ -20,6 +20,8 @@ from .properties.select import Select, Selects
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
 T = TypeVar("T", bound="BasePage")
+S = TypeVar("S", bound=Select)
+M = TypeVar("M", bound=MultiSelect)
 
 
 class AppendBlockError(Exception):
@@ -264,23 +266,24 @@ class Lotion:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)
 
-    def fetch_all_selects(self, database_id: str, name: str) -> Selects:
+    def fetch_all_selects(self, database_id: str, name: str, prop_cls: Type[S] = Select) -> list[S]:
         """指定されたデータベースのセレクト一覧を取得する"""
         results = self.retrieve_database(database_id=database_id)
-        selects = []
+        selects: list[S] = []
         for page in results:
-            for prop in page.properties.values:
-                if isinstance(prop, Select) and prop.name == name and not prop.is_empty():
-                    selects.append(prop)
-        return Selects(list(set(selects)))
+            prop = page.get_prop(prop_cls)
+            selects.append(prop)
+        return list(set(selects))
 
-    def fetch_select(self, database_id: str, name: str, status_name: str) -> Select:
-        """
-        指定されたデータベースのセレクトを取得する。
-        ただし現在のデータベースで利用されていないセレクトを取得することはできない。
-        """
-        selects = self.fetch_all_selects(database_id=database_id, name=name)
-        return selects.get(status_name)
+    def fetch_select(self, cls: Type[T], prop: Type[S], value: str) -> S:
+        """指定されたデータベースのセレクトを取得する"""
+        selects = self.fetch_all_selects(database_id=cls._get_database_id(), name=prop.PROP_NAME, prop_cls=prop)
+        for select in selects:
+            print(select.selected_name)
+        filtered_selects = [s for s in selects if s.selected_name == value]
+        if len(filtered_selects) == 0:
+            raise ValueError(f"Select not found in database: cls={cls.__name__}, prop={prop.__name__}, value={value}")
+        return filtered_selects[0]
 
     def fetch_all_multi_select_elements(self, database_id: str, name: str) -> MultiSelectElements:
         """指定されたデータベースのマルチセレクト一覧を取得する"""
