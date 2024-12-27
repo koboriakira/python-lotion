@@ -1,6 +1,10 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+
+T = TypeVar("T", bound="Status")
 
 
 @dataclass
@@ -24,9 +28,9 @@ class Status(Property):
         self.status_id = status_id
         self.status_color = status_color
 
-    @staticmethod
-    def of(name: str, param: dict) -> "Status":
-        return Status(
+    @classmethod
+    def of(cls: Type[T], name: str, param: dict) -> T:
+        return cls(
             name=name,
             status_name=param["status"]["name"],
             id=param["id"],
@@ -34,9 +38,9 @@ class Status(Property):
             status_color=param["status"]["color"],
         )
 
-    @staticmethod
-    def from_status_name(name: str, status_name: str) -> "Status":
-        return Status(
+    @classmethod
+    def from_status_name(cls: Type[T], name: str, status_name: str) -> T:
+        return cls(
             name=name,
             status_name=status_name,
         )

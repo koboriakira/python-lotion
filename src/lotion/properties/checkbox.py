@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Checkbox")
 
 
 @dataclass
@@ -8,31 +11,29 @@ class Checkbox(Property):
     checked: bool
     type: str = "checkbox"
 
-    def __init__(
-        self, name: str, checked: bool, id: str | None = None
-    ) -> None:  # noqa: A002, FBT001
+    def __init__(self, name: str, checked: bool, id: str | None = None) -> None:  # noqa: A002, FBT001
         self.name = name
         self.checked = checked or False
         self.id = id
 
-    @staticmethod
-    def of(name: str, param: dict) -> "Checkbox":
-        return Checkbox(
+    @classmethod
+    def of(cls: Type[T], name: str, param: dict) -> T:
+        return cls(
             name=name,
             checked=param["checkbox"],
             id=param["id"],
         )
 
-    @staticmethod
-    def true(name: str) -> "Checkbox":
-        return Checkbox(
+    @classmethod
+    def true(cls: Type[T], name: str) -> T:
+        return cls(
             name=name,
             checked=True,
         )
 
-    @staticmethod
-    def false(name: str) -> "Checkbox":
-        return Checkbox(
+    @classmethod
+    def false(cls: Type[T], name: str) -> T:
+        return cls(
             name=name,
             checked=False,
         )

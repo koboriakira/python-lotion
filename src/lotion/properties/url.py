@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Url")
 
 
 @dataclass
@@ -12,25 +15,25 @@ class Url(Property):
         self.url = url
         self.id = id
 
-    @staticmethod
-    def of(name: str, param: dict) -> "Url":
+    @classmethod
+    def of(cls: Type[T], name: str, param: dict) -> T:
         url = param["url"] if param.get("url") else ""
-        return Url(
+        return cls(
             name=name,
             url=url,
             id=param["id"],
         )
 
-    @staticmethod
-    def from_url(url: str, name: str = "URL") -> "Url":
-        return Url(
+    @classmethod
+    def from_url(cls: Type[T], url: str, name: str = "URL") -> T:
+        return cls(
             name=name,
             url=url,
         )
 
-    @staticmethod
-    def empty(name: str = "URL") -> "Url":
-        return Url(name=name)
+    @classmethod
+    def empty(cls: Type[T], name: str = "URL") -> T:
+        return cls(name=name)
 
     @property
     def type(self) -> str:

@@ -1,15 +1,12 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from lotion.block.rich_text.rich_text import RichText
 from lotion.block.rich_text.rich_text_builder import RichTextBuilder
 
-from ..block.rich_text.rich_text_element import (
-    RichTextMentionElement,
-    RichTextTextElement,
-)
-from ..page.page_id import PageId
 from .property import Property
+
+T = TypeVar("T", bound="Title")
 
 
 @dataclass
@@ -31,7 +28,7 @@ class Title(Property):
         self.rich_text = rich_text
 
     @classmethod
-    def from_properties(cls, properties: dict) -> "Title":
+    def from_properties(cls: Type[T], properties: dict) -> T:
         if "Name" in properties:
             return cls.__of("Name", properties["Name"])
         if "Title" in properties:
@@ -42,7 +39,7 @@ class Title(Property):
         raise Exception(msg)
 
     @classmethod
-    def from_property(cls, key: str, property: dict) -> "Title":
+    def from_property(cls: Type[T], key: str, property: dict) -> T:
         return cls.__of(key, property)
 
     def __dict__(self) -> dict:
@@ -55,44 +52,45 @@ class Title(Property):
             self.name: result,
         }
 
-    @staticmethod
-    def __of(name: str, param: dict) -> "Title":
+    @classmethod
+    def __of(cls: Type[T], name: str, param: dict) -> T:
         rich_text = RichText.from_entity(param["title"])
-        return Title(
+        return cls(
             name=name,
             id=param["id"],
             rich_text=rich_text,
         )
 
-    @staticmethod
-    def from_plain_text(name: str = "名前", text: str = "") -> "Title":
+    @classmethod
+    def from_plain_text(cls: Type[T], name: str = "名前", text: str = "") -> T:
         rich_text = RichText.from_plain_text(text)
-        return Title(
+        return cls(
             name=name,
             rich_text=rich_text,
         )
 
-    @staticmethod
-    def from_rich_text(name: str, rich_text: RichText) -> "Title":
-        return Title(
+    @classmethod
+    def from_rich_text(cls: Type[T], name: str, rich_text: RichText) -> T:
+        return cls(
             name=name,
             rich_text=rich_text,
         )
 
-    @staticmethod
+    @classmethod
     def from_mentioned_page(
+        cls: Type[T],
         mentioned_page_id: str,
         name: str = "名前",
         prefix: str = "",
         suffix: str = "",
-    ) -> "Title":
+    ) -> T:
         rich_text_builder = RichTextBuilder.create()
         if prefix != "":
             rich_text_builder.add_text(prefix)
         rich_text_builder.add_page_mention(mentioned_page_id)
         if suffix != "":
             rich_text_builder.add_text(suffix)
-        return Title(
+        return cls(
             name=name,
             rich_text=rich_text_builder.build(),
         )

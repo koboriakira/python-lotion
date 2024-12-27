@@ -1,7 +1,9 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="CreatedBy")
 
 
 @dataclass
@@ -16,9 +18,9 @@ class CreatedBy(Property):
         self.created_by_param = created_by_param
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "CreatedBy":
-        return CreatedBy(id=param["id"], name=key, created_by_param=param["created_by"])
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
+        return cls(id=param["id"], name=key, created_by_param=param["created_by"])
 
     def __dict__(self) -> dict[str, Any]:
         return {

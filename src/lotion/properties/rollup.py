@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Rollup")
 
 
 @dataclass
@@ -23,9 +26,9 @@ class Rollup(Property):
         self._rollup = rollup
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "Rollup":
-        return Rollup(
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
+        return cls(
             id=param["id"],
             name=key,
             rollup=param["rollup"],
