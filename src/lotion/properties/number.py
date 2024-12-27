@@ -41,8 +41,8 @@ class Number(Property):
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str) -> T:
-        return cls(name=name)
+    def empty(cls: Type[T], name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME)
 
     def is_empty(self) -> bool:
         return self.number is None
@@ -63,9 +63,9 @@ class Number(Property):
         }
 
     @classmethod
-    def from_num(cls: Type[T], name: str, value: int) -> T:
+    def from_num(cls: Type[T], value: int, name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             number=value,
         )
 

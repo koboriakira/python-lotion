@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Type, TypeVar
+
 from .property import Property
 
 T = TypeVar("T", bound="Select")
@@ -40,8 +41,8 @@ class Select(Property):
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str) -> T:
-        return cls(name=name)
+    def empty(cls: Type[T], name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME)
 
     def is_empty(self) -> bool:
         return self.selected_name == ""

@@ -34,12 +34,12 @@ class Email(Property):
         return cls(id=param["id"], name=key, value=value or "")
 
     @classmethod
-    def from_email(cls: Type[T], name: str, email: str) -> T:
-        return cls(name=name, value=email)
+    def from_email(cls: Type[T], email: str, name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, value=email)
 
     @classmethod
-    def empty(cls: Type[T], name: str) -> T:
-        return cls(name=name)
+    def empty(cls: Type[T], name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, value="")
 
     @property
     def type(self) -> str:

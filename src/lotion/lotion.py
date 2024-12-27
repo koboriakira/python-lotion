@@ -76,6 +76,10 @@ class Lotion:
         update_properties = Properties(values=properties or [])
         self.__update(page_id=page_id, properties=update_properties)
 
+    def update(self, page: BasePage) -> None:
+        """ページを更新する"""
+        self.__update(page_id=page.id, properties=Properties(values=page.properties.values))
+
     def retrieve_comments(self, page_id: str) -> list[dict]:
         """指定されたページのコメントを取得する"""
         comments = self.client.comments.list(
@@ -103,6 +107,16 @@ class Lotion:
             self.append_blocks(block_id=page["id"], blocks=blocks)
         return self.retrieve_page(page_id=page["id"], cls=cls)
 
+    def create_page(self, page: T) -> T:
+        """ページを新規作成する"""
+        return self.create_page_in_database(
+            database_id=page._get_own_database_id(),
+            cover=page.cover,
+            properties=page.properties.values,
+            blocks=page.block_children,
+            cls=type(page),
+        )
+
     def retrieve_database(  # noqa: PLR0913
         self,
         database_id: str,
@@ -121,6 +135,19 @@ class Lotion:
             )
             pages.append(page)
         return pages
+
+    def retrieve_pages(
+        self,
+        cls: Type[T],
+        filter_param: dict | None = None,
+        include_children: bool | None = None,
+    ) -> list[T]:
+        return self.retrieve_database(
+            database_id=cls._get_database_id(),
+            filter_param=filter_param,
+            include_children=include_children,
+            cls=cls,
+        )
 
     def find_page_by_title(
         self,

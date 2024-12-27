@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
 from .property import Property
 
@@ -34,20 +34,20 @@ class Relation(Property):
         return len(self.text_list) > 0 and len(self.id_list) == 0
 
     @classmethod
-    def of(cls: Type[T], name: str, property: dict[str, str]) -> T:
+    def of(cls: Type[T], name: str, property: dict[str, Any]) -> T:
         id_list = [r["id"] for r in property["relation"]]
         return cls(name=name, id_list=id_list, has_more=property["has_more"])
 
     @classmethod
-    def from_id_list(cls: Type[T], name: str, id_list: list[str]) -> T:
+    def from_id_list(cls: Type[T], id_list: list[str], name: str | None = None) -> T:
         return cls(
-            name=name,
+            name=name or cls.PROP_NAME,
             id_list=id_list,
         )
 
     @classmethod
-    def from_id(cls: Type[T], name: str, id: str) -> T:
-        return cls.from_id_list(name=name, id_list=[id])
+    def from_id(cls: Type[T], id: str, name: str | None = None) -> T:
+        return cls.from_id_list(name=name or cls.PROP_NAME, id_list=[id])
 
     def __dict__(self) -> dict:
         result = {

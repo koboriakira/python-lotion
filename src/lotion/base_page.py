@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Type, TypeVar
+from typing import Type, TypeVar, cast
 
 from .datetime_utils import JST
 from .properties.files import Files
@@ -30,6 +30,8 @@ from .properties.url import Url
 
 T = TypeVar("T", bound="BasePage")
 
+P = TypeVar("P", bound=Property)
+
 
 class NotCreatedError(Exception):
     pass
@@ -55,6 +57,7 @@ class BasePage:
     archived: bool | None = False
     parent: dict | None = None
     object = "page"
+    DATABASE_ID: str | None = None  # must be set in subclass
 
     @classmethod
     def create(cls: Type[T], properties: list[Property] | None = None, blocks: list[Block] | None = None) -> T:
@@ -100,6 +103,35 @@ class BasePage:
         if self.last_edited_time is None:
             raise NotCreatedError("created_at is None.")
         return self.last_edited_time
+
+    def get_prop(self, instance_class: Type[P]) -> P:
+        error_message = "instance_class must be one of the following classes: Checkbox, Date, Email, MultiSelect, \
+        Number, PhoneNumber, Relation, Select, Status, Text, Title, Url"
+        if not instance_class.__bases__:
+            raise ValueError(error_message)
+        parent_class = instance_class.__bases__[0]
+        if parent_class not in [
+            Checkbox,
+            Date,
+            Email,
+            MultiSelect,
+            Number,
+            PhoneNumber,
+            Relation,
+            Select,
+            Status,
+            Text,
+            Title,
+            Url,
+        ]:
+            raise ValueError(error_message)
+        result = self.properties.get_property(name=instance_class.PROP_NAME, instance_class=parent_class)
+        if result is None:
+            raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=instance_class.PROP_NAME)
+        return cast(P, result)
+
+    def set_prop(self, value: Property) -> None:
+        self.properties = self.properties.append_property(value)
 
     def get_status(self, name: str) -> Status:
         return self._get_property(name=name, instance_class=Status)  # type: ignore
@@ -235,3 +267,13 @@ class BasePage:
             properties=properties,
             block_children=block_children,
         )
+
+    @classmethod
+    def _get_database_id(cls) -> str:
+        result = cls.DATABASE_ID
+        if result is None:
+            raise ValueError("DATABASE_ID is null")
+        return result
+
+    def _get_own_database_id(self) -> str:
+        return self.__class__._get_database_id()
