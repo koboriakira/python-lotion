@@ -1,5 +1,4 @@
 import json
-import copy
 from unittest import TestCase
 
 import pytest
@@ -7,6 +6,7 @@ from lotion.base_page import BasePage
 from lotion.properties.title import Title
 
 
+@pytest.mark.current
 class TestBasePage(TestCase):
     def test_ページを作成する(self):
         # When
@@ -57,3 +57,16 @@ class TestBasePage(TestCase):
         self.assertEqual(base_page.properties.values, actual.properties.values)
         self.assertEqual(base_page.block_children, actual.block_children)
         self.assertNotEqual(base_page, actual)
+
+    def test_オリジナルのBasePageを作成する(self):
+        class OriginalPage(BasePage):
+            pass
+
+        # Given
+        original_page = OriginalPage.create(
+            properties=[Title.from_plain_text(name="名前", text="タイトル")],
+        )
+        copied_original_page = original_page.copy()
+
+        self.assertIsInstance(original_page, OriginalPage)
+        self.assertIsInstance(copied_original_page, OriginalPage)
