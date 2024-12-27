@@ -1,7 +1,9 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="UniqueId")
 
 
 @dataclass
@@ -27,9 +29,9 @@ class UniqueId(Property):
         self.number = number
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "UniqueId":
-        return UniqueId(
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
+        return cls(
             id=param["id"],
             name=key,
             prefix=param["unique_id"]["prefix"],

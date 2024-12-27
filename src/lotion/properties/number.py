@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Number")
 
 
 @dataclass
@@ -18,27 +21,28 @@ class Number(Property):
         self.id = id
         self.number = number
 
-    def add(self, count: int) -> "Number":
+    def add(self, count: int):
         prev = self.number if self.number is not None else 0
-        return Number(
+        cls = type(self)
+        return cls(
             name=self.name,
             id=self.id,
             number=prev + count,
         )
 
-    @staticmethod
-    def of(name: str, param: dict) -> "Number":
+    @classmethod
+    def of(cls: Type[T], name: str, param: dict) -> T:
         if param["number"] is None:
-            return Number(name=name, id=param["id"])
-        return Number(
+            return cls(name=name, id=param["id"])
+        return cls(
             name=name,
             id=param["id"],
             number=param["number"],
         )
 
-    @staticmethod
-    def empty(name: str) -> "Number":
-        return Number(name=name)
+    @classmethod
+    def empty(cls: Type[T], name: str) -> T:
+        return cls(name=name)
 
     def is_empty(self) -> bool:
         return self.number is None
@@ -58,9 +62,9 @@ class Number(Property):
             self.name: result,
         }
 
-    @staticmethod
-    def from_num(name: str, value: int) -> "Number":
-        return Number(
+    @classmethod
+    def from_num(cls: Type[T], name: str, value: int) -> T:
+        return cls(
             name=name,
             number=value,
         )

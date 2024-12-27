@@ -1,7 +1,10 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from ..block.rich_text import RichText
 from .property import Property
+
+T = TypeVar("T", bound="Text")
 
 
 @dataclass
@@ -19,12 +22,12 @@ class Text(Property):
         self.id = id
         self.rich_text = rich_text
 
-    @staticmethod
-    def from_dict(name: str, param: dict) -> "Text":
+    @classmethod
+    def from_dict(cls: Type[T], name: str, param: dict) -> T:
         try:
             rich_text = RichText.from_entity(param["rich_text"])
             id = param["id"]
-            return Text(
+            return cls(
                 name=name,
                 id=id,
                 rich_text=rich_text,
@@ -40,23 +43,24 @@ class Text(Property):
         }
         return {self.name: result}
 
-    def append_text(self, text: str) -> "Text":
+    def append_text(self, text: str):
         updated_text = self.text + "\n" + text
-        return Text(
+        cls = self.__class__
+        return cls(
             name=self.name,
             rich_text=RichText.from_plain_text(updated_text.strip()),
         )
 
-    @staticmethod
-    def from_plain_text(name: str, text: str) -> "Text":
-        return Text(
+    @classmethod
+    def from_plain_text(cls: Type[T], name: str, text: str) -> T:
+        return cls(
             name=name,
             rich_text=RichText.from_plain_text(text=text),
         )
 
-    @staticmethod
-    def empty(name: str) -> "Text":
-        return Text(
+    @classmethod
+    def empty(cls: Type[T], name: str) -> T:
+        return cls(
             name=name,
             rich_text=RichText.empty(),
         )

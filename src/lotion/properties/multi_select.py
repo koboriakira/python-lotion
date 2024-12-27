@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="MultiSelect")
 
 
 @dataclass(frozen=True)
@@ -49,9 +52,7 @@ class MultiSelect(Property):
     values: list[MultiSelectElement]
     type: str = "multi_select"
 
-    def __init__(
-        self, name: str, values: list[MultiSelectElement], id: str | None = None
-    ) -> None:  # noqa: A002
+    def __init__(self, name: str, values: list[MultiSelectElement], id: str | None = None) -> None:  # noqa: A002
         self.name = name
         self.values = values
         self.id = id
@@ -60,8 +61,8 @@ class MultiSelect(Property):
         if not all(isinstance(value, MultiSelectElement) for value in self.values):
             raise ValueError("All values must be MultiSelectElement instances.")
 
-    @staticmethod
-    def of(name: str, param: dict) -> "MultiSelect":
+    @classmethod
+    def of(cls: Type[T], name: str, param: dict) -> T:
         multi_select = [
             MultiSelectElement(
                 id=element["id"],
@@ -71,14 +72,14 @@ class MultiSelect(Property):
             for element in param["multi_select"]
         ]
 
-        return MultiSelect(
+        return cls(
             name=name,
             values=multi_select,
             id=param["id"],
         )
 
-    @staticmethod
-    def create(name: str, values: list[dict[str, str]]) -> "MultiSelect":
+    @classmethod
+    def create(cls: Type[T], name: str, values: list[dict[str, str]]) -> T:
         """
         Create a MultiSelect instance from a list of dictionaries.
 
@@ -89,11 +90,8 @@ class MultiSelect(Property):
         Returns:
             MultiSelect: MultiSelect instance.
         """
-        multi_select = [
-            MultiSelectElement(id=element["id"], name=element["name"])
-            for element in values
-        ]
-        return MultiSelect(
+        multi_select = [MultiSelectElement(id=element["id"], name=element["name"]) for element in values]
+        return cls(
             name=name,
             values=multi_select,
         )

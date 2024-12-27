@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from .property import Property
 from ..datetime_utils import convert_to_date_or_datetime
+
+T = TypeVar("T", bound="LastEditedTime")
 
 
 @dataclass
@@ -18,9 +20,9 @@ class LastEditedTime(Property):
         self.value = value
         self.id = id
 
-    @staticmethod
-    def create(key, value: str) -> "LastEditedTime":
-        return LastEditedTime(
+    @classmethod
+    def create(cls: Type[T], key, value: str) -> T:
+        return cls(
             name=key,
             value=convert_to_date_or_datetime(value),
         )

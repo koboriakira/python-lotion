@@ -1,8 +1,11 @@
 from dataclasses import dataclass
 from datetime import date, datetime
+from typing import Type, TypeVar
 
 from .property import Property
 from ..datetime_utils import convert_to_date_or_datetime
+
+T = TypeVar("T", bound="Date")
 
 
 @dataclass
@@ -64,13 +67,13 @@ class Date(Property):
             return None
         return convert_to_date_or_datetime(self.end, cls=datetime)
 
-    @staticmethod
-    def of(name: str = DEFAULT_NAME, param: dict | None = None) -> "Date":
+    @classmethod
+    def of(cls: Type[T], name: str = DEFAULT_NAME, param: dict | None = None) -> T:
         if param is None:
             param = {}
         if param["date"] is None:
-            return Date(name=name, id=param["id"])
-        return Date(
+            return cls(name=name, id=param["id"])
+        return cls(
             name=name,
             id=param["id"],
             start=param["date"]["start"],
@@ -78,20 +81,16 @@ class Date(Property):
             time_zone=param["date"]["time_zone"],
         )
 
-    @staticmethod
-    def from_start_date(
-        name: str = DEFAULT_NAME, start_date: date | datetime | None = None
-    ) -> "Date":
-        return Date(
+    @classmethod
+    def from_start_date(cls: Type[T], name: str = DEFAULT_NAME, start_date: date | datetime | None = None) -> T:
+        return cls(
             name=name,
             start=start_date.isoformat() if start_date is not None else None,
         )
 
-    @staticmethod
-    def from_range(
-        start: date | datetime, end: date | datetime, name: str = DEFAULT_NAME
-    ) -> "Date":
-        return Date(
+    @classmethod
+    def from_range(cls: Type[T], start: date | datetime, end: date | datetime, name: str = DEFAULT_NAME) -> T:
+        return cls(
             name=name,
             start=start.isoformat(),
             end=end.isoformat(),

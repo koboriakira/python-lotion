@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+from typing import Type, TypeVar
 
 from .property import Property
+
+T = TypeVar("T", bound="Files")
 
 
 @dataclass(frozen=True)
@@ -44,9 +47,9 @@ class Files(Property):
         self._files = files
         self.id = id
 
-    @staticmethod
-    def of(key: str, param: dict) -> "Files":
-        return Files(
+    @classmethod
+    def of(cls: Type[T], key: str, param: dict) -> T:
+        return cls(
             id=param["id"],
             name=key,
             files=param["files"],
