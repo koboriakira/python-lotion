@@ -1,13 +1,16 @@
-from lotion import Lotion, BasePage, notion_database
+from lotion import Lotion, BasePage, notion_database, notion_prop
 from lotion.properties import Title, Date
 
 
+@notion_prop(name="Title")
 class TaskTitle(Title):
-    PROP_NAME = "Title"
+    pass
 
 
+@notion_prop(name="Started At")
 class TaskDate(Date):
-    PROP_NAME = "Started At"
+    # PROP_NAME = "Started At"
+    pass
 
 
 @notion_database(database_id="1696567a3bbf803e9817c7ae1e398b71")

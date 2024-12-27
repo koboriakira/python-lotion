@@ -52,4 +52,17 @@ def notion_database(database_id: str):
     return decorator
 
 
-__all__ = ["Lotion", "BasePage", "notion_database"]
+def notion_prop(name: str):
+    """
+    クラスデコレータ: PROP_NAME を自動的に設定する。
+    """
+
+    def decorator(cls):
+        # クラスに PROP_NAME を設定
+        setattr(cls, "PROP_NAME", name)
+        return cls
+
+    return decorator
+
+
+__all__ = ["Lotion", "BasePage", "notion_database", "notion_prop"]
