@@ -1,8 +1,10 @@
+from typing import cast
 from unittest import TestCase
 
 import pytest
 from lotion.lotion import Lotion
 from test.test_lotion.test_original_page.original_page import OriginalBasePage
+
 
 @pytest.mark.current()
 class TestOriginalBasePage(TestCase):
@@ -24,4 +26,4 @@ class TestOriginalBasePage(TestCase):
         print(original_page)
         print(original_text)
         print(original_page.original_text.text)
-        self.fail()
+        self.assertEqual(original_text.text, "This is a test.")

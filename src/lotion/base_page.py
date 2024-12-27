@@ -217,8 +217,8 @@ class BasePage:
             raise NotCreatedError("created_by is None.")
         return self._last_edited_by
 
-    @staticmethod
-    def from_data(data: dict, block_children: list[Block] | None = None) -> "BasePage":
+    @classmethod
+    def from_data(cls: Type[T], data: dict, block_children: list[Block] | None = None) -> T:
         id_ = PageId(data["id"]).value if data["id"] is not None else None
         url_ = data["url"] if "url" in data else None
         created_time = datetime.fromisoformat(data["created_time"]) + timedelta(hours=9)
@@ -231,7 +231,7 @@ class BasePage:
         properties = PropertyTranslator.from_dict(data["properties"])
         block_children = block_children or []
 
-        return BasePage(
+        return cls(
             id_=id_,
             url_=url_,
             created_time=created_time.replace(tzinfo=JST),

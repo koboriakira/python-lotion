@@ -69,8 +69,7 @@ class Lotion:
     def retrieve_page(self, page_id: str, cls: Type[T]) -> T:
         """指定されたページを取得する"""
         page_entity = self.__retrieve_page(page_id=page_id)
-        base_page = self.__convert_page_model(page_entity=page_entity, include_children=True)
-        return cls._cast(base_page)
+        return self.__convert_page_model(page_entity=page_entity, include_children=True, cls=cls)
 
     def update_page(self, page_id: str, properties: list[Property] | None = None) -> None:
         """指定されたページを更新する"""
@@ -284,13 +283,14 @@ class Lotion:
         self,
         page_entity: dict,
         include_children: bool | None = None,
-    ) -> BasePage:
+        cls: Type[T] = BasePage,
+    ) -> T:
         include_children = (
             include_children if include_children is not None else True
         )  # 未指定の場合はchildrenを取得する
         id_ = PageId(page_entity["id"])
         block_children = self.__get_block_children(page_id=id_.value) if include_children else []
-        return BasePage.from_data(data=page_entity, block_children=block_children)
+        return cls.from_data(data=page_entity, block_children=block_children)
 
     def __retrieve_page(self, page_id: str, retry_count: int = 0) -> dict:
         try:
