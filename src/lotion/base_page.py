@@ -104,12 +104,15 @@ class BasePage:
             raise NotCreatedError("created_at is None.")
         return self.last_edited_time
 
-    def get(self, instance_class: Type[P]) -> P:
+    def get_prop(self, instance_class: Type[P]) -> P:
         parent_classes = instance_class.__bases__
         result = self.properties.get_property(name=instance_class.PROP_NAME, instance_class=parent_classes[0])
         if result is None:
             raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=instance_class.PROP_NAME)
         return cast(P, result)
+
+    def set_prop(self, value: Property) -> None:
+        self.properties = self.properties.append_property(value)
 
     def get_status(self, name: str) -> Status:
         return self._get_property(name=name, instance_class=Status)  # type: ignore
