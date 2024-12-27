@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from lotion import Lotion, BasePage, lotion
 from lotion.properties import Title, Date
 
@@ -10,9 +11,8 @@ class TaskDate(Date):
     PROP_NAME = "Started At"
 
 
-@lotion
+@lotion(database_id="1696567a3bbf803e9817c7ae1e398b71")
 class Task(BasePage):
-    DATABASE_ID = "1696567a3bbf803e9817c7ae1e398b71"
     task_title: TaskTitle
     started_at: TaskDate
 
