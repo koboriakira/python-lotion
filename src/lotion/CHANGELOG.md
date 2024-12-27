@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/koboriakira/python-lotion/compare/v0.7.0...v0.7.1) (2024-12-27)
+
+
+### Features
+
+* BasePageを継承可能なものにする ([#44](https://github.com/koboriakira/python-lotion/issues/44)) ([a327e56](https://github.com/koboriakira/python-lotion/commit/a327e56e7500e41d21d54e412550df4917f7a393))
+* 各プロパティを継承可能にする ([#47](https://github.com/koboriakira/python-lotion/issues/47)) ([4659ad0](https://github.com/koboriakira/python-lotion/commit/4659ad03f0e2759724df28caec4523ef2e02ff9a))
+
 ## [0.7.0](https://github.com/koboriakira/python-lotion/compare/v0.6.4...v0.7.0) (2024-12-25)
 
 
