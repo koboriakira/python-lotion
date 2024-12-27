@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from typing import Type, TypeVar
 
 from .datetime_utils import JST
 from .properties.files import Files
@@ -27,6 +28,8 @@ from .properties.title import Title
 from .properties.unique_id import UniqueId
 from .properties.url import Url
 
+T = TypeVar("T", bound="BasePage")
+
 
 class NotCreatedError(Exception):
     pass
@@ -53,9 +56,9 @@ class BasePage:
     parent: dict | None = None
     object = "page"
 
-    @staticmethod
-    def create(properties: list[Property] | None = None, blocks: list[Block] | None = None) -> "BasePage":
-        return BasePage(
+    @classmethod
+    def create(cls: Type[T], properties: list[Property] | None = None, blocks: list[Block] | None = None) -> T:
+        return cls(
             id_=None,
             url_=None,
             created_time=None,
@@ -163,9 +166,10 @@ class BasePage:
         """Slackでの表示用のリンクつきタイトルを返す"""
         return f"<{self.url}|{self.get_title_text()}>"
 
-    def copy(self) -> "BasePage":
+    def copy(self):
         """コピーを作成する。新しいページになる"""
-        return BasePage.create(properties=self.properties.values, blocks=self.block_children)
+        cls = self.__class__
+        return cls.create(properties=self.properties.values, blocks=self.block_children)
 
     def title_for_markdown(self) -> str:
         """Markdownでの表示用のリンクつきタイトルを返す"""
@@ -204,8 +208,8 @@ class BasePage:
             raise NotCreatedError("created_by is None.")
         return self._last_edited_by
 
-    @staticmethod
-    def from_data(data: dict, block_children: list[Block] | None = None) -> "BasePage":
+    @classmethod
+    def from_data(cls: Type[T], data: dict, block_children: list[Block] | None = None) -> T:
         id_ = PageId(data["id"]).value if data["id"] is not None else None
         url_ = data["url"] if "url" in data else None
         created_time = datetime.fromisoformat(data["created_time"]) + timedelta(hours=9)
@@ -218,7 +222,7 @@ class BasePage:
         properties = PropertyTranslator.from_dict(data["properties"])
         block_children = block_children or []
 
-        return BasePage(
+        return cls(
             id_=id_,
             url_=url_,
             created_time=created_time.replace(tzinfo=JST),
