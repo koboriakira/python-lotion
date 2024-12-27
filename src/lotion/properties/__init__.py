@@ -10,7 +10,6 @@ from .multi_select import MultiSelect, MultiSelectElement, MultiSelectElements
 from .select import Select, Selects
 from .checkbox import Checkbox
 from .number import Number
-from .notion_datetime import NotionDatetime
 from .cover import Cover
 from .icon import Icon
 from .parent import Parent
@@ -43,7 +42,6 @@ __all__ = [
     "Selects",
     "Checkbox",
     "Number",
-    "NotionDatetime",
     "Cover",
     "Icon",
     "Parent",
