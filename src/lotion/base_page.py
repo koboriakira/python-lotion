@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Type, TypeVar
+from typing import Type, TypeVar, cast
 
 from .datetime_utils import JST
 from .properties.files import Files
@@ -30,6 +30,8 @@ from .properties.url import Url
 
 T = TypeVar("T", bound="BasePage")
 
+P = TypeVar("P", bound=Property)
+
 
 class NotCreatedError(Exception):
     pass
@@ -55,6 +57,7 @@ class BasePage:
     archived: bool | None = False
     parent: dict | None = None
     object = "page"
+    DATABASE_ID: str | None = None  # must be set in subclass
 
     @classmethod
     def create(cls: Type[T], properties: list[Property] | None = None, blocks: list[Block] | None = None) -> T:
@@ -100,6 +103,13 @@ class BasePage:
         if self.last_edited_time is None:
             raise NotCreatedError("created_at is None.")
         return self.last_edited_time
+
+    def get(self, instance_class: Type[P]) -> P:
+        parent_classes = instance_class.__bases__
+        result = self.properties.get_property(name=instance_class.PROP_NAME, instance_class=parent_classes[0])
+        if result is None:
+            raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=instance_class.PROP_NAME)
+        return cast(P, result)
 
     def get_status(self, name: str) -> Status:
         return self._get_property(name=name, instance_class=Status)  # type: ignore

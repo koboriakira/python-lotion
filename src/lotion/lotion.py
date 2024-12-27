@@ -122,6 +122,22 @@ class Lotion:
             pages.append(page)
         return pages
 
+    def retrieve_pages(
+        self,
+        cls: Type[T],
+        filter_param: dict | None = None,
+        include_children: bool | None = None,
+    ) -> list[T]:
+        database_id = cls.DATABASE_ID
+        if database_id is None:
+            raise ValueError(f"DATABASE_ID is not set in {cls}")
+        return self.retrieve_database(
+            database_id=database_id,
+            filter_param=filter_param,
+            include_children=include_children,
+            cls=cls,
+        )
+
     def find_page_by_title(
         self,
         database_id: str,

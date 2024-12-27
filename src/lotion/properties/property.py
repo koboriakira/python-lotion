@@ -5,6 +5,7 @@ class Property(metaclass=ABCMeta):
     id: str | None
     name: str
     type: str
+    PROP_NAME: str = "Property"  # Must be overridden
 
     @abstractmethod
     def __dict__(self) -> dict:
