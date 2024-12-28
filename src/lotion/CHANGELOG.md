@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.2](https://github.com/koboriakira/python-lotion/compare/v0.8.1...v0.8.2) (2024-12-28)
+
+
+### Features
+
+* カバー画像とアイコンの指定を可能にする ([daab1af](https://github.com/koboriakira/python-lotion/commit/daab1af621dfb2deec3bd5ae4e7d4844368ea975))
+
+
+### Bug Fixes
+
+* 使わない関数を削除 ([c9dd4b2](https://github.com/koboriakira/python-lotion/commit/c9dd4b20e5f7cc6323639736d8a3b3fa3e29c189))
+
 ## [0.8.1](https://github.com/koboriakira/python-lotion/compare/v0.8.0...v0.8.1) (2024-12-27)
 
 
