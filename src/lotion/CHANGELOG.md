@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.3](https://github.com/koboriakira/python-lotion/compare/v0.8.2...v0.8.3) (2024-12-28)
+
+
+### Features
+
+* append関数を作成 ([7c24814](https://github.com/koboriakira/python-lotion/commit/7c24814ef73d91d97a1c784dc1498ddeb1f442ee))
+* find_page関数を実装 ([661169d](https://github.com/koboriakira/python-lotion/commit/661169dd848e2d36b5ce3818fad88a21c740e187))
+
 ## [0.8.2](https://github.com/koboriakira/python-lotion/compare/v0.8.1...v0.8.2) (2024-12-28)
 
 
