@@ -57,7 +57,7 @@ class BasePage:
     archived: bool | None = False
     parent: dict | None = None
     object = "page"
-    DATABASE_ID: str | None = None  # must be set in subclass
+    DATABASE_ID: str = "database_id"  # must be set in subclass
 
     @classmethod
     def create(cls: Type[T], properties: list[Property] | None = None, blocks: list[Block] | None = None) -> T:
