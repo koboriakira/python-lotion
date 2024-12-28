@@ -5,6 +5,7 @@ from typing import Type, TypeVar
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
+
 from .base_page import BasePage
 from .block import Block, BlockFactory
 from .filter.builder import Builder
@@ -12,16 +13,19 @@ from .filter.condition.cond import Cond
 from .filter.condition.prop import Prop
 from .page.page_id import PageId
 from .properties.cover import Cover
-from .properties.multi_select import MultiSelect, MultiSelectElement, MultiSelectElements
+from .properties.multi_select import MultiSelect, MultiSelectElement
 from .properties.properties import Properties
 from .properties.property import Property
-from .properties.select import Select, Selects
+from .properties.select import Select
+from .properties.title import Title
+from .properties.text import Text
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
 T = TypeVar("T", bound="BasePage")
 S = TypeVar("S", bound=Select)
 M = TypeVar("M", bound=MultiSelect)
+TI = TypeVar("TI", bound=Title)
 
 
 class AppendBlockError(Exception):
@@ -154,6 +158,31 @@ class Lotion:
             include_children=include_children,
             cls=cls,
         )
+
+    def find_page(
+        self,
+        cls: Type[T],
+        prop: Title | Text,
+        prop_name: str | None = None,
+    ) -> T | None:
+        """指定されたデータベースのページを取得する。検索可能なプロパティはTitleとTextのみ"""
+        filter_param = (
+            Builder.create()
+            .add(
+                Prop.RICH_TEXT,
+                prop_name or prop.PROP_NAME,
+                Cond.EQUALS,
+                prop.text,
+            )
+            .build()
+        )
+        pages = self.retrieve_pages(cls, filter_param=filter_param)
+        if len(pages) == 0:
+            return None
+        if len(pages) > 1:
+            warning_message = f"Found multiple pages with the same property: {prop}"
+            self._logger.warning(warning_message)
+        return pages[0]
 
     def find_page_by_title(
         self,
