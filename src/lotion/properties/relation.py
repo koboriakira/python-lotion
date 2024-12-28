@@ -49,6 +49,9 @@ class Relation(Property):
     def from_id(cls: Type[T], id: str, name: str | None = None) -> T:
         return cls.from_id_list(name=name or cls.PROP_NAME, id_list=[id])
 
+    def append(self, id: str) -> None:
+        self.id_list.append(id)
+
     def __dict__(self) -> dict:
         result = {
             "type": self.type,
