@@ -42,4 +42,4 @@ class TestApiText(TestCase):
             print(element.to_plain_text())
 
         # Then
-        self.assertEqual(actual.title, "prefixLotion開発用suffix")
+        self.assertEqual(actual.get_title().text, "prefixLotion開発用suffix")

@@ -89,10 +89,6 @@ class BasePage:
         return self.get_title().rich_text.to_plain_text()
 
     @property
-    def title(self) -> str:
-        return self.get_title_text()
-
-    @property
     def created_at(self) -> datetime:
         if self.created_time is None:
             raise NotCreatedError("created_at is None.")

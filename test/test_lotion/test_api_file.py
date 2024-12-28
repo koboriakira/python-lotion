@@ -22,7 +22,7 @@ class TestApiStatus(TestCase):
     def test_ファイルのあるページを変更できる(self):
         title = Title.from_plain_text(text="テスト")
         actual = update_page(page=self.page, property=title)
-        self.assertEqual(actual.title, "テスト")
+        self.assertEqual(actual.get_title().text, "テスト")
 
     def test_ファイルプロパティを取得できる(self):
         page = Lotion.get_instance().retrieve_page(page_id="1636567a3bbf80aeb2ccce5c0320bfc5")
