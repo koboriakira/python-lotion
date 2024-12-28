@@ -60,7 +60,13 @@ class BasePage:
     DATABASE_ID: str = "database_id"  # must be set in subclass
 
     @classmethod
-    def create(cls: Type[T], properties: list[Property] | None = None, blocks: list[Block] | None = None) -> T:
+    def create(
+        cls: Type[T],
+        properties: list[Property] | None = None,
+        blocks: list[Block] | None = None,
+        cover: Cover | None = None,
+        icon: Icon | None = None,
+    ) -> T:
         return cls(
             id_=None,
             url_=None,
@@ -69,8 +75,8 @@ class BasePage:
             _created_by=None,
             _last_edited_by=None,
             properties=Properties(values=properties or []),
-            cover=None,
-            icon=None,
+            cover=cover,
+            icon=icon,
             archived=False,
             parent=None,
             block_children=blocks or [],
