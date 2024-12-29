@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.7](https://github.com/koboriakira/python-lotion/compare/v0.8.6...v0.8.7) (2024-12-29)
+
+
+### Bug Fixes
+
+* 関数が意図通りにはたらくようにする ([e6b9846](https://github.com/koboriakira/python-lotion/commit/e6b9846d0756e52149572b8b7f6d1abd0c97e875))
+
 ## [0.8.6](https://github.com/koboriakira/python-lotion/compare/v0.8.5...v0.8.6) (2024-12-29)
 
 
