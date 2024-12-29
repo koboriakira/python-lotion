@@ -16,7 +16,7 @@ class MultiSelectElement:
     TYPE = "multi_select"
 
     def _is_value_only(self) -> bool:
-        return self.id is None and self.color is None
+        return self.id is None and self.color is None and self.name != ""
 
     def __dict__(self) -> dict:
         result = {

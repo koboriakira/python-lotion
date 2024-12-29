@@ -50,7 +50,7 @@ class Select(Property):
 
     def _is_set_name_only(self) -> bool:
         """selected_idが指定されていない場合にTrueを返す。このときは一度Selectを取得しなおす必要がある。"""
-        return self.selected_id is None
+        return self.selected_id is None and self.selected_name != ""
 
     def is_empty(self) -> bool:
         return self.selected_name == ""
