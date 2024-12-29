@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/koboriakira/python-lotion/compare/v0.8.4...v0.8.5) (2024-12-29)
+
+
+### Bug Fixes
+
+* Noneに対応 ([b2a8786](https://github.com/koboriakira/python-lotion/commit/b2a8786bc4442a4922f70caa27c1300f0823ee4b))
+
 ## [0.8.4](https://github.com/koboriakira/python-lotion/compare/v0.8.3...v0.8.4) (2024-12-29)
 
 
