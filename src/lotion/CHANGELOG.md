@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.4](https://github.com/koboriakira/python-lotion/compare/v0.8.3...v0.8.4) (2024-12-29)
+
+
+### Features
+
+* SelectやMultiSelectの名前指定更新に対応する ([#54](https://github.com/koboriakira/python-lotion/issues/54)) ([38bcc63](https://github.com/koboriakira/python-lotion/commit/38bcc63321a63d5fcfff02d379999ee59ca69e90))
+
 ## [0.8.3](https://github.com/koboriakira/python-lotion/compare/v0.8.2...v0.8.3) (2024-12-28)
 
 
