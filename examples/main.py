@@ -45,14 +45,14 @@ class Task(BasePage):
 
 
 lotion = Lotion.get_instance()
-tasks = lotion.retrieve_pages(Task)
-for task in tasks:
-    print(task.task_title.text)
-    print(task.started_at.start_date)
-    print(task.memo.text)
-    print(task.goal.text)
-    print(task.category.selected_name)
-    print(task.tags.values)
+# tasks = lotion.retrieve_pages(Task)
+# for task in tasks:
+#     print(task.task_title.text)
+#     print(task.started_at.start_date)
+#     print(task.memo.text)
+#     print(task.goal.text)
+#     print(task.category.selected_name)
+#     print(task.tags.values)
 
 category = lotion.fetch_select(Task, TaskCategory, "Rent")
 tag = lotion.fetch_multi_select(Task, TaskTags, ["Test", "Sample"])
@@ -69,5 +69,7 @@ print(created_page.task_title.text)
 
 new_task_title = TaskTitle.from_plain_text("Updated Task")
 created_page.set_prop(new_task_title)
+new_select = TaskCategory.from_name("Food")
+created_page.set_prop(new_select)
 print(created_page.task_title.text)
 lotion.update(created_page)
