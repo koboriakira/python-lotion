@@ -87,11 +87,20 @@ class Date(Property):
         )
 
     @classmethod
-    def from_range(cls: Type[T], start: date | datetime, end: date | datetime, name: str | None = None) -> T:
+    def from_range(
+        cls: Type[T],
+        start: date | datetime | None = None,
+        end: date | datetime | None = None,
+        name: str | None = None,
+    ) -> T:
+        if start is None:
+            if end is not None:
+                raise ValueError("Start date is required when end date is specified.")
+            return cls(name=name or cls.PROP_NAME)
         return cls(
             name=name or cls.PROP_NAME,
             start=start.isoformat(),
-            end=end.isoformat(),
+            end=end.isoformat() if end is not None else None,
         )
 
     def is_between(self, start: datetime, end: datetime) -> bool:
