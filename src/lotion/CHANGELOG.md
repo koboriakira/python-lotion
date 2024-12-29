@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.6](https://github.com/koboriakira/python-lotion/compare/v0.8.5...v0.8.6) (2024-12-29)
+
+
+### Bug Fixes
+
+* 独自ページのプロパティを正しく取得する ([#58](https://github.com/koboriakira/python-lotion/issues/58)) ([5581b1f](https://github.com/koboriakira/python-lotion/commit/5581b1fcf8afd7e7c6a215d28f298c6d2e782e11))
+
 ## [0.8.5](https://github.com/koboriakira/python-lotion/compare/v0.8.4...v0.8.5) (2024-12-29)
 
 
