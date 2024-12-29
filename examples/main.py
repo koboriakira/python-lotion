@@ -5,7 +5,8 @@ from lotion.properties.multi_select import MultiSelect
 
 @notion_prop(name="Title")
 class TaskTitle(Title):
-    pass
+    def add_hello(self) -> str:
+        return f"Hello, {self.text}"
 
 
 @notion_prop(name="Started At")
@@ -45,14 +46,15 @@ class Task(BasePage):
 
 
 lotion = Lotion.get_instance()
-# tasks = lotion.retrieve_pages(Task)
-# for task in tasks:
-#     print(task.task_title.text)
-#     print(task.started_at.start_date)
-#     print(task.memo.text)
-#     print(task.goal.text)
-#     print(task.category.selected_name)
-#     print(task.tags.values)
+tasks = lotion.retrieve_pages(Task)
+for task in tasks:
+    print(task.task_title.text)
+    print(task.task_title.add_hello())
+    print(task.started_at.start_date)
+    print(task.memo.text)
+    print(task.goal.text)
+    print(task.category.selected_name)
+    print(task.tags.values)
 
 category = lotion.fetch_select(Task, TaskCategory, "Rent")
 tag = lotion.fetch_multi_select(Task, TaskTags, ["Test", "Sample"])
