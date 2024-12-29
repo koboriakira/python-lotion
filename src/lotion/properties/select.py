@@ -44,6 +44,14 @@ class Select(Property):
     def empty(cls: Type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME)
 
+    @classmethod
+    def from_name(cls: Type[T], selected_name: str, name: str | None = None) -> T:
+        return cls(name=name or cls.PROP_NAME, selected_name=selected_name)
+
+    def _is_set_name_only(self) -> bool:
+        """selected_idが指定されていない場合にTrueを返す。このときは一度Selectを取得しなおす必要がある。"""
+        return self.selected_id is None
+
     def is_empty(self) -> bool:
         return self.selected_name == ""
 

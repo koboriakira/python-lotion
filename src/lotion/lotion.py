@@ -84,11 +84,11 @@ class Lotion:
 
     def update(self, page: T) -> T:
         """ページを更新する"""
-        if page.is_created():
+        _page = self._convert_to_update_page_object(page)
+        if _page.is_created():
             self.__update(page_id=page.id, properties=Properties(values=page.properties.values))
-            return page
-        created_page = self.create_page(page)
-        return created_page
+            return _page
+        return self.create_page(_page)
 
     def retrieve_comments(self, page_id: str) -> list[dict]:
         """指定されたページのコメントを取得する"""
@@ -119,12 +119,13 @@ class Lotion:
 
     def create_page(self, page: T) -> T:
         """ページを新規作成する"""
+        _page = self._convert_to_update_page_object(page)
         return self.create_page_in_database(
-            database_id=page._get_own_database_id(),
-            cover=page.cover,
-            properties=page.properties.values,
-            blocks=page.block_children,
-            cls=type(page),
+            database_id=_page._get_own_database_id(),
+            cover=_page.cover,
+            properties=_page.properties.values,
+            blocks=_page.block_children,
+            cls=type(_page),
         )
 
     def retrieve_database(  # noqa: PLR0913
@@ -233,6 +234,19 @@ class Lotion:
             return None
         return results[0]
 
+    def _convert_to_update_page_object(self, page: T) -> T:
+        properties = page.properties.exclude_for_update()
+        values = properties.values
+        for value in values:
+            if isinstance(value, Select) and value._is_set_name_only():
+                new_value = self.fetch_select(page.__class__, value.__class__, value.selected_name)
+                properties = properties.append_property(new_value)
+            if isinstance(value, MultiSelect) and value._is_value_only():
+                new_value = self.fetch_multi_select(page.__class__, value.__class__, value.to_str_list())
+                properties = properties.append_property(new_value)
+        page.properties = properties
+        return page
+
     def _database_query(
         self,
         database_id: str,
@@ -311,7 +325,9 @@ class Lotion:
             print(select.selected_name)
         filtered_selects = [s for s in selects if s.selected_name == value]
         if len(filtered_selects) == 0:
-            raise ValueError(f"Select not found in database: cls={cls.__name__}, prop={prop.__name__}, value={value}")
+            raise ValueError(
+                f"Select not found in database. Lotion can get only used selects.: cls={cls.__name__}, prop={prop.__name__}, value={value}"
+            )
         return filtered_selects[0]
 
     def fetch_multi_select(self, cls: Type[T], prop_cls: Type[M], value: str | list[str]) -> M:
