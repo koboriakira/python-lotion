@@ -67,6 +67,7 @@ created_page = lotion.create_page(new_task)
 print(created_page.task_title.text)
 
 
-created_page.task_title = TaskTitle.from_plain_text(text="Updated Task")
+new_task_title = TaskTitle.from_plain_text("Updated Task")
+created_page.set_prop(new_task_title)
 print(created_page.task_title.text)
 lotion.update(created_page)

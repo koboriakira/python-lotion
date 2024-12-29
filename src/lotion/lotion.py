@@ -311,7 +311,9 @@ class Lotion:
             print(select.selected_name)
         filtered_selects = [s for s in selects if s.selected_name == value]
         if len(filtered_selects) == 0:
-            raise ValueError(f"Select not found in database: cls={cls.__name__}, prop={prop.__name__}, value={value}")
+            raise ValueError(
+                f"Select not found in database. Lotion can get only used selects.: cls={cls.__name__}, prop={prop.__name__}, value={value}"
+            )
         return filtered_selects[0]
 
     def fetch_multi_select(self, cls: Type[T], prop_cls: Type[M], value: str | list[str]) -> M:
