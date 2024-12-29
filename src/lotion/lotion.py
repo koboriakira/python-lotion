@@ -241,6 +241,9 @@ class Lotion:
             if isinstance(value, Select) and value._is_set_name_only():
                 new_value = self.fetch_select(page.__class__, value.__class__, value.selected_name)
                 properties = properties.append_property(new_value)
+            if isinstance(value, MultiSelect) and value._is_value_only():
+                new_value = self.fetch_multi_select(page.__class__, value.__class__, value.to_str_list())
+                properties = properties.append_property(new_value)
         page.properties = properties
         return page
 

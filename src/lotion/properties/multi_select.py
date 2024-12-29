@@ -8,12 +8,15 @@ T = TypeVar("T", bound="MultiSelect")
 
 @dataclass(frozen=True)
 class MultiSelectElement:
-    id: str
     name: str
+    id: str | None = None
     color: str | None = None
     type: str = "multi_select"
 
     TYPE = "multi_select"
+
+    def _is_value_only(self) -> bool:
+        return self.id is None and self.color is None
 
     def __dict__(self) -> dict:
         result = {
@@ -77,6 +80,23 @@ class MultiSelect(Property):
             values=multi_select,
             id=param["id"],
         )
+
+    @classmethod
+    def from_name(cls: Type[T], values: list[str], name: str | None = None) -> T:
+        multi_select = [MultiSelectElement(name=value) for value in values]
+        return cls(
+            name=name or cls.PROP_NAME,
+            values=multi_select,
+        )
+
+    def _is_value_only(self) -> bool:
+        for value in self.values:
+            if value._is_value_only():
+                return True
+        return False
+
+    def to_str_list(self) -> list[str]:
+        return [value.name for value in self.values]
 
     @classmethod
     def create(cls: Type[T], values: list[dict[str, str]], name: str | None = None) -> T:
