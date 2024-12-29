@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.8](https://github.com/koboriakira/python-lotion/compare/v0.8.7...v0.8.8) (2024-12-29)
+
+
+### Bug Fixes
+
+* 日付の扱いを改善 ([1ea9bd0](https://github.com/koboriakira/python-lotion/commit/1ea9bd022b5eaefd72fe36fda3c6bb3c5d97338b))
+
 ## [0.8.7](https://github.com/koboriakira/python-lotion/compare/v0.8.6...v0.8.7) (2024-12-29)
 
 
