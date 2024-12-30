@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.9](https://github.com/koboriakira/python-lotion/compare/v0.8.8...v0.8.9) (2024-12-30)
+
+
+### Bug Fixes
+
+* Relationに登録するページIDの重複を整理する ([9f6f3a6](https://github.com/koboriakira/python-lotion/commit/9f6f3a6ff5e68adcecb8b62d6d9aa565d33a75e9))
+
 ## [0.8.8](https://github.com/koboriakira/python-lotion/compare/v0.8.7...v0.8.8) (2024-12-29)
 
 
