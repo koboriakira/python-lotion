@@ -9,7 +9,6 @@ T = TypeVar("T", bound="Relation")
 @dataclass
 class Relation(Property):
     id_list: list[str]
-    text_list: list[str]  # NOTE: Notionのデータとしては扱わない。id_listに変換するために必要になることが多いため
     type: str = "relation"
     has_more: bool = False
 
@@ -20,18 +19,12 @@ class Relation(Property):
         name: str,
         id: str | None = None,  # noqa: A002
         id_list: list[str] | None = None,
-        text_list: list[str] | None = None,
         has_more: bool | None = None,
     ) -> None:
         self.name = name
         self.id = id
-        self.id_list = id_list or []
-        self.text_list = text_list or []
+        self.id_list = list(set(id_list)) if id_list else []
         self.has_more = bool(has_more)
-
-    def is_unconverted_id_list(self) -> bool:
-        """text_listがあるがid_listがない場合にTrueを返す"""
-        return len(self.text_list) > 0 and len(self.id_list) == 0
 
     @classmethod
     def of(cls: Type[T], name: str, property: dict[str, Any]) -> T:
