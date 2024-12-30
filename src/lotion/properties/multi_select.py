@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="MultiSelect")
@@ -11,9 +12,6 @@ class MultiSelectElement:
     name: str
     id: str | None = None
     color: str | None = None
-    type: str = "multi_select"
-
-    TYPE = "multi_select"
 
     def _is_value_only(self) -> bool:
         return self.id is None and self.color is None and self.name != ""
@@ -53,7 +51,7 @@ class MultiSelectElements:
 @dataclass
 class MultiSelect(Property):
     values: list[MultiSelectElement]
-    type: str = "multi_select"
+    TYPE: str = "multi_select"
 
     def __init__(self, name: str, values: list[MultiSelectElement], id: str | None = None) -> None:  # noqa: A002
         self.name = name
@@ -122,12 +120,19 @@ class MultiSelect(Property):
 
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "multi_select": [e.__dict__() for e in self.values],
         }
         if self.id is not None:
             result["id"] = self.id
         return {self.name: result}
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.MULTI_SELECT
+
+    @property
+    def _value_for_filter(self) -> Any:
+        if len(self.values) > 1:
+            raise ValueError("MultiSelect property can only have one value for filter.")
+        return self.values[0].name

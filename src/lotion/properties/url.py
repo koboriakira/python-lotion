@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Url")
@@ -10,6 +11,7 @@ T = TypeVar("T", bound="Url")
 class Url(Property):
     url: str = ""
 
+    TYPE: str = "rich_text"
     PROP_NAME = "url"  # 自分で使うために準備。本来は不要。
 
     def __init__(self, name: str, url: str = "", id: str | None = None):
@@ -37,16 +39,9 @@ class Url(Property):
     def empty(cls: Type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME)
 
-    @property
-    def type(self) -> str:
-        return "url"
-
-    def value_for_filter(self) -> str:
-        return self.url
-
     def __dict__(self):
         result = {
-            "type": self.type,
+            "type": "url",
             "url": self.url if self.url != "" else None,
         }
         if self.id is not None:
@@ -54,3 +49,11 @@ class Url(Property):
         return {
             self.name: result,
         }
+
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.RICH_TEXT
+
+    @property
+    def _value_for_filter(self) -> Any:
+        return self.url

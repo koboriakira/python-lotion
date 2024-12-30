@@ -18,3 +18,11 @@ class Prop(Enum):
     ID = "unique_id"
     CREATED_TIME = "created_time"
     LAST_EDITED_TIME = "last_edited_time"
+    BUTTON = "button"
+
+    @staticmethod
+    def from_str(value: str) -> "Prop":
+        try:
+            return Prop(value)
+        except ValueError:
+            raise ValueError(f"Unknown property type: {value}")

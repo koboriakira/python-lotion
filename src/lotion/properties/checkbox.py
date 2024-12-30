@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Checkbox")
@@ -9,7 +10,7 @@ T = TypeVar("T", bound="Checkbox")
 @dataclass
 class Checkbox(Property):
     checked: bool
-    type: str = "checkbox"
+    TYPE: str = "checkbox"
     PROP_NAME: str = "checkbox"
 
     def __init__(self, name: str, checked: bool, id: str | None = None) -> None:  # noqa: A002, FBT001
@@ -41,7 +42,7 @@ class Checkbox(Property):
 
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "checkbox": self.checked,
         }
         if self.id is not None:
@@ -50,3 +51,11 @@ class Checkbox(Property):
 
     def value_for_filter(self) -> str:
         raise NotImplementedError
+
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.CHECKBOX
+
+    @property
+    def _value_for_filter(self) -> Any:
+        raise ValueError("Checkbox doesn't need a value for filter")

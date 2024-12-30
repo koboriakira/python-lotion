@@ -1,9 +1,14 @@
+from datetime import date
 from unittest import TestCase
 
 import pytest
 
-from lotion.filter import Builder, Prop, Cond
+from lotion.filter import Builder, Cond
 from lotion import Lotion
+from lotion.properties import Text
+from lotion.properties import Number
+from lotion.properties.date import Date
+from lotion.properties.url import Url
 
 
 @pytest.mark.api()
@@ -26,28 +31,36 @@ class TestSearch(TestCase):
 
     def test_検索_複数の条件指定(self):
         # Given
+        text_prop = Text.from_plain_text("テスト", "名前")
+        number_prop = Number.from_num(50, "数値")
         filter_param = (
             Builder.create()
-            .add(Prop.RICH_TEXT, "名前", Cond.STARTS_WITH, "テスト")
-            .add(Prop.NUMBER, "数値", Cond.GREATER_THAN, 50)
+            .add(prop=text_prop, cond=Cond.STARTS_WITH)
+            .add(prop=number_prop, cond=Cond.GREATER_THAN)
             .build()
         )
         self._search_and_assert(filter_param, 1)
 
     def test_検索_日付の検索(self):
         # Given
-        filter_param = Builder.create().add(Prop.DATE, "日付", Cond.AFTER, "2021-01-01").build()
+        date_ = date.fromisoformat("2021-01-01")
+        date_prop = Date.from_start_date(date_, "日付")
+        filter_param = Builder.create().add(prop=date_prop, cond=Cond.AFTER).build()
         self._search_and_assert(filter_param, 1)
 
     def test_検索_日付の検索_1年前以内(self):
         # Given
-        filter_param = Builder.create().add(Prop.DATE, "日付", Cond.PAST_YEAR).build()
+        date_ = date.fromisoformat("2021-01-01")
+        date_prop = Date.from_start_date(date_, "日付")
+        filter_param = Builder.create().add(date_prop, Cond.PAST_YEAR).build()
         self._search_and_assert(filter_param, 1)
 
     def test_or条件(self):
         # Given
-        filter_param_a = Builder.create().add(Prop.RICH_TEXT, "名前", Cond.EQUALS, "テストA").build()
-        filter_param_b = Builder.create().add(Prop.RICH_TEXT, "テキスト", Cond.EQUALS, "テキストB").build()
+        text_prop_a = Text.from_plain_text("テストA", "名前")
+        text_prop_b = Text.from_plain_text("テキストB", "テキスト")
+        filter_param_a = Builder.create().add(prop=text_prop_a, cond=Cond.EQUALS).build()
+        filter_param_b = Builder.create().add(prop=text_prop_b, cond=Cond.EQUALS).build()
         filter_param = {
             "or": [filter_param_a, filter_param_b],
         }
@@ -60,7 +73,8 @@ class TestSearch(TestCase):
 
     def test_urlの検索(self):
         # Given
-        filter_param = Builder.create().add(Prop.RICH_TEXT, "URL", Cond.EQUALS, "https://example.com/").build()
+        url = Url.from_url("https://example.com/", "URL")
+        filter_param = Builder.create().add(url, Cond.EQUALS).build()
         self._search_and_assert(filter_param, 1)
 
     def _search_and_assert(self, filter_param: dict, expected: int):

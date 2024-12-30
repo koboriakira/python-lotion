@@ -1,7 +1,6 @@
 from datetime import date, datetime
 from unittest import TestCase
 
-import pytest
 from lotion.properties.date import Date
 
 DUMMY_START_DATE = date(2021, 1, 1)
@@ -10,7 +9,6 @@ DUMMY_START_DATETIME = datetime(2022, 1, 1, 1, 0, 0)
 DUMMY_END_DATETIME = datetime(2022, 1, 1, 1, 0, 0)
 
 
-@pytest.mark.current
 class TestDate(TestCase):
     def test_range(self):
         # Given, When

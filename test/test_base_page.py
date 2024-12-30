@@ -1,12 +1,10 @@
 import json
 from unittest import TestCase
 
-import pytest
 from lotion.base_page import BasePage
 from lotion.properties.title import Title
 
 
-@pytest.mark.current
 class TestBasePage(TestCase):
     def test_ページを作成する(self):
         # When

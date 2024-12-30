@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Relation")
@@ -9,7 +10,6 @@ T = TypeVar("T", bound="Relation")
 @dataclass
 class Relation(Property):
     id_list: list[str]
-    type: str = "relation"
     has_more: bool = False
 
     TYPE = "relation"
@@ -47,7 +47,7 @@ class Relation(Property):
 
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "relation": [
                 {
                     "id": id,
@@ -62,5 +62,12 @@ class Relation(Property):
             self.name: result,
         }
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.RELATION
+
+    @property
+    def _value_for_filter(self) -> Any:
+        if len(self.id_list) > 1:
+            raise ValueError(f"{self.name}: Relation property can only have one value for filter.")
+        return self.id_list[0]

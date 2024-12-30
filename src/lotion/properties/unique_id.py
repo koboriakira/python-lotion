@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Type, TypeVar
 
 from .property import Property
 
@@ -16,6 +16,7 @@ class UniqueId(Property):
 
     prefix: str | None
     number: int
+    TYPE: str = "unique_id"
 
     def __init__(
         self,
@@ -38,12 +39,13 @@ class UniqueId(Property):
             number=param["unique_id"]["number"],
         )
 
-    @property
-    def type(self) -> str:
-        return "unique_id"
-
     def __dict__(self) -> dict:
         raise NotImplementedError("this dict method must not be called")
 
-    def value_for_filter(self) -> Any:
-        return self.number
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

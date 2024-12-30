@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
 from ..block.rich_text import RichText
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Text")
@@ -10,7 +11,7 @@ T = TypeVar("T", bound="Text")
 @dataclass
 class Text(Property):
     rich_text: RichText
-    type: str = "rich_text"
+    TYPE: str = "rich_text"
 
     def __init__(
         self,
@@ -38,7 +39,7 @@ class Text(Property):
 
     def __dict__(self):
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "rich_text": self.rich_text.to_dict(),
         }
         return {self.name: result}
@@ -73,5 +74,10 @@ class Text(Property):
     def text(self) -> str:
         return self.rich_text.to_plain_text()
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.RICH_TEXT
+
+    @property
+    def _value_for_filter(self) -> Any:
+        return self.text

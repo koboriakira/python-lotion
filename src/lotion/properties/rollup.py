@@ -15,6 +15,7 @@ class Rollup(Property):
     """
 
     _rollup: dict
+    TYPE: str = "rollup"
 
     def __init__(
         self,
@@ -39,12 +40,13 @@ class Rollup(Property):
         rollup_type = self._rollup["type"]
         return self._rollup[rollup_type]
 
-    @property
-    def type(self) -> str:
-        return "rollup"
-
     def __dict__(self) -> dict:
         raise NotImplementedError("this dict method must not be called")
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

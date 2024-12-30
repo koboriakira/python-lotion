@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Email")
@@ -15,6 +16,7 @@ class Email(Property):
     """
 
     value: str
+    TYPE: str = "email"
 
     def __init__(
         self,
@@ -41,13 +43,9 @@ class Email(Property):
     def empty(cls: Type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, value="")
 
-    @property
-    def type(self) -> str:
-        return "email"
-
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "email": None if self.value == "" else self.value,
         }
         if self.id is not None:
@@ -56,5 +54,10 @@ class Email(Property):
             self.name: result,
         }
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self) -> Prop:
+        raise NotImplementedError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self) -> Any:  # noqa: ANN201
+        raise NotImplementedError(f"{self.__class__.__name__} doesn't need a value for filter")

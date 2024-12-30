@@ -8,6 +8,8 @@ T = TypeVar("T", bound="LastEditedBy")
 
 @dataclass
 class LastEditedBy(Property):
+    TYPE: str = "last_edited_by"
+
     def __init__(
         self,
         name: str,
@@ -26,14 +28,15 @@ class LastEditedBy(Property):
         return {
             self.name: {
                 "id": self.id,
-                "type": self.type,
+                "type": self.TYPE,
                 "last_edited_by": self.last_edited_by,
             },
         }
 
     @property
-    def type(self) -> str:
-        return "last_edited_by"  # NOTE: created_timeではなくdateにする
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError()
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

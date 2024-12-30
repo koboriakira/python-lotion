@@ -1,10 +1,8 @@
 from unittest import TestCase
 
-import pytest
 from lotion.properties.relation import Relation
 
 
-@pytest.mark.current
 class TestRelation(TestCase):
     def test_重複したページIDを整理する(self):
         # Given, When

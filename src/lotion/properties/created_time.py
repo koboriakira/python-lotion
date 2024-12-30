@@ -2,14 +2,16 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Type, TypeVar
 
-from .property import Property
 from ..datetime_utils import convert_to_date_or_datetime
+from .property import Property
 
 T = TypeVar("T", bound="CreatedTime")
 
 
 @dataclass
 class CreatedTime(Property):
+    TYPE: str = "date"
+
     def __init__(
         self,
         name: str,
@@ -35,14 +37,18 @@ class CreatedTime(Property):
         }
         return {
             self.name: {
-                "type": self.type,
+                "type": self.TYPE,
                 "date": _date,
             },
         }
 
-    @property
-    def type(self) -> str:
-        return "date"  # NOTE: created_timeではなくdateにする
-
     def value_for_filter(self) -> str:
         return self.value.isoformat()
+
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

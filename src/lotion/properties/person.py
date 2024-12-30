@@ -17,6 +17,8 @@ class People(Property):
     }
     """
 
+    TYPE: str = "people"
+
     def __init__(self, name: str, id: str | None = None, people_list: list | None = None) -> None:  # noqa: A002, FBT001
         self.name = name
         self.id = id
@@ -32,18 +34,19 @@ class People(Property):
             people_list=people_list,
         )
 
-    @property
-    def type(self) -> str:
-        return "people"
-
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
-            self.type: self.people_list,
+            "type": self.TYPE,
+            self.TYPE: self.people_list,
         }
         if self.id is not None:
             result["id"] = self.id
         return {self.name: result}
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
 from ..datetime_utils import convert_to_date_or_datetime
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Date")
@@ -13,7 +14,7 @@ class Date(Property):
     start: str | None = None
     end: str | None = None
     time_zone: str | None = None
-    type: str = "date"
+    TYPE: str = "date"
 
     def __init__(
         self,
@@ -130,10 +131,17 @@ class Date(Property):
         )
         return {
             self.name: {
-                "type": self.type,
+                "type": self.TYPE,
                 "date": _date,
             },
         }
 
-    def value_for_filter(self) -> str:
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.DATE
+
+    @property
+    def _value_for_filter(self) -> Any:
+        if self.start is None:
+            raise ValueError(f"{self.name}: date is required.")
         return self.start

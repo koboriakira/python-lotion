@@ -1,11 +1,19 @@
 import re
 from dataclasses import dataclass
-from types import NoneType
 from typing import Any
 
 from ..page.page_id import PageId
+from ..properties.prop import Prop
 from .condition.cond import Cond
-from .condition.prop import Prop
+
+
+class TrueValue:
+    pass
+
+
+class EmptyObject:
+    pass
+
 
 RULESET: dict[Prop, dict[Cond, list[type]]] = {}
 RULESET[Prop.RICH_TEXT] = {
@@ -13,8 +21,8 @@ RULESET[Prop.RICH_TEXT] = {
     Cond.DOES_NOT_EQUAL: [str],
     Cond.CONTAINS: [str],
     Cond.DOES_NOT_CONTAIN: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
     Cond.STARTS_WITH: [str],
     Cond.ENDS_WITH: [str],
 }
@@ -28,25 +36,25 @@ RULESET[Prop.DATE] = {
     Cond.ON_OR_AFTER: [str],
     Cond.BEFORE: [str],
     Cond.ON_OR_BEFORE: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
-    Cond.NEXT_WEEK: [NoneType],
-    Cond.NEXT_MONTH: [NoneType],
-    Cond.NEXT_YEAR: [NoneType],
-    Cond.PAST_WEEK: [NoneType],
-    Cond.PAST_MONTH: [NoneType],
-    Cond.PAST_YEAR: [NoneType],
-    Cond.THIS_WEEK: [NoneType],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
+    Cond.NEXT_WEEK: [EmptyObject],
+    Cond.NEXT_MONTH: [EmptyObject],
+    Cond.NEXT_YEAR: [EmptyObject],
+    Cond.PAST_WEEK: [EmptyObject],
+    Cond.PAST_MONTH: [EmptyObject],
+    Cond.PAST_YEAR: [EmptyObject],
+    Cond.THIS_WEEK: [EmptyObject],
 }
 RULESET[Prop.FILES] = {
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.MULTI_SELECT] = {
     Cond.CONTAINS: [str],
     Cond.DOES_NOT_CONTAIN: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.NUMBER] = {
     Cond.EQUALS: [int, float],
@@ -55,32 +63,32 @@ RULESET[Prop.NUMBER] = {
     Cond.LESS_THAN: [int, float],
     Cond.GREATER_THAN_OR_EQUAL_TO: [int, float],
     Cond.LESS_THAN_OR_EQUAL_TO: [int, float],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.PEOPLE] = {
     Cond.CONTAINS: [str],
     Cond.DOES_NOT_CONTAIN: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.RELATION] = {
     Cond.CONTAINS: [str],
     Cond.DOES_NOT_CONTAIN: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.SELECT] = {
     Cond.EQUALS: [str],
     Cond.DOES_NOT_EQUAL: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.STATUS] = {
     Cond.EQUALS: [str],
     Cond.DOES_NOT_EQUAL: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.ID] = {
     Cond.EQUALS: [int],
@@ -89,8 +97,8 @@ RULESET[Prop.ID] = {
     Cond.LESS_THAN: [int],
     Cond.GREATER_THAN_OR_EQUAL_TO: [int],
     Cond.LESS_THAN_OR_EQUAL_TO: [int],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
 }
 RULESET[Prop.CREATED_TIME] = {
     Cond.EQUALS: [str],
@@ -98,15 +106,15 @@ RULESET[Prop.CREATED_TIME] = {
     Cond.ON_OR_AFTER: [str],
     Cond.BEFORE: [str],
     Cond.ON_OR_BEFORE: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
-    Cond.NEXT_WEEK: [NoneType],
-    Cond.NEXT_MONTH: [NoneType],
-    Cond.NEXT_YEAR: [NoneType],
-    Cond.PAST_WEEK: [NoneType],
-    Cond.PAST_MONTH: [NoneType],
-    Cond.PAST_YEAR: [NoneType],
-    Cond.THIS_WEEK: [NoneType],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
+    Cond.NEXT_WEEK: [EmptyObject],
+    Cond.NEXT_MONTH: [EmptyObject],
+    Cond.NEXT_YEAR: [EmptyObject],
+    Cond.PAST_WEEK: [EmptyObject],
+    Cond.PAST_MONTH: [EmptyObject],
+    Cond.PAST_YEAR: [EmptyObject],
+    Cond.THIS_WEEK: [EmptyObject],
 }
 RULESET[Prop.LAST_EDITED_TIME] = {
     Cond.EQUALS: [str],
@@ -114,25 +122,26 @@ RULESET[Prop.LAST_EDITED_TIME] = {
     Cond.ON_OR_AFTER: [str],
     Cond.BEFORE: [str],
     Cond.ON_OR_BEFORE: [str],
-    Cond.IS_EMPTY: [bool],
-    Cond.IS_NOT_EMPTY: [bool],
-    Cond.NEXT_WEEK: [NoneType],
-    Cond.NEXT_MONTH: [NoneType],
-    Cond.NEXT_YEAR: [NoneType],
-    Cond.PAST_WEEK: [NoneType],
-    Cond.PAST_MONTH: [NoneType],
-    Cond.PAST_YEAR: [NoneType],
-    Cond.THIS_WEEK: [NoneType],
+    Cond.IS_EMPTY: [TrueValue],
+    Cond.IS_NOT_EMPTY: [TrueValue],
+    Cond.NEXT_WEEK: [EmptyObject],
+    Cond.NEXT_MONTH: [EmptyObject],
+    Cond.NEXT_YEAR: [EmptyObject],
+    Cond.PAST_WEEK: [EmptyObject],
+    Cond.PAST_MONTH: [EmptyObject],
+    Cond.PAST_YEAR: [EmptyObject],
+    Cond.THIS_WEEK: [EmptyObject],
 }
 
 
 @dataclass(frozen=True)
 class ConditionRuleset:
     prop: Prop
+    prop_name: str
     cond: Cond
     value: Any
 
-    def validate(self) -> None:
+    def validate(self) -> "ConditionRuleset":
         # 必須のチェック
         self.validate_prop()
         self.validate_cond()
@@ -141,6 +150,36 @@ class ConditionRuleset:
         # オプションのチェック
         self.validate_page_id()
         self.validate_date()
+
+        return self
+
+    def generate_param(self) -> Any:
+        if self.prop == Prop.CREATED_TIME or self.prop == Prop.LAST_EDITED_TIME:
+            return self._generate_timestamp_param()
+        value = self._get_value()
+        return {
+            "property": self.prop_name,
+            self.prop.value: {
+                self.cond.value: value,
+            },
+        }
+
+    def _generate_timestamp_param(self) -> Any:
+        value = self._get_value()
+        return {
+            "timestamp": self.prop.value,
+            self.prop.value: {
+                self.cond.value: value,
+            },
+        }
+
+    def _get_value(self) -> Any:
+        conds = RULESET[self.prop][self.cond]
+        if TrueValue in conds:
+            return True
+        if EmptyObject in conds:
+            return {}
+        return self.value
 
     def validate_prop(self) -> None:
         if self.prop not in RULESET:
@@ -152,7 +191,13 @@ class ConditionRuleset:
             raise ValueError(msg)
 
     def validate_value(self) -> None:
-        if type(self.value) not in RULESET[self.prop][self.cond]:
+        conds = RULESET[self.prop][self.cond]
+        if TrueValue in conds:
+            return
+        if EmptyObject in conds:
+            return
+        # strやint、floatなどの型が含まれているかどうかを確認する
+        if type(self.value) not in conds:
             msg = f"Value type {type(self.value)} is not supported for property {self.prop} with condition {self.cond}"
             raise ValueError(msg)
 
