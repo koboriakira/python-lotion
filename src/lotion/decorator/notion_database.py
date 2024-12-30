@@ -69,7 +69,6 @@ def __cast(value: Property, cls: Type[P]) -> P:
             name=value.name,
             id=value.id,
             id_list=value.id_list,
-            text_list=value.text_list,
             has_more=value.has_more,
         )
     if isinstance(value, Select) and parent_class == Select:
