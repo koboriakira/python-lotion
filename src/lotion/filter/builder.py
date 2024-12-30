@@ -17,8 +17,7 @@ class Builder:
     def create() -> "Builder":
         return Builder(conditions=[])
 
-    def add(self, prop: Property, cond: Cond) -> "Builder":
-        # TODO: valueを指定しない場合に対応させたい
+    def add(self, prop: Property | Type[Property], cond: Cond) -> "Builder":
         if isinstance(prop, Type):
             return self._add(prop.TYPE, prop.PROP_NAME, cond)
         return self._add(prop.TYPE, prop.name, cond, prop._value_for_filter)

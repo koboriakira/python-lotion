@@ -2,11 +2,9 @@ from datetime import date
 from unittest import TestCase
 
 import pytest
-
-from lotion.filter import Builder, Cond
 from lotion import Lotion
-from lotion.properties import Text
-from lotion.properties import Number
+from lotion.filter import Builder, Cond
+from lotion.properties import Number, Text
 from lotion.properties.date import Date
 from lotion.properties.url import Url
 
@@ -73,8 +71,12 @@ class TestSearch(TestCase):
 
     def test_urlの検索(self):
         # Given
-        url = Url.from_url("https://example.com/", "URL")
+        url = Url.from_url("https://example.com/", "url")
         filter_param = Builder.create().add(url, Cond.EQUALS).build()
+        self._search_and_assert(filter_param, 1)
+
+    def test_Urlを持つデータを検索(self):
+        filter_param = Builder.create().add(Url, Cond.IS_NOT_EMPTY).build()
         self._search_and_assert(filter_param, 1)
 
     def _search_and_assert(self, filter_param: dict, expected: int):
