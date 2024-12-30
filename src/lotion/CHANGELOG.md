@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.10](https://github.com/koboriakira/python-lotion/compare/v0.8.9...v0.8.10) (2024-12-30)
+
+
+### Bug Fixes
+
+* 独自のRelationの作成に失敗する事象を修正 ([d9820dc](https://github.com/koboriakira/python-lotion/commit/d9820dcf687b612ce6ab320b8ee63d3b31eb2177))
+
 ## [0.8.9](https://github.com/koboriakira/python-lotion/compare/v0.8.8...v0.8.9) (2024-12-30)
 
 
