@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.9.0](https://github.com/koboriakira/python-lotion/compare/v0.8.10...v0.9.0) (2024-12-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* 独自プロパティの検索機能を実装 ([#65](https://github.com/koboriakira/python-lotion/issues/65))
+
+### Features
+
+* 独自プロパティの検索機能を実装 ([#65](https://github.com/koboriakira/python-lotion/issues/65)) ([f5ddd4f](https://github.com/koboriakira/python-lotion/commit/f5ddd4fefb02039e8dadf5f67100c8b9bd805669))
+
 ## [0.8.10](https://github.com/koboriakira/python-lotion/compare/v0.8.9...v0.8.10) (2024-12-30)
 
 
