@@ -8,6 +8,8 @@ T = TypeVar("T", bound="CreatedBy")
 
 @dataclass
 class CreatedBy(Property):
+    TYPE: str = "created_by"
+
     def __init__(
         self,
         name: str,
@@ -26,14 +28,18 @@ class CreatedBy(Property):
         return {
             self.name: {
                 "id": self.id,
-                "type": self.type,
+                "type": self.TYPE,
                 "created_by": self.created_by_param,
             },
         }
 
-    @property
-    def type(self) -> str:
-        return "created_by"  # NOTE: created_timeではなくdateにする
-
     def value_for_filter(self) -> str:
         raise NotImplementedError()
+
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

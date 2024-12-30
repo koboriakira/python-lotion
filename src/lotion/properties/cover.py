@@ -36,6 +36,3 @@ class Cover:
                 "url": self.external_url,
             }
         return result
-
-    def value_for_filter(self) -> str:
-        raise NotImplementedError

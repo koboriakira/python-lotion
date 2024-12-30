@@ -1,4 +1,6 @@
 from lotion import Lotion, BasePage, notion_database, notion_prop
+from lotion.filter.builder import Builder
+from lotion.filter.condition.cond import Cond
 from lotion.properties import Title, Date, Text, Select
 from lotion.properties.multi_select import MultiSelect
 
@@ -49,12 +51,23 @@ lotion = Lotion.get_instance()
 tasks = lotion.retrieve_pages(Task)
 for task in tasks:
     print(task.task_title.text)
-    print(task.task_title.add_hello())
-    print(task.started_at.start_date)
-    print(task.memo.text)
-    print(task.goal.text)
-    print(task.category.selected_name)
-    print(task.tags.values)
+    # print(task.task_title.add_hello())
+    # print(task.started_at.start_date)
+    # print(task.memo.text)
+    # print(task.goal.text)
+    # print(task.category.selected_name)
+    # print(task.tags.values)
+
+task_category = TaskCategory.from_name("Rent")
+filter_param = (
+    Builder.create()
+    .add(
+        prop=task_category,
+        cond=Cond.EQUALS,
+    )
+    .build()
+)
+filtered_tasks = lotion.retrieve_pages(Task, filter_param)
 
 category = lotion.fetch_select(Task, TaskCategory, "Rent")
 tag = lotion.fetch_multi_select(Task, TaskTags, ["Test", "Sample"])

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Select")
@@ -11,7 +12,7 @@ class Select(Property):
     selected_name: str
     selected_id: str | None
     selected_color: str | None
-    type: str = "select"
+    TYPE: str = "select"
 
     def __init__(
         self,
@@ -56,15 +57,16 @@ class Select(Property):
         return self.selected_name == ""
 
     def __dict__(self):
-        if self.selected_id is None:
+        if self.is_empty():
+            # 空の場合はtypeだけ返す
             return {
                 self.name: {
-                    "type": self.type,
+                    "type": self.TYPE,
                     "select": None,
                 }
             }
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "select": {
                 "id": self.selected_id,
                 "name": self.selected_name,
@@ -75,15 +77,20 @@ class Select(Property):
             result["id"] = self.id
         return {self.name: result}
 
-    def value_for_filter(self) -> str:
-        return self.selected_name if self.selected_name is not None else ""
-
     # __hash__と__eq__を実装することで、リストやセットの中で比較が可能になる
     def __hash__(self):
         return hash(self.selected_id)
 
     def __eq__(self, other):
         return self.selected_id == other.selected_id
+
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.SELECT
+
+    @property
+    def _value_for_filter(self) -> Any:
+        return self.selected_name
 
 
 @dataclass(frozen=True)

@@ -1,9 +1,9 @@
 from unittest import TestCase
 
 import pytest
-
 from lotion.lotion import Lotion
 from lotion.properties.title import Title
+
 from test.test_lotion.lotion_utils import create_empty_page, remove_page, update_page
 
 

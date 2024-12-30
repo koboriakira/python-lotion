@@ -15,6 +15,7 @@ class PhoneNumber(Property):
     """
 
     value: str
+    TYPE: str = "phone_number"
 
     def __init__(
         self,
@@ -41,13 +42,9 @@ class PhoneNumber(Property):
     def create(cls: Type[T], phone_number: str, name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, value=phone_number)
 
-    @property
-    def type(self) -> str:
-        return "phone_number"
-
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "phone_number": self.value if self.value != "" else None,
         }
         if self.id is not None:
@@ -56,5 +53,10 @@ class PhoneNumber(Property):
             self.name: result,
         }
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

@@ -5,20 +5,19 @@ from typing import Type, TypeVar
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
-
 from .base_page import BasePage
 from .block import Block, BlockFactory
 from .filter.builder import Builder
 from .filter.condition.cond import Cond
-from .filter.condition.prop import Prop
 from .page.page_id import PageId
 from .properties.cover import Cover
 from .properties.multi_select import MultiSelect, MultiSelectElement
+from .properties.prop import Prop
 from .properties.properties import Properties
 from .properties.property import Property
 from .properties.select import Select
-from .properties.title import Title
 from .properties.text import Text
+from .properties.title import Title
 
 NOTION_API_ERROR_BAD_GATEWAY = 502
 
@@ -170,10 +169,8 @@ class Lotion:
         filter_param = (
             Builder.create()
             .add(
-                Prop.RICH_TEXT,
-                prop_name or prop.PROP_NAME,
+                prop,
                 Cond.EQUALS,
-                prop.text,
             )
             .build()
         )
@@ -192,8 +189,8 @@ class Lotion:
         title_key_name: str = "名前",
         cls: Type[T] = BasePage,
     ) -> T | None:
-        """タイトルだけをもとにデータベースのページを取得する"""
-        filter_param = Builder.create().add(Prop.RICH_TEXT, title_key_name, Cond.EQUALS, title).build()
+        """文字列をもとにデータベースのページを取得する"""
+        filter_param = Builder.create()._add(Prop.RICH_TEXT, title_key_name, Cond.EQUALS, title).build()
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,
@@ -216,15 +213,14 @@ class Lotion:
         unique_id_prop_name = None
         base_page = self._fetch_sample_page(database_id=database_id, cls=cls)
         for propety in base_page.properties.values:
-            if propety.type == "unique_id":
+            if propety.TYPE == "unique_id":
                 unique_id_prop_name = propety.name
                 break
 
         if unique_id_prop_name is None:
             raise ValueError("unique_id property is not found")
 
-        # filter_param = FilterBuilder.build_simple_equal_unique_id_condition(name=unique_id_prop_name, number=unique_id)
-        filter_param = Builder.create().add(Prop.ID, unique_id_prop_name, Cond.EQUALS, unique_id).build()
+        filter_param = Builder.create()._add(Prop.ID, unique_id_prop_name, Cond.EQUALS, unique_id).build()
         results = self.retrieve_database(
             database_id=database_id,
             filter_param=filter_param,

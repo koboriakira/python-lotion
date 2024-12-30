@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Status")
@@ -11,7 +12,7 @@ class Status(Property):
     status_id: str | None
     status_name: str
     status_color: str | None
-    type: str = "status"
+    TYPE: str = "status"
 
     def __init__(
         self,
@@ -46,7 +47,7 @@ class Status(Property):
 
     def __dict__(self):
         result = {
-            "type": self.type,
+            "type": self.TYPE,
             "status": {
                 "name": self.status_name,
             },
@@ -57,5 +58,10 @@ class Status(Property):
             result["status"]["color"] = self.status_color
         return {self.name: result}
 
-    def value_for_filter(self) -> str:
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.STATUS
+
+    @property
+    def _value_for_filter(self) -> Any:
         return self.status_name

@@ -36,6 +36,7 @@ class Files(Property):
     """
 
     _files: list
+    TYPE: str = "files"
 
     def __init__(
         self,
@@ -59,12 +60,13 @@ class Files(Property):
     def value(self) -> list[File]:
         return [File.of(param) for param in self._files]
 
-    @property
-    def type(self) -> str:
-        return "files"
-
     def __dict__(self) -> dict:
         raise NotImplementedError("this dict method must not be called")
 
-    def value_for_filter(self) -> str:
-        raise NotImplementedError
+    @property
+    def _prop_type(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
+
+    @property
+    def _value_for_filter(self):
+        raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

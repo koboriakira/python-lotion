@@ -4,6 +4,7 @@ from typing import Any, Type, TypeVar
 from lotion.block.rich_text.rich_text import RichText
 from lotion.block.rich_text.rich_text_builder import RichTextBuilder
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Title")
@@ -14,7 +15,7 @@ class Title(Property):
     # text: str
     # value: list[dict]
     rich_text: RichText
-    type: str = "title"
+    TYPE: str = "rich_text"
     # mentioned_page_id: str | None = None
     PROP_NAME = "名前"  # 自分のデータベース用にデフォルトの名前を指定している
 
@@ -113,5 +114,10 @@ class Title(Property):
     def text(self) -> str:
         return self.rich_text.to_plain_text()
 
-    def value_for_filter(self) -> str:
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.RICH_TEXT
+
+    @property
+    def _value_for_filter(self) -> Any:
         return self.text

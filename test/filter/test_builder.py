@@ -1,11 +1,13 @@
 from unittest import TestCase
 
 
-from lotion.filter import Builder, Cond, Prop
+from lotion.filter import Builder, Cond
 
 # https://developers.notion.com/reference/post-database-query-filter
 
 import pytest
+
+from lotion.properties.text import Text
 
 
 class TestBuilder(TestCase):
@@ -13,11 +15,8 @@ class TestBuilder(TestCase):
         return super().setUp()
 
     def test_タイトルで絞りこむ(self):
-        actual = (
-            Builder.create()
-            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストA")
-            .build()
-        )
+        text_prop = Text.from_plain_text("テストA", "名前")
+        actual = Builder.create().add(prop=text_prop, cond=Cond.EQUALS).build()
         expected = {
             "property": "名前",
             "rich_text": {
@@ -37,11 +36,10 @@ class TestBuilder(TestCase):
         self.assertEqual(expected, actual)
 
     def test_and条件で絞り込む(self):
+        text_prop_a = Text.from_plain_text("テストA", "名前")
+        text_prop_b = Text.from_plain_text("テストB", "名前")
         actual = (
-            Builder.create()
-            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストA")
-            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストB")
-            .build()
+            Builder.create().add(prop=text_prop_a, cond=Cond.EQUALS).add(prop=text_prop_b, cond=Cond.EQUALS).build()
         )
         print(actual)
         expected = {
@@ -59,10 +57,12 @@ class TestBuilder(TestCase):
         self.assertEqual(expected, actual)
 
     def test_or条件で絞り込む(self):
+        text_prop_a = Text.from_plain_text("テストA", "名前")
+        text_prop_b = Text.from_plain_text("テストB", "名前")
         actual = (
             Builder.create()
-            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストA")
-            .add(prop_type=Prop.RICH_TEXT, prop_name="名前", cond_type=Cond.EQUALS, value="テストB")
+            .add(prop=text_prop_a, cond=Cond.EQUALS)
+            .add(prop=text_prop_b, cond=Cond.EQUALS)
             .build(mode="or")
         )
         expected = {

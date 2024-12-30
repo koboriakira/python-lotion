@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import Any, Type, TypeVar
 
+from .prop import Prop
 from .property import Property
 
 T = TypeVar("T", bound="Number")
@@ -9,7 +10,7 @@ T = TypeVar("T", bound="Number")
 @dataclass
 class Number(Property):
     number: int | None
-    type: str = "number"
+    TYPE: str = "number"
 
     def __init__(
         self,
@@ -53,8 +54,8 @@ class Number(Property):
 
     def __dict__(self) -> dict:
         result = {
-            "type": self.type,
-            self.type: self.number,
+            "type": self.TYPE,
+            self.TYPE: self.number,
         }
         if self.id is not None:
             result["id"] = self.id
@@ -69,5 +70,12 @@ class Number(Property):
             number=value,
         )
 
-    def value_for_filter(self):
+    @property
+    def _prop_type(self) -> Prop:
+        return Prop.NUMBER
+
+    @property
+    def _value_for_filter(self) -> Any:
+        if self.number is None:
+            raise ValueError(f"{self.name}: Number is required")
         return self.number
