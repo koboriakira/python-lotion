@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.2](https://github.com/koboriakira/python-lotion/compare/v0.9.1...v0.9.2) (2024-12-31)
+
+
+### Features
+
+* 作成時刻や更新時刻での簡単な検索用関数を用意 ([b021eec](https://github.com/koboriakira/python-lotion/commit/b021eec7090e7f849cdc667f0c8f0ffbdaa182ad))
+
+
+### Bug Fixes
+
+* Fix a typo ([2efa6eb](https://github.com/koboriakira/python-lotion/commit/2efa6eb997a849155c3e38f068c15d58d02d4423))
+
 ## [0.9.1](https://github.com/koboriakira/python-lotion/compare/v0.9.0...v0.9.1) (2024-12-31)
 
 
