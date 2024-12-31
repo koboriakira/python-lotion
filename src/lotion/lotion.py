@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import os
 from logging import Logger, getLogger
 from typing import Type, TypeVar
@@ -158,6 +159,32 @@ class Lotion:
             filter_builder = filter_builder.add(prop, Cond.EQUALS)
         filter_param = filter_builder.build()
         return self.retrieve_pages(cls, filter_param=filter_param, include_children=include_children)
+
+    def search_page_by_created_at(
+        self,
+        cls: Type[T],
+        start: date | datetime,
+        end: date | datetime | None = None,
+    ) -> list[T]:
+        """指定された日付範囲内のページを取得する"""
+        filter_builder = Builder.create()
+        filter_builder = filter_builder.add_created_at(Cond.ON_OR_AFTER, start.isoformat())
+        if end is not None:
+            filter_builder = filter_builder.add_created_at(Cond.ON_OR_BEFORE, end.isoformat())
+        return self.retrieve_pages(cls, filter_param=filter_builder.build())
+
+    def search_page_by_last_edited_at(
+        self,
+        cls: Type[T],
+        start: date | datetime,
+        end: date | datetime | None = None,
+    ) -> list[T]:
+        """指定された日付範囲内のページを取得する"""
+        filter_builder = Builder.create()
+        filter_builder = filter_builder.add_last_edited_at(Cond.ON_OR_AFTER, start.isoformat())
+        if end is not None:
+            filter_builder = filter_builder.add_last_edited_at(Cond.ON_OR_BEFORE, end.isoformat())
+        return self.retrieve_pages(cls, filter_param=filter_builder.build())
 
     def retrieve_pages(
         self,
