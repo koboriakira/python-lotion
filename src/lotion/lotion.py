@@ -155,7 +155,7 @@ class Lotion:
         """ページを検索する"""
         filter_builder = Builder.create()
         for prop in props if isinstance(props, list) else [props]:
-            filter_builder.add(prop, Cond.EQUALS)
+            filter_builder = filter_builder.add(prop, Cond.EQUALS)
         filter_param = filter_builder.build()
         return self.retrieve_pages(cls, filter_param=filter_param, include_children=include_children)
 
