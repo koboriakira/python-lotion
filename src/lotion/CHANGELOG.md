@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/koboriakira/python-lotion/compare/v0.9.0...v0.9.1) (2024-12-31)
+
+
+### Features
+
+* 簡単な検索機能を実装 ([c19323f](https://github.com/koboriakira/python-lotion/commit/c19323f6bf02e79711626a937a932208bca6b6ae))
+
 ## [0.9.0](https://github.com/koboriakira/python-lotion/compare/v0.8.10...v0.9.0) (2024-12-30)
 
 
