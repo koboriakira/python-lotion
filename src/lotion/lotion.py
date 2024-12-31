@@ -146,6 +146,19 @@ class Lotion:
             pages.append(page)
         return pages
 
+    def search_pages(
+        self,
+        cls: Type[T],
+        props: Property | list[Property],
+        include_children: bool | None = None,
+    ) -> list[T]:
+        """ページを検索する"""
+        filter_builder = Builder.create()
+        for prop in props if isinstance(props, list) else [props]:
+            filter_builder.add(prop, Cond.EQUALS)
+        filter_param = filter_builder.build()
+        return self.retrieve_pages(cls, filter_param=filter_param, include_children=include_children)
+
     def retrieve_pages(
         self,
         cls: Type[T],
