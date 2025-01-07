@@ -357,8 +357,6 @@ class Lotion:
             prop = page.get_prop(prop_type)
             selects.append(prop)
         selects = list(set(selects))
-        for select in selects:
-            print(select.selected_name)
         filtered_selects = [s for s in selects if s.selected_name == value]
         if len(filtered_selects) == 0:
             raise ValueError(

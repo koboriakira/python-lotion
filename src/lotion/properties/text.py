@@ -25,17 +25,13 @@ class Text(Property):
 
     @classmethod
     def from_dict(cls: Type[T], name: str, param: dict) -> T:
-        try:
-            rich_text = RichText.from_entity(param["rich_text"])
-            id = param["id"]
-            return cls(
-                name=name,
-                id=id,
-                rich_text=rich_text,
-            )
-        except Exception as e:
-            print(param)
-            raise e
+        rich_text = RichText.from_entity(param["rich_text"])
+        id = param["id"]
+        return cls(
+            name=name,
+            id=id,
+            rich_text=rich_text,
+        )
 
     def __dict__(self):
         result = {
