@@ -66,8 +66,6 @@ class Properties:
             "unique_id",
             "files",
         ]
-        print(self.values)
-        print([prop.TYPE for prop in self.values])
         return Properties(values=[prop for prop in self.values if prop.TYPE not in exclude_types])
 
     def is_empty(self) -> bool:
