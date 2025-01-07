@@ -1,92 +1,106 @@
+from datetime import date
 from lotion import Lotion, BasePage, notion_database, notion_prop
 from lotion.filter.builder import Builder
 from lotion.filter.condition.cond import Cond
-from lotion.properties import Title, Date, Text, Select
-from lotion.properties.multi_select import MultiSelect
+from lotion.properties import Title, Date, Select, Number, MultiSelect
 
+# At first, you must create Lotion instance.
+# You must set environment variable `NOTION_SECRET`.
+lotion = Lotion.get_instance()
+
+# Next, you create classes of Notion Database and each property
 
 @notion_prop(name="Title")
-class TaskTitle(Title):
-    def add_hello(self) -> str:
-        return f"Hello, {self.text}"
-
-
-@notion_prop(name="Started At")
-class TaskDate(Date):
-    # PROP_NAME = "Started At"
+class ExpenseTitle(Title):
     pass
 
-
-@notion_prop(name="Memo")
-class TaskMemo(Text):
-    pass
-
-
-@notion_prop(name="Goal")
-class TaskGoal(Text):
+@notion_prop(name="Date")
+class ExpenseDate(Date):
     pass
 
 
 @notion_prop(name="Category")
-class TaskCategory(Select):
+class ExpenseCategory(Select):
     pass
 
+@notion_prop(name="Amount")
+class Amount(Number):
+    pass
 
-@notion_prop(name="Tags")
-class TaskTags(MultiSelect):
+@notion_prop(name="Payment")
+class Payment(MultiSelect):
     pass
 
 
 @notion_database(database_id="1696567a3bbf803e9817c7ae1e398b71")
-class Task(BasePage):
-    task_title: TaskTitle
-    started_at: TaskDate
-    memo: TaskMemo
-    goal: TaskGoal
-    category: TaskCategory
-    tags: TaskTags
+class Expense(BasePage):
+    expense_title: ExpenseTitle
+    expense_date: ExpenseDate
+    expense_category: ExpenseCategory
+    amount: Amount
+    payment: Payment
+
+# Pattern1: Retrieve all pages
+
+expenses = lotion.retrieve_pages(Expense)
+for expense in expenses:
+    print(expense.expense_title.text)
+    print(expense.expense_date.date)
+    print(expense.expense_category.selected_name)
+    print(expense.amount.number)
+    for payment in expense.payment.values:
+        print(payment.name)
+    print("=====================================")
 
 
-lotion = Lotion.get_instance()
-tasks = lotion.retrieve_pages(Task)
-for task in tasks:
-    print(task.task_title.text)
-    # print(task.task_title.add_hello())
-    # print(task.started_at.start_date)
-    # print(task.memo.text)
-    # print(task.goal.text)
-    # print(task.category.selected_name)
-    # print(task.tags.values)
+# Pattern2: Retrieve pages with filter
 
-task_category = TaskCategory.from_name("Rent")
-filter_param = (
-    Builder.create()
-    .add(
-        prop=task_category,
-        cond=Cond.EQUALS,
-    )
-    .build()
-)
-filtered_tasks = lotion.retrieve_pages(Task, filter_param)
+## Pattern2-1: Retrieve pages with filter by simple condition
+## You can use `search_pages` method to filter pages by a specific property.
 
-category = lotion.fetch_select(Task, TaskCategory, "Rent")
-tag = lotion.fetch_multi_select(Task, TaskTags, ["Test", "Sample"])
-new_task = Task.create(
-    properties=[
-        TaskTitle.from_plain_text("New Task"),
-        category,
-        tag,
-    ]
-)
-created_page = lotion.create_page(new_task)
-print(created_page.task_title.text)
+category = ExpenseCategory.from_name("Transportation")
+expenses = lotion.search_pages(Expense, [category])
+for expense in expenses:
+    print(expense.expense_title.text)
+    print(expense.expense_date.date)
+    print(expense.expense_category.selected_name)
+    print(expense.amount.number)
+    for payment in expense.payment.values:
+        print(payment.name)
 
+## Pattern2-2: Retrieve pages with filter by complex condition
+## You can use `retrieve_pages` method to filter pages by multiple conditions.
 
-new_task_title = TaskTitle.from_plain_text("Updated Task")
-created_page.set_prop(new_task_title)
-new_select = TaskCategory.from_name("Food")
-created_page.set_prop(new_select)
-new_tag = TaskTags.from_name(["Specified"])
-created_page.set_prop(new_tag)
-print(created_page.task_title.text)
+filter_param = Builder.create().add(
+    Amount.from_num(20),
+    Cond.GREATER_THAN,
+).add(Payment.from_name(["Credit Card"]), Cond.CONTAINS).build()
+
+expenses = lotion.retrieve_pages(Expense, filter_param)
+for expense in expenses:
+    print(expense.expense_title.text)
+    print(expense.expense_date.date)
+    print(expense.expense_category.selected_name)
+    print(expense.amount.number)
+    for payment in expense.payment.values:
+        print(payment.name)
+
+# Pattern3: Create/Update a page
+# You can create a new page by using `create_page` method.
+expense = Expense.create([
+    ExpenseTitle.from_plain_text("New Expense"),
+    ExpenseDate.from_start_date(date(2025, 1, 4)),
+    ExpenseCategory.from_name("Food"),
+    Amount.from_num(20),
+    Payment.from_name(["Credit Card"]),
+])
+created_page = lotion.create_page(expense)
+
+# You can also update a page.
+
+created_page.set_prop(ExpenseTitle.from_plain_text("Updated Name"))
+created_page.set_prop(ExpenseCategory.from_name("Entertainment"))
 lotion.update(created_page)
+
+
+exit(0)
