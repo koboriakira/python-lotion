@@ -1,5 +1,5 @@
-from datetime import date, datetime
 import os
+from datetime import date, datetime
 from logging import Logger, getLogger
 from typing import Type, TypeVar
 
@@ -68,8 +68,8 @@ class Lotion:
         self._logger = logger or getLogger(__name__)
 
     @staticmethod
-    def get_instance(max_retry_count: int = 3, logger: Logger | None = None) -> "Lotion":
-        client = Client(auth=os.getenv("NOTION_SECRET"))
+    def get_instance(secret: str | None = None, max_retry_count: int = 3, logger: Logger | None = None) -> "Lotion":
+        client = Client(auth=secret or os.getenv("NOTION_SECRET"))
         return Lotion(client, max_retry_count=max_retry_count, logger=logger)
 
     def retrieve_page(self, page_id: str, cls: Type[T] = BasePage) -> T:
