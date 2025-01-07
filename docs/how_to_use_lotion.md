@@ -1,15 +1,13 @@
-from datetime import date
+# How to use Lotion
 
-from lotion import BasePage, Lotion, notion_database, notion_prop
-from lotion.filter.builder import Builder
-from lotion.filter.condition.cond import Cond
-from lotion.properties import Date, MultiSelect, Number, Select, Title
+## Basic Usage
 
-# At first, you must create Lotion instance.
-# You must set environment variable `NOTION_SECRET`.
+```python
+from lotion import Lotion
+
+# First, create a Lotion instance.
+# Make sure to set the environment variable `NOTION_SECRET`.
 lotion = Lotion.get_instance("NOTION_API_SECRET")
-
-# You can simply use lotion like this.
 
 pages = lotion.retrieve_database("1696567a3bbf803e9817c7ae1e398b71")
 for page in pages:
@@ -17,12 +15,20 @@ for page in pages:
     print(page.get_select("Category").selected_name)
     print("=====================================")
 
-# If you want to use lotion with class-based API, you can use like this.
+page = lotion.retrieve_page("7c94bde2b57a4663ba612f85f63bf572")
+```
 
+## Using Custom Properties and Database Pages
 
-@notion_prop(name="Title")
+If you prefer a class-based API, you can use Lotion as follows:
+
+```python
+from lotion import BasePage, notion_database, notion_prop
+from lotion.properties import Date, MultiSelect, Number, Select, Title
+
+@notion_prop(name="Title") # The name of the propety
 class ExpenseTitle(Title):
-    pass
+    pass # You can implement additional methods
 
 
 @notion_prop(name="Date")
@@ -44,7 +50,6 @@ class Amount(Number):
 class Payment(MultiSelect):
     pass
 
-
 @notion_database(database_id="1696567a3bbf803e9817c7ae1e398b71")
 class Expense(BasePage):
     expense_title: ExpenseTitle
@@ -52,10 +57,11 @@ class Expense(BasePage):
     expense_category: ExpenseCategory
     amount: Amount
     payment: Payment
+```
 
+### Retrieve all pages
 
-# Pattern1: Retrieve all pages
-
+```python
 expenses = lotion.retrieve_pages(Expense)
 for expense in expenses:
     print(expense.expense_title.text)
@@ -65,13 +71,13 @@ for expense in expenses:
     for payment in expense.payment.values:
         print(payment.name)
     print("=====================================")
+```
 
+### Retrieve pages with filters
 
-# Pattern2: Retrieve pages with filter
+Retrieve pages with simple conditions using the `search_pages` method:
 
-## Pattern2-1: Retrieve pages with filter by simple condition
-## You can use `search_pages` method to filter pages by a specific property.
-
+```python
 category = ExpenseCategory.from_name("Transportation")
 expenses = lotion.search_pages(Expense, [category])
 for expense in expenses:
@@ -81,16 +87,14 @@ for expense in expenses:
     print(expense.amount.number)
     for payment in expense.payment.values:
         print(payment.name)
+```
 
-## Pattern2-2: Retrieve pages with filter by complex condition
-## You can use `retrieve_pages` method to filter pages by multiple conditions.
+Use the `Builder` class and `retrieve_pages` method for complex conditions:
 
+```python
 filter_param = (
     Builder.create()
-    .add(
-        Amount.from_num(20),
-        Cond.GREATER_THAN,
-    )
+    .add(Amount.from_num(20), Cond.GREATER_THAN)
     .add(Payment.from_name(["Credit Card"]), Cond.CONTAINS)
     .build()
 )
@@ -103,9 +107,13 @@ for expense in expenses:
     print(expense.amount.number)
     for payment in expense.payment.values:
         print(payment.name)
+```
 
-# Pattern3: Create/Update a page
-# You can create a new page by using `create_page` method.
+### Pattern3: Create/Update a page
+
+You can create a new page by using `create_page` method, and update it by `update`.
+
+```python
 expense = Expense.create(
     [
         ExpenseTitle.from_plain_text("New Expense"),
@@ -117,8 +125,34 @@ expense = Expense.create(
 )
 created_page = lotion.create_page(expense)
 
-# You can also update a page.
-
 created_page.set_prop(ExpenseTitle.from_plain_text("Updated Name"))
 created_page.set_prop(ExpenseCategory.from_name("Entertainment"))
 lotion.update(created_page)
+```
+
+
+## About Property classes
+
+You can read and update the following properties:
+
+- Checkbox
+- Date
+- Email
+- MultiSelect
+- Number
+- PhoneNumber
+- Relation
+- Select
+- Status
+- Text
+- Title
+- Url
+
+You can only read (not update) the following properties:
+
+- People
+- Button
+- Formula
+- UniqueId
+- Files
+- Rollup

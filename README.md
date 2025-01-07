@@ -1,66 +1,32 @@
 # Lotion
 
-Lotion is a wrapper of `notion-client`.
+Lotion is a wrapper for `notion-client` by [ramnes/notion-sdk-py: The official Notion API client library, but rewritten in Python! (sync + async)](https://github.com/ramnes/notion-sdk-py).
 
-refs: [ramnes/notion-sdk-py: The official Notion API client library, but rewritten in Python! (sync + async)](https://github.com/ramnes/notion-sdk-py)
-
-You can use Notion API easily using Lotion.
-
-## Example
-
-### By notion-client
-
-```python
-from notion_client import Client
-
-client = Client(auth='NOTION_SECRET')
-client.pages.create(
-    parent={
-      'type': 'database_id',
-      'database_id': 'abcd1234-4e63-4a46-9ffe-36adeb59ab30'
-    },
-    properties={
-      'Name': {
-        'title': [
-          {
-            'type': 'text',
-            'text': {
-              'content': 'テスト'
-            }
-          }
-        ]
-      }
-    },
-)
-```
-
-### By lotion
+With Lotion, you can easily use the Notion API.
 
 ```python
 from lotion import Lotion
 
-lotion = Lotion.get_instance()
-created_page = lotion.create_page_in_database(
-    database_id='abcd1234-4e63-4a46-9ffe-36adeb59ab30',
-    properties=[
-      Title.from_plain_text(name='Name', text='テスト')
-    ]
-)
+lotion = Lotion.get_instance("NOTION_API_SECRET")
+# or `lotion = Lotion.get_instance()` if you set it as `NOTION_SECRET`
+
+pages = lotion.retrieve_database("1696567a3bbf803e9817c7ae1e398b71")
+for page in pages:
+    print(page.get_title().text)
 ```
 
-## Use Original Prop and Database page.
+## Install
 
-### Available Class
+```shell
+pip install python-lotion
+```
 
-- Checkbox
-- Date
-- Email
-- MultiSelect
-- Number
-- PhoneNumber
-- Relation
-- Select
-- Status
-- Text
-- Title
-- Url
+You must also create your integration, obtain a Notion API secret, and give your integration page permissions.
+
+Reference: [Build your first integration](https://developers.notion.com/docs/create-a-notion-integration#create-your-integration-in-notion)
+
+## Usage
+
+Refer to [How to use Lotion](./docs/how_to_use_lotion.md).
+
+If you have any questions, please create an issue.
