@@ -115,7 +115,7 @@ class Date(Property):
         return True
 
     @property
-    def date(self) -> date:
+    def date(self) -> date | None:
         return convert_to_date_or_datetime(self.start, cls=date)
 
     def __dict__(self) -> dict:
