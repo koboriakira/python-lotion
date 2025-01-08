@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.3](https://github.com/koboriakira/python-lotion/compare/v0.9.2...v0.9.3) (2025-01-08)
+
+
+### Features
+
+* SelectとMultiSelectを取得する機能にキャッシュを追加 ([#69](https://github.com/koboriakira/python-lotion/issues/69)) ([07b11ed](https://github.com/koboriakira/python-lotion/commit/07b11ed4a712e4c499b19263c7548f4503027551))
+
 ## [0.9.2](https://github.com/koboriakira/python-lotion/compare/v0.9.1...v0.9.2) (2024-12-31)
 
 
