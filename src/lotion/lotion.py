@@ -419,7 +419,6 @@ class Lotion:
                 if cache.has(v):
                     cached_elements.append(cache.get(v))
             if len(cached_elements) == len(value):
-                print("cache hit")
                 return prop_cls.from_elements(name=prop_cls.PROP_NAME, elements=cached_elements)
         pages = self.retrieve_pages(cls)
         elements: list[MultiSelectElement] = []
@@ -433,7 +432,6 @@ class Lotion:
         for e in elements:
             cache.set(e.name, e)
         MULTI_SELECT_CACHE[prop_cache_key] = cache
-        print(MULTI_SELECT_CACHE)
         return prop_cls.from_elements(name=prop_cls.PROP_NAME, elements=[e for e in elements if e.name in value])
 
     def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> None:
