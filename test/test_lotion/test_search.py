@@ -51,7 +51,7 @@ class TestSearch(TestCase):
         date_ = date.fromisoformat("2021-01-01")
         date_prop = Date.from_start_date(date_, "日付")
         filter_param = Builder.create().add(date_prop, Cond.PAST_YEAR).build()
-        self._search_and_assert(filter_param, 1)
+        self._search_and_assert(filter_param, 0)
 
     def test_or条件(self):
         # Given

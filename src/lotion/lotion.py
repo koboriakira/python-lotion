@@ -1,7 +1,7 @@
 import os
 from datetime import date, datetime
 from logging import Logger, getLogger
-from typing import Type, TypeVar
+from typing import Generic, Type, TypeVar
 
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
@@ -26,6 +26,37 @@ T = TypeVar("T", bound="BasePage")
 S = TypeVar("S", bound=Select)
 M = TypeVar("M", bound=MultiSelect)
 TI = TypeVar("TI", bound=Title)
+
+
+class SelectCache(Generic[S]):
+    def __init__(self) -> None:
+        self.cache: dict[str, S] = {}
+
+    def get(self, key: str) -> S:
+        return self.cache[key]
+
+    def set(self, key: str, value: S) -> None:
+        self.cache[key] = value
+
+    def has(self, key: str) -> bool:
+        return key in self.cache
+
+SELECT_CACHE: dict[str, SelectCache] = {}
+
+class MultiSelectCache():
+    def __init__(self) -> None:
+        self.cache: dict[str, MultiSelectElement] = {}
+
+    def get(self, key: str) -> MultiSelectElement:
+        return self.cache[key]
+
+    def set(self, key: str, value: MultiSelectElement) -> None:
+        self.cache[key] = value
+
+    def has(self, key: str) -> bool:
+        return key in self.cache
+
+MULTI_SELECT_CACHE: dict[str, MultiSelectCache] = {}
 
 
 class AppendBlockError(Exception):
@@ -100,6 +131,7 @@ class Lotion:
     def create_page_in_database(
         self,
         database_id: str,
+
         cover: Cover | None = None,
         properties: list[Property] | None = None,
         blocks: list[Block] | None = None,
@@ -351,6 +383,9 @@ class Lotion:
 
     def fetch_select(self, cls: Type[T], prop_type: Type[S], value: str) -> S:
         """指定されたデータベースのセレクトを取得する"""
+        prop_cache_key = cls.DATABASE_ID + prop_type.__name__
+        if prop_cache_key in SELECT_CACHE and SELECT_CACHE[prop_cache_key].has(value):
+            return SELECT_CACHE[prop_cache_key].get(value)
         pages = self.retrieve_pages(cls)
         selects: list[S] = []
         for page in pages:
@@ -362,7 +397,13 @@ class Lotion:
             raise ValueError(
                 f"Select not found in database. Lotion can get only used selects.: cls={cls.__name__}, prop={prop.__name__}, value={value}"
             )
-        return filtered_selects[0]
+        result = filtered_selects[0]
+        cache = SELECT_CACHE[prop_cache_key] if prop_cache_key in SELECT_CACHE else None
+        if cache is None:
+            cache = SelectCache[S]()
+        cache.set(value, result)
+        SELECT_CACHE[prop_cache_key] = cache
+        return result
 
     def fetch_multi_select(self, cls: Type[T], prop_cls: Type[M], value: str | list[str]) -> M:
         """
@@ -370,12 +411,27 @@ class Lotion:
         ただし現在のデータベースで利用されていないマルチセレクトを取得することはできない。
         """
         value = value if isinstance(value, list) else [value]
+        prop_cache_key = cls.DATABASE_ID + prop_cls.__name__
+        if prop_cache_key in MULTI_SELECT_CACHE:
+            cache = MULTI_SELECT_CACHE[prop_cache_key]
+            cached_elements:list[MultiSelectElement] = []
+            for v in value:
+                if cache.has(v):
+                    cached_elements.append(cache.get(v))
+            if len(cached_elements) == len(value):
+                return prop_cls.from_elements(name=prop_cls.PROP_NAME, elements=cached_elements)
         pages = self.retrieve_pages(cls)
         elements: list[MultiSelectElement] = []
         for page in pages:
             multi_select = page.get_prop(prop_cls)
             elements.extend(multi_select.values)
         elements = list(set(elements))
+        cache = MULTI_SELECT_CACHE[prop_cache_key] if prop_cache_key in MULTI_SELECT_CACHE else None
+        if cache is None:
+            cache = MultiSelectCache()
+        for e in elements:
+            cache.set(e.name, e)
+        MULTI_SELECT_CACHE[prop_cache_key] = cache
         return prop_cls.from_elements(name=prop_cls.PROP_NAME, elements=[e for e in elements if e.name in value])
 
     def __append_block_children(self, block_id: str, children: list[dict], retry_count: int = 0) -> None:
