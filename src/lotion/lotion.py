@@ -41,9 +41,11 @@ class SelectCache(Generic[S]):
     def has(self, key: str) -> bool:
         return key in self.cache
 
+
 SELECT_CACHE: dict[str, SelectCache] = {}
 
-class MultiSelectCache():
+
+class MultiSelectCache:
     def __init__(self) -> None:
         self.cache: dict[str, MultiSelectElement] = {}
 
@@ -55,6 +57,7 @@ class MultiSelectCache():
 
     def has(self, key: str) -> bool:
         return key in self.cache
+
 
 MULTI_SELECT_CACHE: dict[str, MultiSelectCache] = {}
 
@@ -131,7 +134,6 @@ class Lotion:
     def create_page_in_database(
         self,
         database_id: str,
-
         cover: Cover | None = None,
         properties: list[Property] | None = None,
         blocks: list[Block] | None = None,
@@ -387,23 +389,18 @@ class Lotion:
         if prop_cache_key in SELECT_CACHE and SELECT_CACHE[prop_cache_key].has(value):
             return SELECT_CACHE[prop_cache_key].get(value)
         pages = self.retrieve_pages(cls)
-        selects: list[S] = []
         for page in pages:
             prop = page.get_prop(prop_type)
-            selects.append(prop)
-        selects = list(set(selects))
-        filtered_selects = [s for s in selects if s.selected_name == value]
-        if len(filtered_selects) == 0:
-            raise ValueError(
-                f"Select not found in database. Lotion can get only used selects.: cls={cls.__name__}, prop={prop.__name__}, value={value}"
-            )
-        result = filtered_selects[0]
-        cache = SELECT_CACHE[prop_cache_key] if prop_cache_key in SELECT_CACHE else None
-        if cache is None:
-            cache = SelectCache[S]()
-        cache.set(value, result)
-        SELECT_CACHE[prop_cache_key] = cache
-        return result
+            if prop.selected_name == value:
+                cache = SELECT_CACHE[prop_cache_key] if prop_cache_key in SELECT_CACHE else None
+                if cache is None:
+                    cache = SelectCache[S]()
+                cache.set(value, prop)
+                SELECT_CACHE[prop_cache_key] = cache
+                return prop
+        raise ValueError(
+            f"Select not found in database. Lotion can get only used selects.: cls={cls.__name__}, prop={prop.__name__}, value={value}"
+        )
 
     def fetch_multi_select(self, cls: Type[T], prop_cls: Type[M], value: str | list[str]) -> M:
         """
@@ -414,7 +411,7 @@ class Lotion:
         prop_cache_key = cls.DATABASE_ID + prop_cls.__name__
         if prop_cache_key in MULTI_SELECT_CACHE:
             cache = MULTI_SELECT_CACHE[prop_cache_key]
-            cached_elements:list[MultiSelectElement] = []
+            cached_elements: list[MultiSelectElement] = []
             for v in value:
                 if cache.has(v):
                     cached_elements.append(cache.get(v))
@@ -423,9 +420,17 @@ class Lotion:
         pages = self.retrieve_pages(cls)
         elements: list[MultiSelectElement] = []
         for page in pages:
-            multi_select = page.get_prop(prop_cls)
-            elements.extend(multi_select.values)
-        elements = list(set(elements))
+            multi_select_elements = page.get_prop(prop_cls).values
+            for e in multi_select_elements:
+                if e.name in value:
+                    elements.append(e)
+            elements = list(set(elements))
+            if len(elements) == len(value):
+                break
+        if len(elements) != len(value):
+            raise ValueError(
+                f"MultiSelect not found in database. Lotion can get only used multi_selects.: cls={cls.__name__}, prop={prop_cls.__name__}, value={value}"
+            )
         cache = MULTI_SELECT_CACHE[prop_cache_key] if prop_cache_key in MULTI_SELECT_CACHE else None
         if cache is None:
             cache = MultiSelectCache()
