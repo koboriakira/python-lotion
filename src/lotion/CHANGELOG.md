@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.4](https://github.com/koboriakira/python-lotion/compare/v0.9.3...v0.9.4) (2025-01-15)
+
+
+### Features
+
+* link_mentionのリッチテキストを扱う ([#74](https://github.com/koboriakira/python-lotion/issues/74)) ([31144b3](https://github.com/koboriakira/python-lotion/commit/31144b310b01c7d428e1ae2e518494a2d16c9dd8))
+* SelectとMultiSelectについて全ページ検索せずに求められた結果を返却する ([#72](https://github.com/koboriakira/python-lotion/issues/72)) ([ba0cab5](https://github.com/koboriakira/python-lotion/commit/ba0cab501009d53278ff62cc6f611abbf8458b26))
+
 ## [0.9.3](https://github.com/koboriakira/python-lotion/compare/v0.9.2...v0.9.3) (2025-01-08)
 
 
