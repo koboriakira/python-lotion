@@ -6,12 +6,12 @@ from lotion.base_page import BasePage
 
 
 @pytest.mark.api()
-class TestLotion(TestCase):
+@pytest.mark.current
+class TestReadBlock(TestCase):
     def setUp(self):
         self.suite = Lotion.get_instance()
 
     def test_ページを取得する(self):
-        # pipenv run pytest test/test_lotion/test_lotion.py -k test_ページを取得する
-        page_id = "15a6567a3bbf814b9b06e0fd3c6959e0"
+        page_id = "17c6567a3bbf805bbf21ceb23453ec8c"
         page = self.suite.retrieve_page(page_id=page_id)
         self.assertIsInstance(page, BasePage)
