@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from datetime import date
 from typing import Any
+import json
 
 
 class RichTextElement(metaclass=ABCMeta):
@@ -76,7 +77,15 @@ class RichTextElement(metaclass=ABCMeta):
                     plain_text=rich_text_element["plain_text"],
                     href=rich_text_element["href"],
                 )
-            raise Exception("invalid mention type")
+            if mention_type == "link_mention":
+                return RichTextMentionElement(
+                    mention_type=mention_type,
+                    link_mention=mention["link_mention"],
+                    annotations=rich_text_element["annotations"],
+                    plain_text=rich_text_element["plain_text"],
+                    href=rich_text_element["href"],
+                )
+            raise Exception(f"invalid mention_type: {mention_type} {json.dumps(rich_text_element, ensure_ascii=False)}")
         if type == "equation":
             raise NotImplementedError("equation is not implemented yet")
         raise Exception("invalid type")
@@ -145,6 +154,7 @@ class RichTextMentionElement(RichTextElement):
     start_date: str | None = None  # dateのみ利用
     end_date: str | None = None  # dateのみ利用
     link_preview_url: str | None = None  # link_previewのみ利用
+    mentioned_href: str | None = None  # link_mentionのみ利用
 
     def __init__(
         self,
@@ -153,6 +163,7 @@ class RichTextMentionElement(RichTextElement):
         start_date: str | None = None,
         end_date: str | None = None,
         link_preview_url: str | None = None,
+        link_mention: dict[str, Any] | None = None,
         annotations: dict[str, bool] | None = None,
         plain_text: str | None = None,
         href: dict[str, bool] | None = None,
@@ -162,10 +173,11 @@ class RichTextMentionElement(RichTextElement):
         self.start_date = start_date
         self.end_date = end_date
         self.link_preview_url = link_preview_url
+        self.link_mention = link_mention
         super().__init__(annotations, plain_text, href)
 
     @classmethod
-    def from_page_type(cls: "RichTextMentionElement", page_id: str) -> "RichTextMentionElement":
+    def from_page_type(cls, page_id: str) -> "RichTextMentionElement":
         return cls(mention_type="page", object_id=page_id)
 
     def to_slack_text(self) -> str:
@@ -174,7 +186,8 @@ class RichTextMentionElement(RichTextElement):
         return self.to_plain_text()
 
     def to_plain_text(self) -> str:
-        return self.plain_text if self.plain_text is not None else ""
+        text = self.plain_text if self.mention_type != "link_mention" else self.link_mention["title"]
+        return text if text is not None else ""
 
     @staticmethod
     def of_database(database_id: str) -> "RichTextMentionElement":
@@ -206,6 +219,8 @@ class RichTextMentionElement(RichTextElement):
         result: dict[str, Any] = {
             "type": self.mention_type,
         }
+        if self.link_mention is not None:
+            result["link_mention"] = self.link_mention
         if self.mention_type in ["database", "page"]:
             result[self.mention_type] = {
                 "id": self.object_id,
