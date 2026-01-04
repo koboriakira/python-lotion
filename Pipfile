@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 notion_client = ">=2.2.1"
+lotion = {file = ".", editable = true}
 
 [dev-packages]
 parameterized = "*"
