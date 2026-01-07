@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.5](https://github.com/koboriakira/python-lotion/compare/v0.9.4...v0.9.5) (2026-01-07)
+
+
+### Features
+
+* upgrade notion client ([#75](https://github.com/koboriakira/python-lotion/issues/75)) ([b88013d](https://github.com/koboriakira/python-lotion/commit/b88013dfe342a9cfdfa19f951e8eed56ee6e4c94))
+
 ## [0.9.4](https://github.com/koboriakira/python-lotion/compare/v0.9.3...v0.9.4) (2025-01-15)
 
 
