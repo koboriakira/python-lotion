@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "*"
-notion_client = ">=2.2.1"
+notion-client = ">=2.7.0"
 
 [dev-packages]
 parameterized = "*"
