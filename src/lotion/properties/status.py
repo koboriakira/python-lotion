@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -29,7 +29,7 @@ class Status(Property):
         self.status_color = status_color
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         return cls(
             name=name,
             status_name=param["status"]["name"],
@@ -39,7 +39,7 @@ class Status(Property):
         )
 
     @classmethod
-    def from_status_name(cls: Type[T], status_name: str, name: str | None = None) -> T:
+    def from_status_name(cls: type[T], status_name: str, name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             status_name=status_name,

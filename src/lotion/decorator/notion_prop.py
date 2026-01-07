@@ -5,7 +5,7 @@ def notion_prop(name: str):
 
     def decorator(cls):
         # クラスに PROP_NAME を設定
-        setattr(cls, "PROP_NAME", name)
+        cls.PROP_NAME = name
         return cls
 
     return decorator

@@ -1,5 +1,7 @@
 from unittest import TestCase
+
 import pytest
+
 from lotion.properties.title import Title
 
 

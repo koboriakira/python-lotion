@@ -15,16 +15,14 @@ class Image(Block):
         image_type: str,
         image_file: dict | None = None,
         image_external: dict | None = None,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         archived: bool | None = None,
         created_time: str | None = None,
         last_edited_time: str | None = None,
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.image_caption = image_caption
         self.image_type = image_type
         self.image_file = image_file

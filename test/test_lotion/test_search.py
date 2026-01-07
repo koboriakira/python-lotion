@@ -2,6 +2,7 @@ from datetime import date
 from unittest import TestCase
 
 import pytest
+
 from lotion import Lotion
 from lotion.filter import Builder, Cond
 from lotion.properties import Number, Text

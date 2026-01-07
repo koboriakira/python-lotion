@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from ..block.rich_text import RichText
 from .prop import Prop
@@ -18,13 +18,13 @@ class Text(Property):
         name: str,
         rich_text: RichText,
         id: str | None = None,
-    ) -> None:  # noqa: A002
+    ) -> None:
         self.name = name
         self.id = id
         self.rich_text = rich_text
 
     @classmethod
-    def from_dict(cls: Type[T], name: str, param: dict) -> T:
+    def from_dict(cls: type[T], name: str, param: dict) -> T:
         rich_text = RichText.from_entity(param["rich_text"])
         id = param["id"]
         return cls(
@@ -49,18 +49,18 @@ class Text(Property):
         )
 
     @classmethod
-    def from_plain_text(cls: Type[T], text: str, name: str | None = None) -> T:
+    def from_plain_text(cls: type[T], text: str, name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             rich_text=RichText.from_plain_text(text=text),
         )
 
     @classmethod
-    def from_rich_text(cls: Type[T], rich_text: RichText, name: str | None = None) -> T:
+    def from_rich_text(cls: type[T], rich_text: RichText, name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, rich_text=rich_text)
 
     @classmethod
-    def empty(cls: Type[T], name: str | None = None) -> T:
+    def empty(cls: type[T], name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             rich_text=RichText.empty(),

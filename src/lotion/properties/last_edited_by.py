@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .property import Property
 
@@ -14,14 +14,14 @@ class LastEditedBy(Property):
         self,
         name: str,
         last_edited_by: dict,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
     ) -> None:
         self.name = name
         self.last_edited_by = last_edited_by
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], key: str, param: dict) -> T:
+    def of(cls: type[T], key: str, param: dict) -> T:
         return cls(id=param["id"], name=key, last_edited_by=param["last_edited_by"])
 
     def __dict__(self) -> dict[str, Any]:

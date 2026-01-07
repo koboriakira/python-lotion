@@ -1,12 +1,12 @@
 from typing import Any
 
-from .properties.files import Files
 from .properties.button import Button
 from .properties.checkbox import Checkbox
 from .properties.created_by import CreatedBy
 from .properties.created_time import CreatedTime
 from .properties.date import Date
 from .properties.email import Email
+from .properties.files import Files
 from .properties.formula import Formula
 from .properties.last_edited_by import LastEditedBy
 from .properties.last_edited_time import LastEditedTime
@@ -35,7 +35,7 @@ class PropertyTranslator:
         return Properties(values=[value for value in values if value is not None])
 
     @staticmethod
-    def from_property_dict(key: str, property_: dict[str, Any]) -> "Property":  # noqa: PLR0911
+    def from_property_dict(key: str, property_: dict[str, Any]) -> "Property":
         type_ = property_["type"]
         match type_:
             case "title":

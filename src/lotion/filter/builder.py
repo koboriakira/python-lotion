@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from ..properties.prop import Prop
 from ..properties.property import Property
@@ -17,8 +17,8 @@ class Builder:
     def create() -> "Builder":
         return Builder(conditions=[])
 
-    def add(self, prop: Property | Type[Property], cond: Cond) -> "Builder":
-        if isinstance(prop, Type):
+    def add(self, prop: Property | type[Property], cond: Cond) -> "Builder":
+        if isinstance(prop, type):
             return self._add(prop.TYPE, prop.PROP_NAME, cond)
         return self._add(prop.TYPE, prop.name, cond, prop._value_for_filter)
 

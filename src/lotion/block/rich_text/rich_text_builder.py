@@ -1,8 +1,8 @@
-from datetime import date
-from typing import Optional
 from dataclasses import dataclass
-from lotion.block.rich_text.rich_text_element import RichTextElement, RichTextTextElement, RichTextMentionElement
+from datetime import date
+
 from lotion.block.rich_text.rich_text import RichText
+from lotion.block.rich_text.rich_text_element import RichTextElement, RichTextMentionElement, RichTextTextElement
 
 
 @dataclass(frozen=True)
@@ -17,7 +17,7 @@ class RichTextBuilder:
     def create() -> "RichTextBuilder":
         return RichTextBuilder(rich_text=[])
 
-    def add_text(self, content: str, link_url: Optional[str] = None) -> "RichTextBuilder":
+    def add_text(self, content: str, link_url: str | None = None) -> "RichTextBuilder":
         self.rich_text.append(RichTextTextElement.of(content, link_url))
         return self
 

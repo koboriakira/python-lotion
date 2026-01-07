@@ -2,6 +2,7 @@ from datetime import date, datetime
 from unittest import TestCase
 
 import pytest
+
 from lotion.properties.date import Date
 
 DUMMY_START_DATE = date(2021, 1, 1)

@@ -1,17 +1,16 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Type, TypeVar, cast
+from typing import TypeVar, cast
 
-from .datetime_utils import JST
-from .properties.files import Files
-from .property_translator import PropertyTranslator
 from .base_operator import BaseOperator
 from .block.block import Block
+from .datetime_utils import JST
 from .page.page_id import PageId
 from .properties.checkbox import Checkbox
 from .properties.cover import Cover
 from .properties.date import Date
 from .properties.email import Email
+from .properties.files import Files
 from .properties.formula import Formula
 from .properties.icon import Icon
 from .properties.multi_select import MultiSelect
@@ -27,6 +26,7 @@ from .properties.text import Text
 from .properties.title import Title
 from .properties.unique_id import UniqueId
 from .properties.url import Url
+from .property_translator import PropertyTranslator
 
 T = TypeVar("T", bound="BasePage")
 
@@ -61,7 +61,7 @@ class BasePage:
 
     @classmethod
     def create(
-        cls: Type[T],
+        cls: type[T],
         properties: list[Property] | None = None,
         blocks: list[Block] | None = None,
         cover: Cover | None = None,
@@ -106,7 +106,7 @@ class BasePage:
             raise NotCreatedError("created_at is None.")
         return self.last_edited_time
 
-    def get_prop(self, instance_class: Type[P]) -> P:
+    def get_prop(self, instance_class: type[P]) -> P:
         parent_class = self.__get_parent_class(instance_class)
         if parent_class not in [
             Checkbox,
@@ -130,7 +130,7 @@ class BasePage:
             raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=instance_class.PROP_NAME)
         return cast(P, result)
 
-    def __get_parent_class(self, instance_class: Type[P]) -> Type[P]:
+    def __get_parent_class(self, instance_class: type[P]) -> type[P]:
         parent_classes = instance_class.__bases__
         if not parent_classes:
             return instance_class
@@ -247,7 +247,7 @@ class BasePage:
         return self._last_edited_by
 
     @classmethod
-    def from_data(cls: Type[T], data: dict, block_children: list[Block] | None = None) -> T:
+    def from_data(cls: type[T], data: dict, block_children: list[Block] | None = None) -> T:
         id_ = PageId(data["id"]).value if data["id"] is not None else None
         url_ = data["url"] if "url" in data else None
         created_time = datetime.fromisoformat(data["created_time"]) + timedelta(hours=9)

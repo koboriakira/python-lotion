@@ -20,5 +20,5 @@ class Property(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def _value_for_filter(self):  # noqa: ANN201
+    def _value_for_filter(self):
         pass

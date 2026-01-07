@@ -5,20 +5,18 @@ class Bookmark(Block):
     caption: list
     bookmark_url: str
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         bookmark_url: str,
         caption: list | None = None,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         archived: bool | None = None,
         created_time: str | None = None,
         last_edited_time: str | None = None,
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.bookmark_url = bookmark_url
         self.caption = caption or []
 

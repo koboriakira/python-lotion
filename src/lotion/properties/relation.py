@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -14,10 +14,10 @@ class Relation(Property):
 
     TYPE = "relation"
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         name: str,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         id_list: list[str] | None = None,
         has_more: bool | None = None,
     ) -> None:
@@ -27,19 +27,19 @@ class Relation(Property):
         self.has_more = bool(has_more)
 
     @classmethod
-    def of(cls: Type[T], name: str, property: dict[str, Any]) -> T:
+    def of(cls: type[T], name: str, property: dict[str, Any]) -> T:
         id_list = [r["id"] for r in property["relation"]]
         return cls(name=name, id_list=id_list, has_more=property["has_more"])
 
     @classmethod
-    def from_id_list(cls: Type[T], id_list: list[str], name: str | None = None) -> T:
+    def from_id_list(cls: type[T], id_list: list[str], name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             id_list=id_list,
         )
 
     @classmethod
-    def from_id(cls: Type[T], id: str, name: str | None = None) -> T:
+    def from_id(cls: type[T], id: str, name: str | None = None) -> T:
         return cls.from_id_list(name=name or cls.PROP_NAME, id_list=[id])
 
     def append(self, id: str) -> None:
@@ -52,7 +52,7 @@ class Relation(Property):
                 {
                     "id": id,
                 }
-                for id in self.id_list  # noqa: A001
+                for id in self.id_list
             ],
             "has_more": self.has_more,
         }

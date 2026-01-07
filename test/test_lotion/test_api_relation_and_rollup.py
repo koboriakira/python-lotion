@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import pytest
+
 from lotion import Lotion
 from lotion.properties import Relation
 

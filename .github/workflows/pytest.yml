@@ -41,6 +41,14 @@ jobs:
         run: |
           uv sync --dev
 
+      - name: Run ruff check
+        run: |
+          uv run ruff check
+
+      - name: Run ruff format (check only)
+        run: |
+          uv run ruff format --check
+
       - name: Pytest
         run: |
           uv run pytest -m all -n auto --dist=loadfile --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=lotion test/ | tee pytest-coverage.txt

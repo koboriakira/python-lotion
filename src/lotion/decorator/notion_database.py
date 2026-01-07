@@ -1,24 +1,22 @@
-from typing import Type, Any, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from ..properties.checkbox import Checkbox
 from ..properties.date import Date
 from ..properties.email import Email
 from ..properties.multi_select import MultiSelect
 from ..properties.phone_number import PhoneNumber
+from ..properties.property import Property
 from ..properties.relation import Relation
 from ..properties.select import Select
 from ..properties.status import Status
 from ..properties.text import Text
-from ..properties.url import Url
-
 from ..properties.title import Title
-
-from ..properties.property import Property
+from ..properties.url import Url
 
 P = TypeVar("P", bound=Property)
 
 
-def __cast(value: Property, cls: Type[P]) -> P:
+def __cast(value: Property, cls: type[P]) -> P:
     parent_class = cls.__bases__[0]
     if isinstance(value, Title) and parent_class == Title:
         return cls(
@@ -112,7 +110,7 @@ def notion_database(database_id: str):
             # クラスアノテーションに基づいてプロパティを設定
             for attr_name, attr_type in cls.__annotations__.items():
 
-                def make_getter(name, typ: Type[P]):
+                def make_getter(name, typ: type[P]):
                     def getter(self) -> Any:
                         # print(typ, name)  # デバッグ出力
                         result = self.get_prop(typ)  # `self.get()` は任意の実装
@@ -133,7 +131,7 @@ def notion_database(database_id: str):
                 setattr(cls, attr_name, property(make_getter(attr_name, attr_type), make_setter(attr_name, attr_type)))
 
         # デコレータ引数で渡された database_id をクラス属性として設定
-        setattr(cls, "DATABASE_ID", database_id)
+        cls.DATABASE_ID = database_id
 
         cls.__init__ = new_init
         cls.__module__ = cls.__module__

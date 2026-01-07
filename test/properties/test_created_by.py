@@ -2,7 +2,6 @@ from unittest import TestCase
 
 from lotion.properties.created_by import CreatedBy
 
-
 # クラス名の一致をチェックするロジックがあるので、完全に合わせておく
 
 

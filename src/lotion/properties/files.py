@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import TypeVar
 
 from .property import Property
 
@@ -42,14 +42,14 @@ class Files(Property):
         self,
         name: str,
         files: list = [],
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
     ) -> None:
         self.name = name
         self._files = files
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], key: str, param: dict) -> T:
+    def of(cls: type[T], key: str, param: dict) -> T:
         return cls(
             id=param["id"],
             name=key,

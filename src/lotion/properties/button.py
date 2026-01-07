@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .property import Property
 
@@ -13,7 +13,7 @@ class Button(Property):
     TYPE: str = "button"
 
     @classmethod
-    def of(cls: Type[T], key: str, property: dict) -> T:
+    def of(cls: type[T], key: str, property: dict) -> T:
         return cls(id=property["id"], name=key)
 
     def value_for_filter(self) -> str:
@@ -33,5 +33,5 @@ class Button(Property):
         raise ValueError(f"{self.__class__.__name__} doesn't need a property type")
 
     @property
-    def _value_for_filter(self) -> Any:  # noqa: ANN201
+    def _value_for_filter(self) -> Any:
         raise ValueError(f"{self.__class__.__name__} doesn't need a value for filter")

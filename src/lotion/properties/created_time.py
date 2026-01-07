@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from ..datetime_utils import convert_to_date_or_datetime
 from .property import Property
@@ -16,14 +16,14 @@ class CreatedTime(Property):
         self,
         name: str,
         value: datetime,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
     ) -> None:
         self.name = name
         self.value = value
         self.id = id
 
     @classmethod
-    def create(cls: Type[T], key, value: str) -> T:
+    def create(cls: type[T], key, value: str) -> T:
         return cls(
             name=key,
             value=convert_to_date_or_datetime(value),

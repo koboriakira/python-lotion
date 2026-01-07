@@ -1,12 +1,7 @@
 from unittest import TestCase
 
-
-from lotion.filter import Builder, Cond
-
 # https://developers.notion.com/reference/post-database-query-filter
-
-import pytest
-
+from lotion.filter import Builder, Cond
 from lotion.properties.text import Text
 
 

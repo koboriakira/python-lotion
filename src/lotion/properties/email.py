@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -22,25 +22,25 @@ class Email(Property):
         self,
         name: str,
         value: str = "",
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
     ) -> None:
         self.name = name
         self.value = value
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], key: str, param: dict) -> T:
+    def of(cls: type[T], key: str, param: dict) -> T:
         value = param.get("email")
         if value is not None and not isinstance(value, str):
             raise ValueError(f"email must be str, but got {type(value)}")
         return cls(id=param["id"], name=key, value=value or "")
 
     @classmethod
-    def from_email(cls: Type[T], email: str, name: str | None = None) -> T:
+    def from_email(cls: type[T], email: str, name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, value=email)
 
     @classmethod
-    def empty(cls: Type[T], name: str | None = None) -> T:
+    def empty(cls: type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, value="")
 
     def __dict__(self) -> dict:
@@ -59,5 +59,5 @@ class Email(Property):
         raise NotImplementedError(f"{self.__class__.__name__} doesn't need a property type")
 
     @property
-    def _value_for_filter(self) -> Any:  # noqa: ANN201
+    def _value_for_filter(self) -> Any:
         raise NotImplementedError(f"{self.__class__.__name__} doesn't need a value for filter")

@@ -2,11 +2,12 @@ from unittest import TestCase
 
 import pytest
 
-from lotion import Lotion, notion_prop, notion_database
+from lotion import Lotion, notion_database, notion_prop
 from lotion.base_page import BasePage
 from lotion.properties.multi_select import MultiSelect
 
 DATABASE_ID = "15c6567a3bbf80818512f43db108616f"
+
 
 @notion_prop("マルチセレクト")
 class MyMultiSelect(MultiSelect):
@@ -20,7 +21,6 @@ class MyDatabase(BasePage):
 
 @pytest.mark.api()
 class TestApiMultiSelect(TestCase):
-
     def setUp(self) -> None:
         self.suite = Lotion.get_instance()
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from lotion.block.rich_text.rich_text import RichText
 from lotion.block.rich_text.rich_text_builder import RichTextBuilder
@@ -30,7 +30,7 @@ class Title(Property):
         self.rich_text = rich_text
 
     @classmethod
-    def from_properties(cls: Type[T], properties: dict) -> T:
+    def from_properties(cls: type[T], properties: dict) -> T:
         if "Name" in properties:
             return cls.__of("Name", properties["Name"])
         if "Title" in properties:
@@ -41,7 +41,7 @@ class Title(Property):
         raise Exception(msg)
 
     @classmethod
-    def from_property(cls: Type[T], key: str, property: dict) -> T:
+    def from_property(cls: type[T], key: str, property: dict) -> T:
         return cls.__of(key, property)
 
     def __dict__(self) -> dict:
@@ -55,7 +55,7 @@ class Title(Property):
         }
 
     @classmethod
-    def __of(cls: Type[T], name: str, param: dict) -> T:
+    def __of(cls: type[T], name: str, param: dict) -> T:
         rich_text = RichText.from_entity(param["title"])
         return cls(
             name=name,
@@ -64,7 +64,7 @@ class Title(Property):
         )
 
     @classmethod
-    def from_plain_text(cls: Type[T], text: str, name: str | None = None) -> T:
+    def from_plain_text(cls: type[T], text: str, name: str | None = None) -> T:
         rich_text = RichText.from_plain_text(text)
         return cls(
             name=name or cls.PROP_NAME,
@@ -72,7 +72,7 @@ class Title(Property):
         )
 
     @classmethod
-    def from_rich_text(cls: Type[T], rich_text: RichText, name: str | None = None) -> T:
+    def from_rich_text(cls: type[T], rich_text: RichText, name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             rich_text=rich_text,
@@ -80,7 +80,7 @@ class Title(Property):
 
     @classmethod
     def from_mentioned_page(
-        cls: Type[T],
+        cls: type[T],
         mentioned_page_id: str,
         prefix: str = "",
         suffix: str = "",
@@ -99,7 +99,7 @@ class Title(Property):
 
     @classmethod
     def from_mentioned_page_id(
-        cls: Type[T],
+        cls: type[T],
         page_id: str,
         name: str | None = None,
     ) -> T:

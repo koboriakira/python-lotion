@@ -19,9 +19,7 @@ class ToDo(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.rich_text = rich_text
         self.color = color
         self.checked = checked or False
@@ -61,8 +59,4 @@ class ToDo(Block):
         return result
 
     def to_slack_text(self) -> str:
-        return (
-            "[ ] " + self.rich_text.to_slack_text()
-            if not self.checked
-            else "[x] " + self.rich_text.to_slack_text()
-        )
+        return "[ ] " + self.rich_text.to_slack_text() if not self.checked else "[x] " + self.rich_text.to_slack_text()

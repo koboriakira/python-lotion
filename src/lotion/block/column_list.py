@@ -5,19 +5,17 @@ class ColumnList(Block):
     column_list: dict
     type: str = "column_list"
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         column_list: dict,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         archived: bool | None = None,
         created_time: str | None = None,
         last_edited_time: str | None = None,
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(
-            id, archived, has_children, created_time, last_edited_time, parent
-        )
+        super().__init__(id, archived, has_children, created_time, last_edited_time, parent)
         self.column_list = column_list
 
     @staticmethod

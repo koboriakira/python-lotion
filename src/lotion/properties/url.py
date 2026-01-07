@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -20,7 +20,7 @@ class Url(Property):
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         url = param["url"] if param.get("url") else ""
         return cls(
             name=name,
@@ -29,14 +29,14 @@ class Url(Property):
         )
 
     @classmethod
-    def from_url(cls: Type[T], url: str, name: str | None = None) -> T:
+    def from_url(cls: type[T], url: str, name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             url=url,
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str | None = None) -> T:
+    def empty(cls: type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME)
 
     def __dict__(self):

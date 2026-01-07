@@ -14,9 +14,7 @@ class ChildPage(Block):
         parent: dict,
         title: str,
     ):
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.title = title
 
     @staticmethod

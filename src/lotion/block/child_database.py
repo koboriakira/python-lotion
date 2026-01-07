@@ -14,9 +14,7 @@ class ChildDatabase(Block):
         parent: dict,
         database_name: str,
     ):
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.database_name = database_name
 
     @staticmethod

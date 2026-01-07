@@ -17,9 +17,7 @@ class BulletedListItem(Block):
         has_children: bool | None = None,
         parent: dict | None = None,
     ):
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.rich_text = rich_text
         self.color = color
 

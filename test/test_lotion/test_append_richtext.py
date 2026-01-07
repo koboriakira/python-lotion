@@ -2,6 +2,7 @@ from datetime import date
 from unittest import TestCase
 
 import pytest
+
 from lotion import Lotion
 from lotion.block.paragraph import Paragraph
 from lotion.block.rich_text.rich_text_builder import RichTextBuilder

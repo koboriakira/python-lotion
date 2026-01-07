@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -13,13 +13,13 @@ class Checkbox(Property):
     TYPE: str = "checkbox"
     PROP_NAME: str = "checkbox"
 
-    def __init__(self, name: str, checked: bool, id: str | None = None) -> None:  # noqa: A002, FBT001
+    def __init__(self, name: str, checked: bool, id: str | None = None) -> None:
         self.name = name
         self.checked = checked or False
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         return cls(
             name=name,
             checked=param["checkbox"],
@@ -27,14 +27,14 @@ class Checkbox(Property):
         )
 
     @classmethod
-    def true(cls: Type[T], name: str | None = None) -> T:
+    def true(cls: type[T], name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             checked=True,
         )
 
     @classmethod
-    def false(cls: Type[T], name: str | None = None) -> T:
+    def false(cls: type[T], name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             checked=False,

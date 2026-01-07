@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .property import Property
 
@@ -14,14 +14,14 @@ class CreatedBy(Property):
         self,
         name: str,
         created_by_param: dict,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
     ) -> None:
         self.name = name
         self.created_by_param = created_by_param
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], key: str, param: dict) -> T:
+    def of(cls: type[T], key: str, param: dict) -> T:
         return cls(id=param["id"], name=key, created_by_param=param["created_by"])
 
     def __dict__(self) -> dict[str, Any]:

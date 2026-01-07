@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -15,7 +15,7 @@ class Number(Property):
     def __init__(
         self,
         name: str,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         number: int | None = None,
     ) -> None:
         self.name = name
@@ -32,7 +32,7 @@ class Number(Property):
         )
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         if param["number"] is None:
             return cls(name=name, id=param["id"])
         return cls(
@@ -42,7 +42,7 @@ class Number(Property):
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str | None = None) -> T:
+    def empty(cls: type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME)
 
     def is_empty(self) -> bool:
@@ -64,7 +64,7 @@ class Number(Property):
         }
 
     @classmethod
-    def from_num(cls: Type[T], value: int, name: str | None = None) -> T:
+    def from_num(cls: type[T], value: int, name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             number=value,

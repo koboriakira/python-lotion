@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from ..datetime_utils import convert_to_date_or_datetime
 from .prop import Prop
@@ -19,7 +19,7 @@ class Date(Property):
     def __init__(
         self,
         name: str,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         start: str | None = None,
         end: str | None = None,
         time_zone: str | None = None,
@@ -67,7 +67,7 @@ class Date(Property):
         return convert_to_date_or_datetime(self.end, cls=datetime)
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict | None = None) -> T:
+    def of(cls: type[T], name: str, param: dict | None = None) -> T:
         if param is None:
             param = {}
         if param["date"] is None:
@@ -81,7 +81,7 @@ class Date(Property):
         )
 
     @classmethod
-    def from_start_date(cls: Type[T], start_date: date | datetime | None = None, name: str | None = None) -> T:
+    def from_start_date(cls: type[T], start_date: date | datetime | None = None, name: str | None = None) -> T:
         return cls(
             name=name or cls.PROP_NAME,
             start=start_date.isoformat() if start_date is not None else None,
@@ -89,7 +89,7 @@ class Date(Property):
 
     @classmethod
     def from_range(
-        cls: Type[T],
+        cls: type[T],
         start: date | datetime | None = None,
         end: date | datetime | None = None,
         name: str | None = None,

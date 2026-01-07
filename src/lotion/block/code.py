@@ -3,20 +3,18 @@ from .rich_text.rich_text import RichText
 
 
 class Code(Block):
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         rich_text: RichText,
         language: str | None = None,
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
         archived: bool | None = None,
         created_time: str | None = None,
         last_edited_time: str | None = None,
         has_children: bool | None = None,
         parent: dict | None = None,
     ) -> None:
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.rich_text = rich_text
         self.language = language
 

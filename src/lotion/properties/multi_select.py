@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -53,7 +53,7 @@ class MultiSelect(Property):
     values: list[MultiSelectElement]
     TYPE: str = "multi_select"
 
-    def __init__(self, name: str, values: list[MultiSelectElement], id: str | None = None) -> None:  # noqa: A002
+    def __init__(self, name: str, values: list[MultiSelectElement], id: str | None = None) -> None:
         self.name = name
         self.values = values
         self.id = id
@@ -63,7 +63,7 @@ class MultiSelect(Property):
             raise ValueError("All values must be MultiSelectElement instances.")
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         multi_select = [
             MultiSelectElement(
                 id=element["id"],
@@ -80,7 +80,7 @@ class MultiSelect(Property):
         )
 
     @classmethod
-    def from_name(cls: Type[T], values: list[str], name: str | None = None) -> T:
+    def from_name(cls: type[T], values: list[str], name: str | None = None) -> T:
         multi_select = [MultiSelectElement(name=value) for value in values]
         return cls(
             name=name or cls.PROP_NAME,
@@ -97,7 +97,7 @@ class MultiSelect(Property):
         return [value.name for value in self.values]
 
     @classmethod
-    def create(cls: Type[T], values: list[dict[str, str]], name: str | None = None) -> T:
+    def create(cls: type[T], values: list[dict[str, str]], name: str | None = None) -> T:
         """
         Create a MultiSelect instance from a list of dictionaries.
 
@@ -115,7 +115,7 @@ class MultiSelect(Property):
         )
 
     @classmethod
-    def from_elements(cls: Type[T], elements: list[MultiSelectElement], name: str | None = None) -> T:
+    def from_elements(cls: type[T], elements: list[MultiSelectElement], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, values=elements)
 
     def __dict__(self) -> dict:

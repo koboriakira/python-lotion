@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import TypeVar
 
 from .property import Property
 
@@ -19,13 +19,13 @@ class People(Property):
 
     TYPE: str = "people"
 
-    def __init__(self, name: str, id: str | None = None, people_list: list | None = None) -> None:  # noqa: A002, FBT001
+    def __init__(self, name: str, id: str | None = None, people_list: list | None = None) -> None:
         self.name = name
         self.id = id
         self.people_list = people_list
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         id = param["id"]
         people_list = param["people"]
         return cls(

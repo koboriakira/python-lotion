@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import TypeVar
 
 from .property import Property
 
@@ -21,25 +21,25 @@ class PhoneNumber(Property):
         self,
         name: str,
         value: str = "",
-        id: str | None = None,  # noqa: A002
+        id: str | None = None,
     ) -> None:
         self.name = name
         self.value = value
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], key: str, param: dict) -> T:
+    def of(cls: type[T], key: str, param: dict) -> T:
         value = param.get("phone_number")
         if value is not None and not isinstance(value, str):
             raise ValueError(f"phone_number must be str, but got {type(value)}")
         return cls(id=param["id"], name=key, value=value or "")
 
     @classmethod
-    def empty(cls: Type[T], name: str | None = None) -> T:
+    def empty(cls: type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, value="")
 
     @classmethod
-    def create(cls: Type[T], phone_number: str, name: str | None = None) -> T:
+    def create(cls: type[T], phone_number: str, name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, value=phone_number)
 
     def __dict__(self) -> dict:

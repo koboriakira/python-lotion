@@ -11,7 +11,7 @@ class Block(metaclass=ABCMeta):
     last_edited_time: str | None
     parent: dict[str, str] | None = None
 
-    def to_dict(self, for_create: bool|None = None) -> dict:
+    def to_dict(self, for_create: bool | None = None) -> dict:
         result = {
             "object": "block",
         }

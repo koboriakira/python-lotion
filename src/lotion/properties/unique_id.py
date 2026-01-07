@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, TypeVar
+from typing import TypeVar
 
 from .property import Property
 
@@ -31,7 +31,7 @@ class UniqueId(Property):
         self.id = id
 
     @classmethod
-    def of(cls: Type[T], key: str, param: dict) -> T:
+    def of(cls: type[T], key: str, param: dict) -> T:
         return cls(
             id=param["id"],
             name=key,

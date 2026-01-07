@@ -1,6 +1,8 @@
 from unittest import TestCase
 
 import pytest
+
+from lotion import Lotion
 from lotion.block import (
     Bookmark,
     BulletedListItem,
@@ -16,7 +18,6 @@ from lotion.block import (
     ToDo,
     Video,
 )
-from lotion import Lotion
 
 
 @pytest.mark.api()

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Type, TypeVar
+from typing import Any, TypeVar
 
 from .prop import Prop
 from .property import Property
@@ -29,7 +29,7 @@ class Select(Property):
         self.selected_color = selected_color
 
     @classmethod
-    def of(cls: Type[T], name: str, param: dict) -> T:
+    def of(cls: type[T], name: str, param: dict) -> T:
         select = param["select"]
         if select is None:
             return cls(name=name)
@@ -42,11 +42,11 @@ class Select(Property):
         )
 
     @classmethod
-    def empty(cls: Type[T], name: str | None = None) -> T:
+    def empty(cls: type[T], name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME)
 
     @classmethod
-    def from_name(cls: Type[T], selected_name: str, name: str | None = None) -> T:
+    def from_name(cls: type[T], selected_name: str, name: str | None = None) -> T:
         return cls(name=name or cls.PROP_NAME, selected_name=selected_name)
 
     def _is_set_name_only(self) -> bool:

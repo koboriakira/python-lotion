@@ -1,7 +1,7 @@
+import json
 from abc import ABCMeta, abstractmethod
 from datetime import date
 from typing import Any
-import json
 
 
 class RichTextElement(metaclass=ABCMeta):
@@ -37,7 +37,7 @@ class RichTextElement(metaclass=ABCMeta):
         pass
 
     @staticmethod
-    def from_entity(rich_text_element: dict) -> "RichTextElement":  # noqa: C901
+    def from_entity(rich_text_element: dict) -> "RichTextElement":
         """dictからRichTextElementを生成する"""
         type = rich_text_element["type"]
         if type == "text":

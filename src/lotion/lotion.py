@@ -1,7 +1,7 @@
 import os
 from datetime import date, datetime
 from logging import Logger, getLogger
-from typing import Generic, Type, TypeVar
+from typing import Generic, TypeVar
 
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
@@ -103,15 +103,15 @@ class Lotion:
 
     @staticmethod
     def get_instance(
-        secret: str | None = None, 
-        max_retry_count: int = 3, 
+        secret: str | None = None,
+        max_retry_count: int = 3,
         logger: Logger | None = None,
-        notion_version: str = "2022-06-28"
+        notion_version: str = "2022-06-28",
     ) -> "Lotion":
         client = Client(auth=secret or os.getenv("NOTION_SECRET"), notion_version=notion_version)
         return Lotion(client, max_retry_count=max_retry_count, logger=logger)
 
-    def retrieve_page(self, page_id: str, cls: Type[T] = BasePage) -> T:
+    def retrieve_page(self, page_id: str, cls: type[T] = BasePage) -> T:
         """指定されたページを取得する"""
         page_entity = self.__retrieve_page(page_id=page_id)
         return self.__convert_page_model(page_entity=page_entity, include_children=True, cls=cls)
@@ -142,7 +142,7 @@ class Lotion:
         cover: Cover | None = None,
         properties: list[Property] | None = None,
         blocks: list[Block] | None = None,
-        cls: Type[T] = BasePage,
+        cls: type[T] = BasePage,
     ) -> T:
         """データベース上にページを新規作成する"""
         page = self.__create_page(
@@ -167,12 +167,12 @@ class Lotion:
             cls=type(_page),
         )
 
-    def retrieve_database(  # noqa: PLR0913
+    def retrieve_database(
         self,
         database_id: str,
         filter_param: dict | None = None,
         include_children: bool | None = None,
-        cls: Type[T] = BasePage,
+        cls: type[T] = BasePage,
     ) -> list[T]:
         """指定されたデータベースのページを取得する"""
         results = self._database_query(database_id=database_id, filter_param=filter_param)
@@ -188,7 +188,7 @@ class Lotion:
 
     def search_pages(
         self,
-        cls: Type[T],
+        cls: type[T],
         props: Property | list[Property],
         include_children: bool | None = None,
     ) -> list[T]:
@@ -201,7 +201,7 @@ class Lotion:
 
     def search_page_by_created_at(
         self,
-        cls: Type[T],
+        cls: type[T],
         start: date | datetime,
         end: date | datetime | None = None,
     ) -> list[T]:
@@ -214,7 +214,7 @@ class Lotion:
 
     def search_page_by_last_edited_at(
         self,
-        cls: Type[T],
+        cls: type[T],
         start: date | datetime,
         end: date | datetime | None = None,
     ) -> list[T]:
@@ -227,7 +227,7 @@ class Lotion:
 
     def retrieve_pages(
         self,
-        cls: Type[T],
+        cls: type[T],
         filter_param: dict | None = None,
         include_children: bool | None = None,
     ) -> list[T]:
@@ -240,7 +240,7 @@ class Lotion:
 
     def find_page(
         self,
-        cls: Type[T],
+        cls: type[T],
         prop: Title | Text,
         prop_name: str | None = None,
     ) -> T | None:
@@ -266,7 +266,7 @@ class Lotion:
         database_id: str,
         title: str,
         title_key_name: str = "名前",
-        cls: Type[T] = BasePage,
+        cls: type[T] = BasePage,
     ) -> T | None:
         """文字列をもとにデータベースのページを取得する"""
         filter_param = Builder.create()._add(Prop.RICH_TEXT, title_key_name, Cond.EQUALS, title).build()
@@ -286,7 +286,7 @@ class Lotion:
         self,
         database_id: str,
         unique_id: int,
-        cls: Type[T] = BasePage,
+        cls: type[T] = BasePage,
     ) -> T | None:
         """UniqueIdをもとにデータベースのページを取得する"""
         unique_id_prop_name = None
@@ -388,7 +388,7 @@ class Lotion:
         """指定されたページを削除する"""
         self.__archive(page_id=page_id)
 
-    def fetch_select(self, cls: Type[T], prop_type: Type[S], value: str) -> S:
+    def fetch_select(self, cls: type[T], prop_type: type[S], value: str) -> S:
         """指定されたデータベースのセレクトを取得する"""
         prop_cache_key = cls.DATABASE_ID + prop_type.__name__
         if prop_cache_key in SELECT_CACHE and SELECT_CACHE[prop_cache_key].has(value):
@@ -407,7 +407,7 @@ class Lotion:
             f"Select not found in database. Lotion can get only used selects.: cls={cls.__name__}, prop={prop.__name__}, value={value}"
         )
 
-    def fetch_multi_select(self, cls: Type[T], prop_cls: Type[M], value: str | list[str]) -> M:
+    def fetch_multi_select(self, cls: type[T], prop_cls: type[M], value: str | list[str]) -> M:
         """
         指定されたデータベースのマルチセレクトを取得する。
         ただし現在のデータベースで利用されていないマルチセレクトを取得することはできない。
@@ -462,7 +462,7 @@ class Lotion:
         self,
         page_entity: dict,
         include_children: bool | None = None,
-        cls: Type[T] = BasePage,
+        cls: type[T] = BasePage,
     ) -> T:
         include_children = (
             include_children if include_children is not None else True
@@ -561,7 +561,7 @@ class Lotion:
                 )
             raise NotionApiError(database_id=database_id, e=e, properties=properties) from e
 
-    def _fetch_sample_page(self, database_id: str, cls: Type[T] = BasePage) -> T:
+    def _fetch_sample_page(self, database_id: str, cls: type[T] = BasePage) -> T:
         """指定されたデータベースのサンプルページを取得する"""
         data = self.__database_query(database_id=database_id, page_size=1)
         pages: list[dict] = data["results"]

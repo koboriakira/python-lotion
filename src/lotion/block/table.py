@@ -18,9 +18,7 @@ class Table(Block):
         has_children: bool,
         parent: dict,
     ):
-        super().__init__(
-            id, archived, created_time, last_edited_time, has_children, parent
-        )
+        super().__init__(id, archived, created_time, last_edited_time, has_children, parent)
         self.table_width = table_width
         self.has_column_header = has_column_header
         self.has_row_header = has_row_header
