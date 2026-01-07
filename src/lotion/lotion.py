@@ -102,8 +102,13 @@ class Lotion:
         self._logger = logger or getLogger(__name__)
 
     @staticmethod
-    def get_instance(secret: str | None = None, max_retry_count: int = 3, logger: Logger | None = None) -> "Lotion":
-        client = Client(auth=secret or os.getenv("NOTION_SECRET"))
+    def get_instance(
+        secret: str | None = None, 
+        max_retry_count: int = 3, 
+        logger: Logger | None = None,
+        notion_version: str = "2022-06-28"
+    ) -> "Lotion":
+        client = Client(auth=secret or os.getenv("NOTION_SECRET"), notion_version=notion_version)
         return Lotion(client, max_retry_count=max_retry_count, logger=logger)
 
     def retrieve_page(self, page_id: str, cls: Type[T] = BasePage) -> T:
@@ -574,16 +579,25 @@ class Lotion:
     ) -> dict:
         try:
             if filter_param is None:
-                return self.client.databases.query(
-                    database_id=database_id,
-                    start_cursor=start_cursor,
-                    page_size=page_size,
+                body = {}
+                if start_cursor:
+                    body["start_cursor"] = start_cursor
+                if page_size:
+                    body["page_size"] = page_size
+                return self.client.request(
+                    method="POST",
+                    path=f"databases/{database_id}/query",
+                    body=body,
                 )
-            return self.client.databases.query(
-                database_id=database_id,
-                start_cursor=start_cursor,
-                filter=filter_param,
-                page_size=page_size,
+            body = {"filter": filter_param}
+            if start_cursor:
+                body["start_cursor"] = start_cursor
+            if page_size:
+                body["page_size"] = page_size
+            return self.client.request(
+                method="POST",
+                path=f"databases/{database_id}/query",
+                body=body,
             )
         except APIResponseError as e:
             if self.__is_able_retry(status=e.status, retry_count=retry_count):
