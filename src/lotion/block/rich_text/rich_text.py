@@ -9,7 +9,7 @@ class RichText:
 
     @staticmethod
     def from_entity(rich_text: list) -> "RichText":
-        return RichText(elements=list(map(lambda x: RichTextElement.from_entity(x), rich_text)))
+        return RichText(elements=[RichTextElement.from_entity(x) for x in rich_text])
 
     @staticmethod
     def empty() -> "RichText":
@@ -26,10 +26,10 @@ class RichText:
         return cls(elements=[rich_text_element])
 
     def to_plain_text(self) -> str:
-        return "".join(map(lambda x: x.to_plain_text(), self.elements))
+        return "".join(x.to_plain_text() for x in self.elements)
 
     def to_dict(self) -> list[dict]:
-        return list(map(lambda x: x.to_dict(), self.elements))
+        return [x.to_dict() for x in self.elements]
 
     def to_slack_text(self) -> str:
         return "".join([x.to_slack_text() for x in self.elements])

@@ -24,5 +24,5 @@ class Prop(Enum):
     def from_str(value: str) -> "Prop":
         try:
             return Prop(value)
-        except ValueError:
-            raise ValueError(f"Unknown property type: {value}")
+        except ValueError as err:
+            raise ValueError(f"Unknown property type: {value}") from err

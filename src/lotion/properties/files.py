@@ -41,11 +41,11 @@ class Files(Property):
     def __init__(
         self,
         name: str,
-        files: list = [],
+        files: list | None = None,
         id: str | None = None,
     ) -> None:
         self.name = name
-        self._files = files
+        self._files = files or []
         self.id = id
 
     @classmethod

@@ -249,7 +249,7 @@ class BasePage:
     @classmethod
     def from_data(cls: type[T], data: dict, block_children: list[Block] | None = None) -> T:
         id_ = PageId(data["id"]).value if data["id"] is not None else None
-        url_ = data["url"] if "url" in data else None
+        url_ = data.get("url")
         created_time = datetime.fromisoformat(data["created_time"]) + timedelta(hours=9)
         last_edited_time = datetime.fromisoformat(data["last_edited_time"]) + timedelta(hours=9)
         created_by = BaseOperator.of(data["created_by"])

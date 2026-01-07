@@ -23,7 +23,7 @@ class Video(Block):
     @staticmethod
     def of(block: dict) -> "Video":
         video = block["video"]
-        video_external = video["external"] if "external" in video else {}
+        video_external = video.get("external", {})
         return Video(
             id=block["id"],
             archived=block["archived"],
@@ -32,7 +32,7 @@ class Video(Block):
             has_children=block["has_children"],
             parent=block["parent"],
             caption=video["caption"],
-            external_url=video_external["url"] if "url" in video_external else "",
+            external_url=video_external.get("url", ""),
         )
 
     @staticmethod
