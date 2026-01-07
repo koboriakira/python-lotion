@@ -242,7 +242,7 @@ class Lotion:
         self,
         cls: type[T],
         prop: Title | Text,
-        prop_name: str | None = None,
+        _: str | None = None,
     ) -> T | None:
         """指定されたデータベースのページを取得する。検索可能なプロパティはTitleとTextのみ"""
         filter_param = (
@@ -397,7 +397,7 @@ class Lotion:
         for page in pages:
             prop = page.get_prop(prop_type)
             if prop.selected_name == value:
-                cache = SELECT_CACHE[prop_cache_key] if prop_cache_key in SELECT_CACHE else None
+                cache = SELECT_CACHE.get(prop_cache_key)
                 if cache is None:
                     cache = SelectCache[S]()
                 cache.set(value, prop)
@@ -436,7 +436,7 @@ class Lotion:
             raise ValueError(
                 f"MultiSelect not found in database. Lotion can get only used multi_selects.: cls={cls.__name__}, prop={prop_cls.__name__}, value={value}"
             )
-        cache = MULTI_SELECT_CACHE[prop_cache_key] if prop_cache_key in MULTI_SELECT_CACHE else None
+        cache = MULTI_SELECT_CACHE.get(prop_cache_key)
         if cache is None:
             cache = MultiSelectCache()
         for e in elements:

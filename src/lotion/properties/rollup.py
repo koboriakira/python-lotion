@@ -20,11 +20,11 @@ class Rollup(Property):
     def __init__(
         self,
         name: str,
-        rollup: dict = {},
+        rollup: dict | None = None,
         id: str | None = None,
     ) -> None:
         self.name = name
-        self._rollup = rollup
+        self._rollup = rollup or {}
         self.id = id
 
     @classmethod

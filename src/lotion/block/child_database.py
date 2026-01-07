@@ -38,4 +38,4 @@ class ChildDatabase(Block):
         raise NotImplementedError
 
     def to_slack_text(self) -> str:
-        raise ""
+        raise NotImplementedError("ChildDatabase does not support Slack text conversion")

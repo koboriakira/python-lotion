@@ -102,7 +102,7 @@ def notion_database(database_id: str):
 
     def decorator(cls):
         # 元の初期化をオーバーライドしてアノテーション属性をプロパティ化
-        original_init = getattr(cls, "__init__", lambda self: None)
+        original_init = getattr(cls, "__init__", lambda _: None)
 
         def new_init(self, *args, **kwargs):
             original_init(self, *args, **kwargs)
@@ -110,7 +110,7 @@ def notion_database(database_id: str):
             # クラスアノテーションに基づいてプロパティを設定
             for attr_name, attr_type in cls.__annotations__.items():
 
-                def make_getter(name, typ: type[P]):
+                def make_getter(typ: type[P]):
                     def getter(self) -> Any:
                         # print(typ, name)  # デバッグ出力
                         result = self.get_prop(typ)  # `self.get()` は任意の実装
@@ -128,7 +128,7 @@ def notion_database(database_id: str):
                     return setter
 
                 # プロパティを作成してクラスに設定
-                setattr(cls, attr_name, property(make_getter(attr_name, attr_type), make_setter(attr_name, attr_type)))
+                setattr(cls, attr_name, property(make_getter(attr_type), make_setter(attr_name, attr_type)))
 
         # デコレータ引数で渡された database_id をクラス属性として設定
         cls.DATABASE_ID = database_id

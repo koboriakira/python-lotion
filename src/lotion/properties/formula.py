@@ -20,11 +20,11 @@ class Formula(Property):
     def __init__(
         self,
         name: str,
-        formula: dict = {},
+        formula: dict | None = None,
         id: str | None = None,
     ) -> None:
         self.name = name
-        self._formula = formula
+        self._formula = formula or {}
         self.id = id
 
     @classmethod

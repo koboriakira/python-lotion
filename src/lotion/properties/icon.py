@@ -10,5 +10,5 @@ class Icon:
     def of(param: dict) -> "Icon":
         return Icon(
             type=param["type"],
-            emoji=param["emoji"] if "emoji" in param else None,
+            emoji=param.get("emoji"),
         )

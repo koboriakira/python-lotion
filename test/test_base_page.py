@@ -35,7 +35,10 @@ class TestBasePage(TestCase):
         self.assertEqual("<http://example.com|タイトル>", actual)
 
     def test_webhookからのリクエストボディを処理できる(self):
-        given = json.load(open("test/base_page_test/pattern1.json"))
+        from pathlib import Path
+
+        with Path("test/base_page_test/pattern1.json").open() as f:
+            given = json.load(f)
         print(given)
 
         actual = BasePage.from_data(given)

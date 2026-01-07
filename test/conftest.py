@@ -16,11 +16,8 @@ def pytest_collection_modifyitems(config, items):
 
     for item in items:
         # "api" がマークされているかどうかを確認
-        if "api" in item.keywords:
-            # -m で "api" が指定されていなければ、スキップマークを追加
-            # if "api" not in selected_marker:
-            if selected_marker is None or len(selected_marker) == 0:
-                item.add_marker(pytest.mark.skip(reason="api マークがついているのでスキップ"))
+        if "api" in item.keywords and (selected_marker is None or len(selected_marker) == 0):
+            item.add_marker(pytest.mark.skip(reason="api マークがついているのでスキップ"))
 
         if "all" in selected_marker:
             item.add_marker(pytest.mark.all())

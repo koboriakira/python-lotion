@@ -88,10 +88,7 @@ class MultiSelect(Property):
         )
 
     def _is_value_only(self) -> bool:
-        for value in self.values:
-            if value._is_value_only():
-                return True
-        return False
+        return any(value._is_value_only() for value in self.values)
 
     def to_str_list(self) -> list[str]:
         return [value.name for value in self.values]
