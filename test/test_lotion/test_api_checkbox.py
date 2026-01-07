@@ -18,6 +18,7 @@ class TestApiCheckbox(TestCase):
         remove_page(page_id=self.page.id)
         return super().setUp()
 
+    @pytest.mark.minimum()
     def test_チェックボックスを変更する(self):
         checkbox_prop = Checkbox.true(name="チェックボックス")
         actual = update_page(page=self.page, property=checkbox_prop)

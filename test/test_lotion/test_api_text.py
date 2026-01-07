@@ -20,6 +20,7 @@ class TestApiText(TestCase):
         remove_page(page_id=self.page.id)
         return super().setUp()
 
+    @pytest.mark.minimum()
     def test_テキストを変更する(self):
         text_prop = Text.from_plain_text(name="テキスト", text="テスト")
         actual = update_page(page=self.page, property=text_prop)
@@ -29,6 +30,7 @@ class TestApiText(TestCase):
         actual = update_page(page=self.page, property=text_empty_prop)
         self.assertEqual(actual.get_text(name="テキスト").text, "")
 
+    @pytest.mark.minimum()
     def test_タイトルを変更する(self) -> None:
         # Given
         title = Title.from_mentioned_page(

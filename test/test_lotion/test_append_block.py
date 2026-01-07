@@ -27,6 +27,7 @@ class TestAppendBlock(TestCase):
         self.suite = Lotion.get_instance()
         self.suite.clear_page(self.PAGE_ID)
 
+    @pytest.mark.minimum()
     def test_ブロックを追加する(self):
         blocks = []
         blocks.append(Paragraph.from_plain_text(text="テスト"))

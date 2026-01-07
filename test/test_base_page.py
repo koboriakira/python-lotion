@@ -1,11 +1,13 @@
 import json
 from unittest import TestCase
 
+import pytest
 from lotion.base_page import BasePage
 from lotion.properties.title import Title
 
 
 class TestBasePage(TestCase):
+    @pytest.mark.minimum()
     def test_ページを作成する(self):
         # When
         actual = BasePage.create(properties=[], blocks=[])
@@ -39,6 +41,7 @@ class TestBasePage(TestCase):
         print(actual)
         self.assertEqual(given["id"], actual.id)
 
+    @pytest.mark.minimum()
     def test_コピーを作成する(self):
         # Given
         base_page = BasePage.create(

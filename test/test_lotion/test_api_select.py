@@ -22,6 +22,7 @@ class TestApiSelect(TestCase):
     def setUp(self) -> None:
         self.suite = Lotion.get_instance()
 
+    @pytest.mark.minimum()
     def test_fetch_select(self):
         result = self.suite.fetch_select(MyDatabase, MySelect, "セレクトA")
         self.assertEqual(result.selected_name, "セレクトA")

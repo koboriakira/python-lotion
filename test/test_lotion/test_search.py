@@ -17,6 +17,7 @@ class TestSearch(TestCase):
         self.suite = Lotion.get_instance()
         return super().setUp()
 
+    @pytest.mark.minimum()
     def test_検索_シンプルなテキスト検索(self):
         # Given
         filter_param = {
@@ -27,6 +28,7 @@ class TestSearch(TestCase):
         }
         self._search_and_assert(filter_param, 1)
 
+    @pytest.mark.minimum()
     def test_検索_複数の条件指定(self):
         # Given
         text_prop = Text.from_plain_text("テスト", "名前")

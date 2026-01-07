@@ -7,6 +7,7 @@ from lotion.block.rich_text.rich_text_element import RichTextElement
 
 
 class TestReadBlock(TestCase):
+    @pytest.mark.minimum()
     def test_link_mentionのリッチテキストを扱える(self):
         # Given
         input = {

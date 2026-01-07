@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+import pytest
 from lotion.block.code import Code
 
 
@@ -7,6 +8,7 @@ class TestCode(TestCase):
     def setUp(self) -> None:
         return super().setUp()
 
+    @pytest.mark.minimum()
     def test(self):
         # Given
         input = {

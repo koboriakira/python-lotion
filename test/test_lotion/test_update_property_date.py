@@ -27,6 +27,7 @@ class TestUpdateProperty(TestCase):
         self.suite.remove_page(self.page.id)
         return super().setUp()
 
+    @pytest.mark.minimum()
     def test_開始日を変更する(self):
         # Given
         date_ = date(2021, 1, 1)

@@ -24,6 +24,7 @@ class TestApiMultiSelect(TestCase):
     def setUp(self) -> None:
         self.suite = Lotion.get_instance()
 
+    @pytest.mark.minimum()
     def test_fetch_multi_select(self):
         actual = self.suite.fetch_multi_select(MyDatabase, MyMultiSelect, ["A", "B"])
         actual_name_list = [item.name for item in actual.values]
