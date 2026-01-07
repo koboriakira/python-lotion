@@ -6,7 +6,10 @@
       "Bash(python:*)",
       "Bash(rg:*)",
       "WebFetch(domain:developers.notion.com)",
-      "Bash(make test:*)"
+      "Bash(make test:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)",
+      "Bash(uv sync:*)"
     ],
     "deny": []
   }
