@@ -11,6 +11,7 @@ from lotion.block.code import Code
 from lotion.block.column_list import ColumnList
 from lotion.block.divider import Divider
 from lotion.block.embed import Embed
+from lotion.block.file import File
 from lotion.block.heading import Heading
 from lotion.block.image import Image
 from lotion.block.numbered_list_item import NumberedListItem
@@ -70,6 +71,8 @@ class BlockFactory:
                 return ChildPage.of(block)
             case BlockType.COLUMN_LIST:
                 return ColumnList.of(block)
+            case BlockType.FILE:
+                return File.of(block)
             case _:
                 import json
 

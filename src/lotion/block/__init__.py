@@ -10,6 +10,7 @@ from .code import Code
 from .column_list import ColumnList
 from .divider import Divider
 from .embed import Embed
+from .file import File
 from .heading import Heading
 from .image import Image
 from .numbered_list_item import NumberedListItem
@@ -32,6 +33,7 @@ __all__ = [
     "ColumnList",
     "Divider",
     "Embed",
+    "File",
     "Heading",
     "Image",
     "NumberedListItem",
