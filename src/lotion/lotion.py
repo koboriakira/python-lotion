@@ -1,13 +1,16 @@
 import os
 from datetime import date, datetime
 from logging import Logger, getLogger
+from pathlib import Path
 from typing import Generic, TypeVar
 
+import requests
 from notion_client import Client
 from notion_client.errors import APIResponseError, HTTPResponseError
 
 from .base_page import BasePage
 from .block import Block, BlockFactory
+from .file_upload import FileUpload, get_content_type
 from .filter.builder import Builder
 from .filter.condition.cond import Cond
 from .page.page_id import PageId
@@ -620,3 +623,157 @@ class Lotion:
 
     def __is_able_retry(self, status: int, retry_count: int) -> bool:
         return status == NOTION_API_ERROR_BAD_GATEWAY and retry_count < self.max_retry_count
+
+    # ============================================================
+    # File Upload API
+    # ============================================================
+
+    def upload_file(
+        self,
+        file_path: str | Path,
+        filename: str | None = None,
+        content_type: str | None = None,
+    ) -> FileUpload:
+        """Upload a file to Notion.
+
+        This method uploads a local file to Notion using the Direct Upload method.
+        Files must be 20MB or less.
+
+        Args:
+            file_path: Path to the local file to upload.
+            filename: Optional filename to use. Defaults to the file's name.
+            content_type: Optional MIME content type. Auto-detected if not provided.
+
+        Returns:
+            A FileUpload object representing the uploaded file.
+
+        Raises:
+            FileNotFoundError: If the file does not exist.
+            ValueError: If the file exceeds the 20MB limit.
+            NotionApiError: If the API request fails.
+
+        Example:
+            >>> lotion = Lotion.get_instance()
+            >>> file_upload = lotion.upload_file("/path/to/image.png")
+            >>> image_block = Image.from_file_upload(file_upload)
+            >>> lotion.append_block(page_id, image_block)
+        """
+        path = Path(file_path) if isinstance(file_path, str) else file_path
+
+        if not path.exists():
+            msg = f"File not found: {path}"
+            raise FileNotFoundError(msg)
+
+        # Check file size (20MB limit)
+        max_size = 20 * 1024 * 1024  # 20MB
+        file_size = path.stat().st_size
+        if file_size > max_size:
+            msg = f"File exceeds 20MB limit: {file_size / 1024 / 1024:.2f}MB"
+            raise ValueError(msg)
+
+        resolved_filename = filename or path.name
+        resolved_content_type = content_type or get_content_type(path)
+
+        # Step 1: Create file upload
+        file_upload = self.__create_file_upload(
+            filename=resolved_filename,
+            content_type=resolved_content_type,
+        )
+
+        # Step 2: Send file data
+        file_upload = self.__send_file_upload(
+            file_upload=file_upload,
+            file_path=path,
+            content_type=resolved_content_type,
+        )
+
+        return file_upload
+
+    def __create_file_upload(
+        self,
+        filename: str,
+        content_type: str,
+        retry_count: int = 0,
+    ) -> FileUpload:
+        """Create a file upload object in Notion.
+
+        Args:
+            filename: The name of the file.
+            content_type: The MIME content type.
+            retry_count: Current retry attempt count.
+
+        Returns:
+            A FileUpload object with pending status.
+        """
+        try:
+            response = self.client.request(
+                method="POST",
+                path="file_uploads",
+                body={
+                    "filename": filename,
+                    "content_type": content_type,
+                },
+            )
+            return FileUpload.of(response)
+        except APIResponseError as e:
+            if self.__is_able_retry(status=e.status, retry_count=retry_count):
+                return self.__create_file_upload(
+                    filename=filename,
+                    content_type=content_type,
+                    retry_count=retry_count + 1,
+                )
+            raise NotionApiError(e=e) from e
+        except HTTPResponseError as e:
+            if self.__is_able_retry(status=e.status, retry_count=retry_count):
+                return self.__create_file_upload(
+                    filename=filename,
+                    content_type=content_type,
+                    retry_count=retry_count + 1,
+                )
+            raise NotionApiError(e=e) from e
+
+    def __send_file_upload(
+        self,
+        file_upload: FileUpload,
+        file_path: Path,
+        content_type: str,
+        retry_count: int = 0,
+    ) -> FileUpload:
+        """Send file data to complete the upload.
+
+        This uses the requests library directly because notion-client
+        doesn't support multipart/form-data uploads.
+
+        Args:
+            file_upload: The FileUpload object from create step.
+            file_path: Path to the file to upload.
+            content_type: The MIME content type.
+            retry_count: Current retry attempt count.
+
+        Returns:
+            A FileUpload object with uploaded status.
+        """
+        upload_url = f"https://api.notion.com/v1/file_uploads/{file_upload.id}/send"
+        headers = {
+            "Authorization": f"Bearer {self.client.options['auth']}",
+            "Notion-Version": self.client.options.get("notion_version", "2022-06-28"),
+        }
+
+        try:
+            with file_path.open("rb") as f:
+                files = {"file": (file_path.name, f, content_type)}
+                response = requests.post(upload_url, headers=headers, files=files, timeout=300)
+                response.raise_for_status()
+                return FileUpload.of(response.json())
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response else 0
+            if status == NOTION_API_ERROR_BAD_GATEWAY and retry_count < self.max_retry_count:
+                return self.__send_file_upload(
+                    file_upload=file_upload,
+                    file_path=file_path,
+                    content_type=content_type,
+                    retry_count=retry_count + 1,
+                )
+            raise NotionApiError(e=APIResponseError(response.json(), response.status_code, {})) from e
+        except requests.exceptions.RequestException as e:
+            raise NotionApiError() from e
