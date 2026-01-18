@@ -42,9 +42,16 @@ class RichTextElement(metaclass=ABCMeta):
         type = rich_text_element["type"]
         if type == "text":
             text = rich_text_element["text"]
+            link = text.get("link")
+            link_url = None
+            link_page_id = None
+            if link:
+                link_url = link.get("url")
+                link_page_id = link.get("page_id")
             return RichTextTextElement(
                 content=text["content"],
-                link_url=text["link"]["url"] if text.get("link") else None,
+                link_url=link_url,
+                link_page_id=link_page_id,
                 annotations=rich_text_element["annotations"],
                 plain_text=rich_text_element["plain_text"],
                 href=rich_text_element["href"],
@@ -106,24 +113,28 @@ class RichTextElement(metaclass=ABCMeta):
 class RichTextTextElement(RichTextElement):
     content: str
     link_url: str | None = None
+    link_page_id: str | None = None
 
     def __init__(
         self,
         content: str,
         link_url: str | None = None,
+        link_page_id: str | None = None,
         annotations: dict[str, bool] | None = None,
         plain_text: str | None = None,
         href: dict[str, bool] | None = None,
     ) -> None:
         self.content = content
         self.link_url = link_url
+        self.link_page_id = link_page_id
         super().__init__(annotations, plain_text, href)
 
     @staticmethod
-    def of(content: str, link_url: str | None = None) -> "RichTextTextElement":
+    def of(content: str, link_url: str | None = None, link_page_id: str | None = None) -> "RichTextTextElement":
         return RichTextTextElement(
             content=content,
             link_url=link_url,
+            link_page_id=link_page_id,
         )
 
     def to_slack_text(self) -> str:
@@ -135,11 +146,15 @@ class RichTextTextElement(RichTextElement):
     def get_type(self) -> str:
         return "text"
 
-    def to_dict_sub(self) -> str:
-        result = {
+    def to_dict_sub(self) -> dict:
+        result: dict[str, Any] = {
             "content": self.content,
         }
-        if self.link_url is not None:
+        if self.link_page_id is not None:
+            result["link"] = {
+                "page_id": self.link_page_id,
+            }
+        elif self.link_url is not None:
             result["link"] = {
                 "url": self.link_url,
             }
