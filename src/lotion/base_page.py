@@ -1,6 +1,7 @@
+import types
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import TypeVar, cast
+from typing import TypeVar, Union, cast, get_args, get_origin
 
 from .base_operator import BaseOperator
 from .block.block import Block
@@ -107,7 +108,9 @@ class BasePage:
         return self.last_edited_time
 
     def get_prop(self, instance_class: type[P]) -> P:
-        parent_class = self.__get_parent_class(instance_class)
+        # Extract actual type from Union types (X | None or Optional[X])
+        actual_class = self.__extract_type_from_union(instance_class)
+        parent_class = self.__get_parent_class(actual_class)
         if parent_class not in [
             Checkbox,
             Date,
@@ -125,9 +128,9 @@ class BasePage:
             error_message = "instance_class must be one of the following classes: Checkbox, Date, Email, MultiSelect, \
                 Number, PhoneNumber, Relation, Select, Status, Text, Title, Url"
             raise ValueError(error_message)
-        result = self.properties.get_property(name=instance_class.PROP_NAME, instance_class=parent_class)
+        result = self.properties.get_property(name=actual_class.PROP_NAME, instance_class=parent_class)
         if result is None:
-            raise NotFoundPropertyError(class_name=instance_class.__name__, prop_name=instance_class.PROP_NAME)
+            raise NotFoundPropertyError(class_name=actual_class.__name__, prop_name=actual_class.PROP_NAME)
         return cast(P, result)
 
     def __get_parent_class(self, instance_class: type[P]) -> type[P]:
@@ -135,6 +138,17 @@ class BasePage:
         if not parent_classes:
             return instance_class
         return parent_classes[0]
+
+    def __extract_type_from_union(self, type_hint: type[P]) -> type[P]:
+        """Extract the actual type from Union types like X | None or Optional[X]."""
+        origin = get_origin(type_hint)
+        # Python 3.10+ uses types.UnionType for X | None syntax
+        # typing.Union is used for Optional[X] or Union[X, None]
+        if origin is Union or isinstance(type_hint, types.UnionType):
+            args = [arg for arg in get_args(type_hint) if arg is not type(None)]
+            if args:
+                return args[0]
+        return type_hint
 
     def set_prop(self, value: Property) -> None:
         self.properties = self.properties.append_property(value)

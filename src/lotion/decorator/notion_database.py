@@ -1,4 +1,5 @@
-from typing import Any, TypeVar, cast
+import types
+from typing import Any, TypeVar, Union, cast, get_args, get_origin
 
 from ..properties.checkbox import Checkbox
 from ..properties.date import Date
@@ -16,7 +17,21 @@ from ..properties.url import Url
 P = TypeVar("P", bound=Property)
 
 
+def __extract_type_from_union(type_hint: type[P]) -> type[P]:
+    """Extract the actual type from Union types like X | None or Optional[X]."""
+    origin = get_origin(type_hint)
+    # Python 3.10+ uses types.UnionType for X | None syntax
+    # typing.Union is used for Optional[X] or Union[X, None]
+    if origin is Union or isinstance(type_hint, types.UnionType):
+        args = [arg for arg in get_args(type_hint) if arg is not type(None)]
+        if args:
+            return args[0]
+    return type_hint
+
+
 def __cast(value: Property, cls: type[P]) -> P:
+    # Handle Union types (X | None or Optional[X])
+    cls = __extract_type_from_union(cls)
     parent_class = cls.__bases__[0]
     if isinstance(value, Title) and parent_class == Title:
         return cls(
@@ -120,8 +135,10 @@ def notion_database(database_id: str):
 
                 def make_setter(name, typ):
                     def setter(self, value: Any):
-                        if not isinstance(value, typ):
-                            raise TypeError(f"Expected {typ} for {name}, got {type(value)}")
+                        # Extract actual type from Union types for isinstance check
+                        actual_type = __extract_type_from_union(typ)
+                        if not isinstance(value, actual_type):
+                            raise TypeError(f"Expected {actual_type} for {name}, got {type(value)}")
                         # print(f"Setting {name} of type {typ} to {value}")  # デバッグ出力
                         self.set_prop(value)  # `set` メソッドを直接呼び出す
 
