@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.9.6](https://github.com/koboriakira/python-lotion/compare/v0.9.5...v0.9.6) (2026-01-24)
+
+
+### Features
+
+* add file upload functionality via Notion API ([#82](https://github.com/koboriakira/python-lotion/issues/82)) ([9b34dca](https://github.com/koboriakira/python-lotion/commit/9b34dca4452737601900b9def21d129728402d09))
+* add py.typed marker for PEP 561 compliance ([#80](https://github.com/koboriakira/python-lotion/issues/80)) ([f2e7d0c](https://github.com/koboriakira/python-lotion/commit/f2e7d0c4d6e7b55f49d5c49dc7bfc33e8a5a40f1))
+
+
+### Bug Fixes
+
+* handle Union types (X | None) in [@notion](https://github.com/notion)_database decorator ([#85](https://github.com/koboriakira/python-lotion/issues/85)) ([53dcedb](https://github.com/koboriakira/python-lotion/commit/53dcedb4d46fa663d5a79177c34e43d9f937940b))
+* support internal page links using link.page_id ([#84](https://github.com/koboriakira/python-lotion/issues/84)) ([5950036](https://github.com/koboriakira/python-lotion/commit/5950036f9dfc95b629511125f546409a1144e514)), closes [#83](https://github.com/koboriakira/python-lotion/issues/83)
+
 ## [0.9.5](https://github.com/koboriakira/python-lotion/compare/v0.9.4...v0.9.5) (2026-01-07)
 
 
